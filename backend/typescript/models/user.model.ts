@@ -1,17 +1,13 @@
 import { Column, DataType, Model, Table } from "sequelize-typescript";
-import { Role } from "../types";
 
-@Table({ tableName: "users" })
+@Table({ tableName: "USER" })
 export default class User extends Model {
   @Column({ type: DataType.STRING })
-  first_name!: string;
+  name!: string;
 
   @Column({ type: DataType.STRING })
-  last_name!: string;
+  email!: string;
 
-  @Column({ type: DataType.STRING })
-  auth_id!: string;
-
-  @Column({ type: DataType.ENUM("User", "Admin") })
-  role!: Role;
+  @Column({ type: DataType.INTEGER })
+  id!: number;
 }
