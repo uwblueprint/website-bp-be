@@ -20,10 +20,6 @@ export const up: Migration = async ({ context: sequelize }) => {
       type: DataType.STRING,
       allowNull: false,
     },
-    auth_id: {
-      type: DataType.STRING,
-      allowNull: false,
-    },
     role: {
       type: DataType.ENUM("User", "Admin"),
       allowNull: false,
