@@ -10,7 +10,13 @@ export default class User extends Model {
   last_name!: string;
 
   @Column({ type: DataType.STRING })
+  email!: string;
+
+  @Column({ type: DataType.STRING })
   auth_id!: string;
+
+  @Column({ type: DataType.INTEGER })
+  id!: number;
 
   @Column({ type: DataType.ENUM("User", "Admin") })
   role!: Role;

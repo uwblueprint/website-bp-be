@@ -3,6 +3,24 @@ import { DataType } from "sequelize-typescript";
 import { Migration } from "../umzug";
 
 const TABLE_NAME = "users";
+const SEEDED_DATA = [
+  {
+    first_name: "John",
+    last_name: "Doe",
+    email: "johndoe@gmail.com",
+    auth_id: "None",
+    id: 1,
+    role: "User",
+  },
+  {
+    first_name: "Jane",
+    last_name: "Doe",
+    email: "janedoe@gmail.ca",
+    auth_id: "None",
+    id: 2,
+    role: "Admin",
+  },
+];
 
 export const up: Migration = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().createTable(TABLE_NAME, {
@@ -20,10 +38,6 @@ export const up: Migration = async ({ context: sequelize }) => {
       type: DataType.STRING,
       allowNull: false,
     },
-    auth_id: {
-      type: DataType.STRING,
-      allowNull: false,
-    },
     role: {
       type: DataType.ENUM("User", "Admin"),
       allowNull: false,
@@ -31,6 +45,8 @@ export const up: Migration = async ({ context: sequelize }) => {
     createdAt: DataType.DATE,
     updatedAt: DataType.DATE,
   });
+
+  await sequelize.getQueryInterface().bulkInsert(TABLE_NAME, SEEDED_DATA);
 };
 
 export const down: Migration = async ({ context: sequelize }) => {
