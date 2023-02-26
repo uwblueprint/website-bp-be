@@ -6,6 +6,10 @@ const emailService: IEmailService = new EmailService(nodemailerConfig);
 
 describe("sendEmail", () => {
   it("sendEmail", async () => {
-    await emailService.sendEmail("hyunzeekim@uwblueprint.org", "test", "testing");
+    await emailService.sendEmail(
+      "hyunzeekim@uwblueprint.org",
+      "test",
+      "testing",
+    );
   });
 });
