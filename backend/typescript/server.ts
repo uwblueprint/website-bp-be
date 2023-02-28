@@ -1,13 +1,12 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-import * as admin from "firebase-admin"
+import * as admin from "firebase-admin";
 import { ApolloServer } from "apollo-server-express";
 import { sequelize } from "./models";
+// eslint-disable-next-line
+import serviceAccount from "./serviceAccount.json";
 import schema from "./graphql";
-
-// insert PATH to where this file is located at for you
-var serviceAccount = require("./serviceAccount.json");
 
 const CORS_ALLOW_LIST = [
   "http://localhost:3000",
@@ -45,10 +44,24 @@ server.applyMiddleware({
 
 sequelize.authenticate();
 
+// const serviceAccountData: Record<string, unknown> = serviceAccount;
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccountData),
+//   databaseURL: "https://uw-blueprint.firebaseio.com",
+// });
+
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://uw-blueprint.firebaseio.com"
+  credential: admin.credential.cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    privateKey: process.env.FIREBASE_SVC_ACCOUNT_PRIVATE_KEY?.replace(
+      /\\n/g,
+      "\n",
+    ),
+    clientEmail: process.env.FIREBASE_SVC_ACCOUNT_CLIENT_EMAIL,
+  }),
+  databaseURL: "https://uw-blueprint.firebaseio.com",
 });
+
 
 const db = admin.database();
 const ref = db.ref("nonProfitApplications");
@@ -63,7 +76,9 @@ app.get("/applications", async (req, res) => {
     res.status(200).json(applications);
   } catch (error) {
     console.error(error);
-    res.status(500).send("An error occurred while retrieving the applications.");
+    res
+      .status(500)
+      .send("An error occurred while retrieving the applications.");
   }
 });
 
