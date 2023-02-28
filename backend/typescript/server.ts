@@ -4,8 +4,6 @@ import express from "express";
 import * as admin from "firebase-admin";
 import { ApolloServer } from "apollo-server-express";
 import { sequelize } from "./models";
-// eslint-disable-next-line
-import serviceAccount from "./serviceAccount.json";
 import schema from "./graphql";
 
 const CORS_ALLOW_LIST = [
