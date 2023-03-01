@@ -59,11 +59,8 @@ admin.initializeApp({
   }),
   databaseURL: "https://uw-blueprint.firebaseio.com",
 });
-
-
 const db = admin.database();
 const ref = db.ref("nonProfitApplications");
-
 app.get("/applications", async (req, res) => {
   try {
     const snapshot = await ref.once("value");
