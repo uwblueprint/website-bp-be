@@ -8,7 +8,8 @@ const SEEDED_DATA = [
     first_name: "John",
     last_name: "Doe",
     email: "johndoe@gmail.com",
-    auth_id: "None",
+    password: "password123",
+    auth_id: "bide",
     id: 1,
     role: "User",
   },
@@ -16,7 +17,8 @@ const SEEDED_DATA = [
     first_name: "Jane",
     last_name: "Doe",
     email: "janedoe@gmail.ca",
-    auth_id: "None",
+    password: "janedoe321",
+    auth_id: "none",
     id: 2,
     role: "Admin",
   },
@@ -35,6 +37,18 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: false,
     },
     last_name: {
+      type: DataType.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataType.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataType.STRING,
+      allowNull: false,
+    },
+    auth_id: {
       type: DataType.STRING,
       allowNull: false,
     },

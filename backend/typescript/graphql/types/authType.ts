@@ -10,11 +10,19 @@ const authType = gql`
     accessToken: String!
   }
 
+  type loginOK {
+    canLogin: Boolean!
+  }
+
   input RegisterUserDTO {
     firstName: String!
     lastName: String!
     email: String!
     password: String!
+  }
+
+  extend type Query {
+    login(email: String!, password: String!): loginOK!
   }
 
   extend type Mutation {
