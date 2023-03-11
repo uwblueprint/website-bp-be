@@ -8,8 +8,8 @@ describe("sendEmail", () => {
   it("sendEmail", async () => {
     await emailService.sendEmail(
       "hyunzeekim@uwblueprint.org",
-      "test",
-      "testing",
+      "Test subject",
+      "Test body",
     );
   });
 });
