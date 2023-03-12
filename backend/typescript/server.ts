@@ -5,6 +5,7 @@ import * as admin from "firebase-admin";
 import { ApolloServer } from "apollo-server-express";
 import { sequelize } from "./models";
 import schema from "./graphql";
+import Application from "./models/application.model";
 
 const CORS_ALLOW_LIST = [
   "http://localhost:3000",
@@ -64,7 +65,7 @@ const ref = db.ref("nonProfitApplications");
 app.get("/applications", async (req, res) => {
   try {
     const snapshot = await ref.once("value");
-    const applications: any[] = [];
+    const applications: Application[] = [];
     snapshot.forEach((childSnapshot) => {
       applications.push(childSnapshot.val());
     });
