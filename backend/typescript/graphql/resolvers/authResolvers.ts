@@ -7,6 +7,7 @@ import UserService from "../../services/implementations/userService";
 import IAuthService from "../../services/interfaces/authService";
 import IEmailService from "../../services/interfaces/emailService";
 import IUserService from "../../services/interfaces/userService";
+import User from "../../models/user.model";
 import { AuthDTO, RegisterUserDTO } from "../../types";
 
 const userService: IUserService = new UserService();
@@ -19,7 +20,28 @@ const cookieOptions: CookieOptions = {
   secure: process.env.NODE_ENV === "production",
 };
 
+// Object to pass back when frontend queries a login request
+class LoginOK {
+  canLogin: boolean;
+
+  constructor(doesUserExist: boolean) {
+    this.canLogin = doesUserExist;
+  }
+}
+
 const authResolvers = {
+  Query: {
+    login: async (
+      _parent: undefined,
+      { email, password }: { email: string; password: string },
+    ): Promise<LoginOK> => {
+      const user = await User.findByPk(email);
+      if (user && user.password === password) {
+        return new LoginOK(true);
+      }
+      return new LoginOK(false);
+    },
+  },
   Mutation: {
     login: async (
       _parent: undefined,
