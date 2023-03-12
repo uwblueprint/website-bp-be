@@ -1,5 +1,7 @@
+import dotenv from "dotenv";
 import { NodemailerConfig } from "./types";
 
+dotenv.config();
 const config: NodemailerConfig = {
   service: "gmail",
   auth: {
