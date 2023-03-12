@@ -15,7 +15,7 @@ export default class User extends Model {
   @Column({ type: DataType.STRING })
   auth_id!: string;
 
-  @Column({ type: DataType.INTEGER })
+  @Column({ type: DataType.INTEGER, primaryKey: true })
   id!: number;
 
   @Column({ type: DataType.ENUM("User", "Admin") })
