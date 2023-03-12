@@ -9,3 +9,7 @@
 .vscode
 **/*.cache
 **/*.egg-info
+backend/typescript/serviceAccount.json
+package-lock.json
+.gitignore
+package.json
