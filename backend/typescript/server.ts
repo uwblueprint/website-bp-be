@@ -93,6 +93,26 @@ app.get("/applications/:id", async (req, res) => {
   }
 });
 
+const printTestEnvVar = () => {
+  console.log(`TEST_ENV_VAR: ${process.env.TEST_ENV_VAR}`);
+};
+
+printTestEnvVar();
+
+setInterval(() => {
+
+  const currentValue = process.env.TEST_ENV_VAR;
+  console.log(currentValue);
+
+  // If the value has changed, print the new value to the console
+  if (currentValue !== printTestEnvVar.lastValue) {
+    printTestEnvVar.lastValue = currentValue;
+    printTestEnvVar();
+  }
+}, 1000);
+
+printTestEnvVar.lastValue = process.env.TEST_ENV_VAR;
+
 app.listen({ port: process.env.PORT || 5000 }, () => {
   console.info(`Server is listening on port ${process.env.PORT || 5000}!`);
 });
