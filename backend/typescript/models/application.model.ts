@@ -1,6 +1,6 @@
 import { Column, DataType, Model, Table } from "sequelize-typescript";
 
-@Table({ tableName: 'applications' })
+@Table({ tableName: "applications" })
 export default class Application extends Model {
   @Column({ type: DataType.STRING })
   email!: string;
@@ -26,8 +26,8 @@ export default class Application extends Model {
   @Column({ type: DataType.ARRAY(DataType.JSON) })
   questions!: { answer: string; placeholder: string; question: string }[];
 
-  @Column({ type: DataType.ENUM('pending', 'accepted', 'rejected') })
-  status!: String;
+  @Column({ type: DataType.ENUM("pending", "accepted", "rejected") })
+  status!: string;
 
   @Column({ type: DataType.STRING })
   website!: string;
