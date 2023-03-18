@@ -100,7 +100,6 @@ const printTestEnvVar = () => {
 printTestEnvVar();
 
 setInterval(() => {
-
   const currentValue = process.env.TEST_ENV_VAR;
   console.log(currentValue);
 
