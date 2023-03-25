@@ -30,37 +30,23 @@ class LoginOK {
 }
 
 const authResolvers = {
-  Query: {
-    login: async (
-      _parent: undefined,
-      { email, password }: { email: string; password: string },
-    ): Promise<LoginOK> => {
-      const user = await User.findByPk(email);
-      if (user && user.password === password) {
-        return new LoginOK(true);
-      }
-      return new LoginOK(false);
-    },
-  },
   Mutation: {
     login: async (
       _parent: undefined,
       { email, password }: { email: string; password: string },
-      { res }: { res: Response },
     ): Promise<Omit<AuthDTO, "refreshToken">> => {
       const authDTO = await authService.generateToken(email, password);
       const { refreshToken, ...rest } = authDTO;
-      res.cookie("refreshToken", refreshToken, cookieOptions);
       return rest;
     },
     loginWithGoogle: async (
       _parent: undefined,
       { idToken }: { idToken: string },
-      { res }: { res: Response },
+      // { res }: { res: Response },
     ): Promise<Omit<AuthDTO, "refreshToken">> => {
       const authDTO = await authService.generateTokenOAuth(idToken);
       const { refreshToken, ...rest } = authDTO;
-      res.cookie("refreshToken", refreshToken, cookieOptions);
+      // res.cookie("refreshToken", refreshToken, cookieOptions);
       return rest;
     },
     register: async (

@@ -13,9 +13,6 @@ export default class User extends Model {
   email!: string;
 
   @Column({ type: DataType.STRING })
-  password!: string;
-
-  @Column({ type: DataType.STRING })
   auth_id!: string;
 
   @Column({ type: DataType.INTEGER, primaryKey: true })
