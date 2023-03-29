@@ -41,17 +41,17 @@ server.applyMiddleware({
   cors: { origin: CORS_ALLOW_LIST, credentials: true },
 });
 
-sequelize.authenticate(); 
+sequelize.authenticate();
 
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert({
     projectId: process.env.FIREBASE_PROJECT_ID,
     privateKey: process.env.FIREBASE_SVC_ACCOUNT_PRIVATE_KEY
-    ? process.env.FIREBASE_SVC_ACCOUNT_PRIVATE_KEY.replace(/\\n/gm, "\n")
-    : undefined,
+      ? process.env.FIREBASE_SVC_ACCOUNT_PRIVATE_KEY.replace(/\\n/gm, "\n")
+      : undefined,
     clientEmail: process.env.FIREBASE_SVC_ACCOUNT_CLIENT_EMAIL,
   }),
-  databaseURL: "https://uw-blueprint.firebaseio.com", 
+  databaseURL: "https://uw-blueprint.firebaseio.com",
 });
 
 app.listen({ port: process.env.PORT || 5000 }, () => {
