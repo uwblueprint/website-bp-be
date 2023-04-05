@@ -5,6 +5,7 @@ import * as admin from "firebase-admin";
 import { ApolloServer } from "apollo-server-express";
 import { sequelize } from "./models";
 import schema from "./graphql";
+import Application from "./models/application.model";
 
 const CORS_ALLOW_LIST = [
   "http://localhost:3000",
@@ -60,11 +61,11 @@ admin.initializeApp({
   databaseURL: "https://uw-blueprint.firebaseio.com",
 });
 const db = admin.database();
-const ref = db.ref("nonProfitApplications");
+const ref = db.ref("studentApplications");
 app.get("/applications", async (req, res) => {
   try {
     const snapshot = await ref.once("value");
-    const applications: any[] = [];
+    const applications: Application[] = [];
     snapshot.forEach((childSnapshot) => {
       applications.push(childSnapshot.val());
     });
@@ -85,32 +86,15 @@ app.get("/applications/:id", async (req, res) => {
     if (application) {
       res.status(200).json(application);
     } else {
-      res.status(404).send("Application not found.");
+      res.status(404).send("Student application not found.");
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send("An error occurred while retrieving the application.");
+    res
+      .status(500)
+      .send("An error occurred while retrieving the student application.");
   }
 });
-
-const printTestEnvVar = () => {
-  console.log(`TEST_ENV_VAR: ${process.env.TEST_ENV_VAR}`);
-};
-
-printTestEnvVar();
-
-setInterval(() => {
-  const currentValue = process.env.TEST_ENV_VAR;
-  console.log(currentValue);
-
-  // If the value has changed, print the new value to the console
-  if (currentValue !== printTestEnvVar.lastValue) {
-    printTestEnvVar.lastValue = currentValue;
-    printTestEnvVar();
-  }
-}, 1000);
-
-printTestEnvVar.lastValue = process.env.TEST_ENV_VAR;
 
 app.listen({ port: process.env.PORT || 5000 }, () => {
   console.info(`Server is listening on port ${process.env.PORT || 5000}!`);
