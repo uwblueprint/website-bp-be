@@ -20,7 +20,7 @@ class UserService implements IUserService {
       if (!user) {
         throw new Error(`userId ${userId} not found.`);
       }
-      firebaseUser = await firebaseAdmin.auth().getUser(user.auth_id);
+      // firebaseUser = await firebaseAdmin.auth().getUser(user.auth_id);
     } catch (error: unknown) {
       Logger.error(`Failed to get user. Reason = ${getErrorMessage(error)}`);
       throw error;
@@ -30,7 +30,7 @@ class UserService implements IUserService {
       id: String(user.id),
       firstName: user.first_name,
       lastName: user.last_name,
-      email: firebaseUser.email ?? "",
+      email: "firebaseUser.email ?? ",
       role: user.role,
     };
   }

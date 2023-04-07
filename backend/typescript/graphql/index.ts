@@ -15,8 +15,10 @@ import simpleEntityResolvers from "./resolvers/simpleEntityResolvers";
 import simpleEntityType from "./types/simpleEntityType";
 import userResolvers from "./resolvers/userResolvers";
 import userType from "./types/userType";
+import dashboardType from "./types/dashboardType";
 import testResolver from "./resolvers/testResolver";
 import testType from "./types/testType";
+import dashboardResolvers from "./resolvers/dashboardResolvers";
 
 const query = gql`
   type Query {
@@ -38,6 +40,7 @@ const executableSchema = makeExecutableSchema({
     entityType,
     simpleEntityType,
     userType,
+    dashboardType,
     testType,
   ],
   resolvers: merge(
@@ -46,6 +49,7 @@ const executableSchema = makeExecutableSchema({
     simpleEntityResolvers,
     userResolvers,
     testResolver,
+    dashboardResolvers,
   ),
 });
 
@@ -59,6 +63,7 @@ const graphQLMiddlewares = {
     entities: authorizedByAllRoles(),
     simpleEntity: authorizedByAllRoles(),
     simpleEntities: authorizedByAllRoles(),
+    dashboardById: authorizedByAllRoles(),
     userById: authorizedByAdmin(),
     userByEmail: authorizedByAdmin(),
     users: authorizedByAdmin(),
@@ -70,6 +75,8 @@ const graphQLMiddlewares = {
     createSimpleEntity: authorizedByAllRoles(),
     updateSimpleEntity: authorizedByAllRoles(),
     deleteSimpleEntity: authorizedByAllRoles(),
+    changeRating: authorizedByAllRoles(),
+    changeSkillCategory: authorizedByAllRoles(),
     createUser: authorizedByAdmin(),
     updateUser: authorizedByAdmin(),
     deleteUserById: authorizedByAdmin(),

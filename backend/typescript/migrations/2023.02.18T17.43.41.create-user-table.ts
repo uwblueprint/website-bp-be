@@ -3,6 +3,7 @@ import { DataType } from "sequelize-typescript";
 import { Migration } from "../umzug";
 
 const TABLE_NAME = "users";
+
 const SEEDED_DATA = [
   {
     first_name: "John",
@@ -29,6 +30,7 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
+      unique: true,
     },
     first_name: {
       type: DataType.STRING,
@@ -36,6 +38,15 @@ export const up: Migration = async ({ context: sequelize }) => {
     },
     last_name: {
       type: DataType.STRING,
+      allowNull: false,
+    },
+    auth_id: {
+      type: DataType.STRING,
+      allowNull: true,
+    },
+    email: {
+      type: DataType.STRING,
+      primaryKey: true,
       allowNull: false,
     },
     role: {

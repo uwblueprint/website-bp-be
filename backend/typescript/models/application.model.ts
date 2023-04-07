@@ -1,7 +1,11 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
+import ApplicationDashboardTable from "./applicationDashboard.model";
 
-@Table({ tableName: "applications" })
+@Table({ tableName: "applicantresponse" })
 export default class Application extends Model {
+  @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
+  id!: number;
+
   @Column({ type: DataType.STRING })
   academicYear!: string;
 
@@ -105,4 +109,7 @@ export default class Application extends Model {
 
   @Column({ type: DataType.DATE })
   timestamp!: Date;
+
+  @HasMany(() => ApplicationDashboardTable)
+  applicationDashboards?: ApplicationDashboardTable[];
 }

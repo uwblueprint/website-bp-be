@@ -1,3 +1,5 @@
+import { NumberLiteralType } from "typescript";
+
 export type Role = "User" | "Admin";
 
 export type Token = {
@@ -11,6 +13,18 @@ export type UserDTO = {
   lastName: string;
   email: string;
   role: Role;
+};
+
+export type ApplicationDashboardDTO = {
+  id: number;
+  reviewerEmail: string;
+  passionFSG: number;
+  teamPlayer: number;
+  desireToLearn: number;
+  skill: number;
+  skillCategory: string;
+  reviewerId: number;
+  applicationId: number;
 };
 
 export type CreateUserDTO = Omit<UserDTO, "id"> & { password: string };

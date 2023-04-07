@@ -1,5 +1,14 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import {
+  Column,
+  DataType,
+  BelongsToMany,
+  HasMany,
+  Model,
+  Table,
+  ForeignKey,
+} from "sequelize-typescript";
 import { Role } from "../types";
+import ApplicationDashboardTable from "./applicationDashboard.model";
 
 @Table({ tableName: "users" })
 export default class User extends Model {
@@ -15,9 +24,12 @@ export default class User extends Model {
   @Column({ type: DataType.STRING })
   auth_id!: string;
 
-  @Column({ type: DataType.INTEGER, primaryKey: true })
+  @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id!: number;
 
   @Column({ type: DataType.ENUM("User", "Admin") })
   role!: Role;
+
+  @HasMany(() => ApplicationDashboardTable)
+  applicationDashboards?: ApplicationDashboardTable[];
 }
