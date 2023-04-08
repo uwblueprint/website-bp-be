@@ -1,3 +1,5 @@
+/* eslint import/no-cycle: 0 */
+
 import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
 import ApplicationDashboardTable from "./applicationDashboard.model";
 

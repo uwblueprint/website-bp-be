@@ -1,5 +1,3 @@
-import { NumberLiteralType } from "typescript";
-
 export type Role = "User" | "Admin";
 
 export type Token = {

@@ -1,12 +1,6 @@
-import {
-  Column,
-  DataType,
-  BelongsToMany,
-  HasMany,
-  Model,
-  Table,
-  ForeignKey,
-} from "sequelize-typescript";
+/* eslint import/no-cycle: 0 */
+
+import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
 import { Role } from "../types";
 import ApplicationDashboardTable from "./applicationDashboard.model";
 

@@ -1,10 +1,10 @@
+/* eslint import/no-cycle: 0 */
+
 import {
   BelongsTo,
   Column,
   DataType,
   ForeignKey,
-  HasMany,
-  HasOne,
   Model,
   Table,
 } from "sequelize-typescript";

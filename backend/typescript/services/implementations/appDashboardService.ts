@@ -1,9 +1,6 @@
-import * as firebaseAdmin from "firebase-admin";
-import IUserService from "../interfaces/userService";
 import { ApplicationDashboardDTO } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
-import User from "../../models/user.model";
 import ApplicationDashboardTable from "../../models/applicationDashboard.model";
 import IAppDashboardService from "../interfaces/appDashboardService";
 
@@ -58,16 +55,14 @@ class AppDashboardService implements IAppDashboardService {
         );
       }
       // updating the ratingToBeChanged
-      ratingToBeChanged === ratings[0]
-        ? (dashboard.passionFSG = newValue)
-        : null;
-      ratingToBeChanged === ratings[1]
-        ? (dashboard.teamPlayer = newValue)
-        : null;
-      ratingToBeChanged === ratings[2]
-        ? (dashboard.desireToLearn = newValue)
-        : null;
-      ratingToBeChanged === ratings[3] ? (dashboard.skill = newValue) : null;
+      dashboard.passionFSG =
+        ratingToBeChanged === ratings[0] ? newValue : dashboard.passionFSG;
+      dashboard.teamPlayer =
+        ratingToBeChanged === ratings[1] ? newValue : dashboard.teamPlayer;
+      dashboard.desireToLearn =
+        ratingToBeChanged === ratings[2] ? newValue : dashboard.desireToLearn;
+      dashboard.skill =
+        ratingToBeChanged === ratings[3] ? newValue : dashboard.skill;
       await dashboard.save();
     } catch (error: unknown) {
       Logger.error(
