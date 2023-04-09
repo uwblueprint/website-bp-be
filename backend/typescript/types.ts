@@ -59,7 +59,7 @@ export type ApplicationDTO = {
   roleSpecificQuestions: string[];
   status: string;
   timestamp: bigint;
-}
+};
 
 export type CreateUserDTO = Omit<UserDTO, "id"> & { password: string };
 

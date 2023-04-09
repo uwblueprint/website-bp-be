@@ -24,7 +24,7 @@ export default class Application extends Model {
   dropdownQuestion1!: string;
 
   @Column({ type: DataType.ARRAY(DataType.STRING) })
-  dropdownQuestions!: string[]
+  dropdownQuestions!: string[];
 
   @Column({ type: DataType.STRING })
   email!: string;

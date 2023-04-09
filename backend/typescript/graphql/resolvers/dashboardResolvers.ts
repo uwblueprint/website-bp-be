@@ -29,9 +29,11 @@ const dashboardResolvers = {
       _parent: undefined,
       { firstChoice }: { firstChoice: string },
     ): Promise<Array<ApplicationDTO>> => {
-      const applications = await dashboardService.getApplicationsByRole(firstChoice);
+      const applications = await dashboardService.getApplicationsByRole(
+        firstChoice,
+      );
       return applications;
-    }
+    },
   },
   Mutation: {
     changeRating: async (
