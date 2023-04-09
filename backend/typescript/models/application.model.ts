@@ -17,22 +17,14 @@ export default class Application extends Model {
   @Column({ type: DataType.BOOLEAN })
   binaryQuestion2!: string;
 
-  @Column({ type: DataType.ARRAY(DataType.JSON) })
-  binaryQuestions!: {
-    binaryOptions: { value: string }[];
-    question: string;
-    selected: string;
-  }[];
+  @Column({ type: DataType.ARRAY(DataType.STRING) })
+  binaryQuestions!: string[];
 
   @Column({ type: DataType.STRING })
   dropdownQuestion1!: string;
 
   @Column({ type: DataType.ARRAY(DataType.STRING) })
-  dropdownQuestions!: {
-    options: { value: string }[];
-    question: string;
-    selected: string;
-  }[];
+  dropdownQuestions!: string[]
 
   @Column({ type: DataType.STRING })
   email!: string;
@@ -64,8 +56,8 @@ export default class Application extends Model {
   @Column({ type: DataType.STRING })
   question5!: string;
 
-  @Column({ type: DataType.ARRAY(DataType.JSON) })
-  questions!: { answer: string; placeholder: string; question: string }[];
+  @Column({ type: DataType.ARRAY(DataType.STRING) })
+  questions!: string[];
 
   @Column({ type: DataType.STRING })
   resume!: string;
@@ -103,14 +95,14 @@ export default class Application extends Model {
   @Column({ type: DataType.STRING })
   roleQuestion9!: string;
 
-  @Column({ type: DataType.ARRAY(DataType.JSON) })
-  roleSpecificQuestions!: { answer: string }[];
+  @Column({ type: DataType.ARRAY(DataType.STRING) })
+  roleSpecificQuestions!: string[];
 
   @Column({ type: DataType.ENUM("pending", "accepted", "rejected") })
   status!: string;
 
-  @Column({ type: DataType.DATE })
-  timestamp!: Date;
+  @Column({ type: DataType.BIGINT })
+  timestamp!: bigint;
 
   @HasMany(() => ApplicationDashboardTable)
   applicationDashboards?: ApplicationDashboardTable[];

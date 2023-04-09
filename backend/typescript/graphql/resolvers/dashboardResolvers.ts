@@ -1,3 +1,4 @@
+import { application } from "express";
 import ApplicationDashboardTable from "../../models/applicationDashboard.model";
 import nodemailerConfig from "../../nodemailer.config";
 import AppDashboardService from "../../services/implementations/appDashboardService";
@@ -8,12 +9,11 @@ import IAppDashboardService from "../../services/interfaces/appDashboardService"
 import IAuthService from "../../services/interfaces/authService";
 import IEmailService from "../../services/interfaces/emailService";
 import IUserService from "../../services/interfaces/userService";
-import { ApplicationDashboardDTO } from "../../types";
+import { ApplicationDashboardDTO, ApplicationDTO } from "../../types";
 import { generateCSV } from "../../utilities/CSVUtils";
 
 const userService: IUserService = new UserService();
 const emailService: IEmailService = new EmailService(nodemailerConfig);
-const authService: IAuthService = new AuthService(userService, emailService);
 const dashboardService: IAppDashboardService = new AppDashboardService();
 
 const dashboardResolvers = {
@@ -25,6 +25,13 @@ const dashboardResolvers = {
       const dashboard = dashboardService.getDashboardById(id);
       return dashboard;
     },
+    applicationsByRole: async (
+      _parent: undefined,
+      { firstChoice }: { firstChoice: string },
+    ): Promise<Array<ApplicationDTO>> => {
+      const applications = await dashboardService.getApplicationsByRole(firstChoice);
+      return applications;
+    }
   },
   Mutation: {
     changeRating: async (

@@ -13,8 +13,45 @@ const dashboardType = gql`
     applicationId: Int!
   }
 
+  type ApplicationDTO {
+    id: Int!
+    academicYear: String
+    binaryQuestion1: String!
+    binaryQuestion2: String!
+    binaryQuestions: [String!]!
+    dropdownQuestion1: String!
+    dropdownQuestions: [String!]!
+    email: String!
+    firstName: String!
+    lastName: String!
+    positions: [String!]!
+    program: String!
+    question1: String!
+    question2: String!
+    question3: String!
+    question4: String!
+    question5: String!
+    questions: [String!]!
+    resume: String!
+    resumeInput: String!
+    resumeUrl: String!
+    roleQuestion1: String!
+    roleQuestion2: String!
+    roleQuestion3: String!
+    roleQuestion4: String!
+    roleQuestion5: String!
+    roleQuestion6: String!
+    roleQuestion7: String!
+    roleQuestion8: String!
+    roleQuestion9: String!
+    roleSpecificQuestions: [String!]!
+    status: String!
+    timestamp: Int!
+  }
+
   extend type Query {
     dashboardById(id: Int!): ApplicationDashboardDTO!
+    applicationsByRole(firstChoice: String!): [ApplicationDTO]!
   }
 
   extend type Mutation {
