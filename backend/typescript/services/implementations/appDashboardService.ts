@@ -121,6 +121,35 @@ class AppDashboardService implements IAppDashboardService {
     return applicationsByRoleDTO;
   }
 
+  async getDashboardsByApplicationId(applicationId: number): Promise<ApplicationDashboardDTO[]> {
+    let dashboards: ApplicationDashboardTable[] = [];
+    let applicationDashboardDTOs: Array<ApplicationDashboardDTO> = [];
+    try {
+      dashboards = await ApplicationDashboardTable.findAll({where: {applicationId: applicationId}})
+      applicationDashboardDTOs = await dashboards.map((dashboard) => {
+        return {
+          id: dashboard.id,
+          reviewerEmail: dashboard.reviewerEmail,
+          passionFSG: dashboard.passionFSG,
+          teamPlayer: dashboard.teamPlayer,
+          desireToLearn: dashboard.desireToLearn,
+          skill: dashboard.skill,
+          skillCategory: dashboard.skillCategory,
+          reviewerId: dashboard.reviewerId,
+          applicationId: dashboard.applicationId,
+        };
+      })
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to get dashboards by this applicationId = ${applicationId}. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
+    return applicationDashboardDTOs;
+  }
+
   async mutateRating(
     id: number,
     ratingToBeChanged: string,

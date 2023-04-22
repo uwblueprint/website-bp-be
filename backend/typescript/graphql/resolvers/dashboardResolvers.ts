@@ -34,6 +34,15 @@ const dashboardResolvers = {
       );
       return applications;
     },
+    dashboardsByApplicationId: async (
+      _parent: undefined,
+      { applicationId }: { applicationId: number },
+    ): Promise<Array<ApplicationDashboardDTO>> => {
+      const dashboards = await dashboardService.getDashboardsByApplicationId(
+        applicationId,
+      );
+      return dashboards;
+    }
   },
   Mutation: {
     changeRating: async (

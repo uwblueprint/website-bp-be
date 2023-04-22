@@ -10,6 +10,7 @@ interface IAppDashboardService {
    */
   getDashboardById(id: number): Promise<ApplicationDashboardDTO>;
   getApplicationsByRole(role: string): Promise<ApplicationDTO[]>;
+  getDashboardsByApplicationId(applicationId: number): Promise<ApplicationDashboardDTO[]>;
   mutateRating(
     id: number,
     ratingToBeChanged: string,
