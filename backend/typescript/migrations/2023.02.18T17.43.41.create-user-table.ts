@@ -8,7 +8,7 @@ const SEEDED_DATA = [
     first_name: "John",
     last_name: "Doe",
     email: "johndoe@gmail.com",
-    auth_id: "None",
+    auth_id: "bide",
     id: 1,
     role: "User",
   },
@@ -16,12 +16,21 @@ const SEEDED_DATA = [
     first_name: "Jane",
     last_name: "Doe",
     email: "janedoe@gmail.ca",
-    auth_id: "None",
+    auth_id: "none",
     id: 2,
     role: "Admin",
   },
+  {
+    first_name: "UW",
+    last_name: "Blueprint",
+    email: "recruitmenttools@uwblueprint.org",
+    auth_id: "1Z4wyuonu9MhAi4VoAEiTMVj1iT2",
+    id: 4,
+    role: "Admin",
+  },
 ];
-
+// recruitmenttools@uwblueprint.org
+// myblueprint!
 export const up: Migration = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().createTable(TABLE_NAME, {
     id: {
@@ -35,6 +44,14 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: false,
     },
     last_name: {
+      type: DataType.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataType.STRING,
+      allowNull: false,
+    },
+    auth_id: {
       type: DataType.STRING,
       allowNull: false,
     },
