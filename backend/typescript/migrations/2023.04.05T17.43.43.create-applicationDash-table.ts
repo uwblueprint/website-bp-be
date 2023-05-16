@@ -1,7 +1,4 @@
-import { trimEnd } from "lodash";
 import { DataType } from "sequelize-typescript";
-import ApplicationDashboardTable from "../models/applicationDashboard.model";
-import User from "../models/user.model";
 
 import { Migration } from "../umzug";
 

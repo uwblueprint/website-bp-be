@@ -1,4 +1,3 @@
-import ApplicationDashboardTable from "../../models/applicationDashboard.model";
 import { ApplicationDashboardDTO, ApplicationDTO } from "../../types";
 
 interface IAppDashboardService {
@@ -10,7 +9,9 @@ interface IAppDashboardService {
    */
   getDashboardById(id: number): Promise<ApplicationDashboardDTO>;
   getApplicationsByRole(role: string): Promise<ApplicationDTO[]>;
-  getDashboardsByApplicationId(applicationId: number): Promise<ApplicationDashboardDTO[]>;
+  getDashboardsByApplicationId(
+    applicationId: number,
+  ): Promise<ApplicationDashboardDTO[]>;
   mutateRating(
     id: number,
     ratingToBeChanged: string,

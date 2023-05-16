@@ -1,4 +1,3 @@
-import { app } from "firebase-admin";
 import { ApplicationDashboardDTO, ApplicationDTO } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
@@ -8,25 +7,6 @@ import Application from "../../models/application.model";
 
 const Logger = logger(__filename);
 const ratings = ["passionFSG", "teamPlayer", "desireToLearn", "skill"];
-enum ApplicantRole {
-  pres = "president", // community tab
-  vpe = "vp engineering", // eng tab
-  vpd = "vp design", // design tab
-  vpp = "vp product", // prod tab
-  vpt = "vp talent", // community tab
-  vp_ext = "vp external", // community tab
-  vp_int = "vp internal", // community tab
-  vp_comms = "vp communications", // community tab
-  vp_scoping = "vp scoping", // community tab
-  vp_finance = "vp finance", // community tab
-  pm = "project manager", // prod tab
-  pl = "project lead", // eng tab
-  design_mentor = "design mentor", // design tab
-  graphic_design = "graphic designer", // design tab
-  product_design = "product designer", // design tab
-  uxr = "user exp. researcher", // design tab
-  dev = "project developer", // eng tab
-}
 
 const grabDashboard = async (
   id: number,
@@ -121,11 +101,15 @@ class AppDashboardService implements IAppDashboardService {
     return applicationsByRoleDTO;
   }
 
-  async getDashboardsByApplicationId(applicationId: number): Promise<ApplicationDashboardDTO[]> {
+  async getDashboardsByApplicationId(
+    applicationId: number,
+  ): Promise<ApplicationDashboardDTO[]> {
     let dashboards: ApplicationDashboardTable[] = [];
     let applicationDashboardDTOs: Array<ApplicationDashboardDTO> = [];
     try {
-      dashboards = await ApplicationDashboardTable.findAll({where: {applicationId: applicationId}})
+      dashboards = await ApplicationDashboardTable.findAll({
+        where: { applicationId },
+      });
       applicationDashboardDTOs = await dashboards.map((dashboard) => {
         return {
           id: dashboard.id,
@@ -138,7 +122,7 @@ class AppDashboardService implements IAppDashboardService {
           reviewerId: dashboard.reviewerId,
           applicationId: dashboard.applicationId,
         };
-      })
+      });
     } catch (error: unknown) {
       Logger.error(
         `Failed to get dashboards by this applicationId = ${applicationId}. Reason = ${getErrorMessage(

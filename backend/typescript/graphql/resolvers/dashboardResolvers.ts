@@ -1,19 +1,7 @@
-import { application } from "express";
-import ApplicationDashboardTable from "../../models/applicationDashboard.model";
-import nodemailerConfig from "../../nodemailer.config";
 import AppDashboardService from "../../services/implementations/appDashboardService";
-import AuthService from "../../services/implementations/authService";
-import EmailService from "../../services/implementations/emailService";
-import UserService from "../../services/implementations/userService";
 import IAppDashboardService from "../../services/interfaces/appDashboardService";
-import IAuthService from "../../services/interfaces/authService";
-import IEmailService from "../../services/interfaces/emailService";
-import IUserService from "../../services/interfaces/userService";
 import { ApplicationDashboardDTO, ApplicationDTO } from "../../types";
-import { generateCSV } from "../../utilities/CSVUtils";
 
-const userService: IUserService = new UserService();
-const emailService: IEmailService = new EmailService(nodemailerConfig);
 const dashboardService: IAppDashboardService = new AppDashboardService();
 
 const dashboardResolvers = {
@@ -42,7 +30,7 @@ const dashboardResolvers = {
         applicationId,
       );
       return dashboards;
-    }
+    },
   },
   Mutation: {
     changeRating: async (

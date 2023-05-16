@@ -12,7 +12,7 @@ class UserService implements IUserService {
 
   async getUserById(userId: string): Promise<UserDTO> {
     let user: User | null;
-    let firebaseUser: firebaseAdmin.auth.UserRecord;
+    // let firebaseUser: firebaseAdmin.auth.UserRecord;
 
     try {
       user = await User.findByPk(Number(userId));
