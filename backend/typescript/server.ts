@@ -43,17 +43,6 @@ server.applyMiddleware({
 
 sequelize.authenticate();
 
-firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    privateKey: process.env.FIREBASE_SVC_ACCOUNT_PRIVATE_KEY
-      ? process.env.FIREBASE_SVC_ACCOUNT_PRIVATE_KEY.replace(/\\n/gm, "\n")
-      : undefined,
-    clientEmail: process.env.FIREBASE_SVC_ACCOUNT_CLIENT_EMAIL,
-  }),
-  databaseURL: "https://uw-blueprint.firebaseio.com",
-});
-
 // const serviceAccountData: Record<string, unknown> = serviceAccount;
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccountData),
