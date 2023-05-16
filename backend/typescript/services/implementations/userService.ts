@@ -170,6 +170,7 @@ class UserService implements IUserService {
           first_name: user.firstName,
           last_name: user.lastName,
           auth_id: firebaseUser.uid,
+          email: firebaseUser.email,
           role: user.role,
         });
       } catch (postgresError) {

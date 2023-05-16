@@ -10,7 +10,8 @@ import IEmailService from "../../services/interfaces/emailService";
 import FirebaseRestClient from "../../utilities/firebaseRestClient";
 import IUserService from "../../services/interfaces/userService";
 import User from "../../models/user.model";
-import { AuthDTO, RegisterUserDTO } from "../../types";
+import { AuthDTO, RegisterUserDTO, Role } from "../../types";
+import logger from "../../utilities/logger";
 
 const userService: IUserService = new UserService();
 const emailService: IEmailService = new EmailService(nodemailerConfig);
@@ -39,16 +40,25 @@ const splitName = function (
 };
 
 const authResolvers = {
+  Query: {
+    isAuthorizedByRole: async (
+      _parent: undefined,
+      { accessToken, roles }: {accessToken: string, roles: Role[] }): Promise<Boolean> => {
+        const Logger = logger(__filename);
+        Logger.error(`foo bar baz ${roles} ${accessToken}`)
+        const isAuthorized = await authService.isAuthorizedByRole(accessToken, new Set(roles))
+        return isAuthorized
+      },
+  },
   Mutation: {
     login: async (
       _parent: undefined,
       { email, password }: { email: string; password: string },
-    ): Promise<Omit<AuthDTO, "refreshToken">> => {
+    ): Promise<AuthDTO> => {
       try {
         // Trying to log in with the given user and email
         const authDTO = await authService.generateToken(email, password);
-        const { refreshToken, ...rest } = authDTO;
-        return rest;
+        return authDTO;
       } catch {
         // If an error is thrown during generateToken we know that the user failed to login
         // checking if this user can sign in to firebase with the given credentials, if not an error will be thrown
@@ -64,8 +74,7 @@ const authResolvers = {
         });
         // now generating a token
         const authDTO = await authService.generateToken(email, password);
-        const { refreshToken, ...rest } = authDTO;
-        return rest;
+        return authDTO;
       }
     },
     loginWithGoogle: async (
@@ -83,7 +92,7 @@ const authResolvers = {
       { user }: { user: RegisterUserDTO },
       { res }: { res: Response },
     ): Promise<Omit<AuthDTO, "refreshToken">> => {
-      await userService.createUser({ ...user, role: "User" });
+      await userService.createUser({ ...user, role: "Admin" });
       const authDTO = await authService.generateToken(
         user.email,
         user.password,

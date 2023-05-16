@@ -174,12 +174,11 @@ class AuthService implements IAuthService {
       const userRole = await this.userService.getUserRoleByAuthId(
         decodedIdToken.uid,
       );
-
       const firebaseUser = await firebaseAdmin
         .auth()
         .getUser(decodedIdToken.uid);
 
-      return firebaseUser.emailVerified && roles.has(userRole);
+      return roles.has(userRole);
     } catch (error) {
       return false;
     }
