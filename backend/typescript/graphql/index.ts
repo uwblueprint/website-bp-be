@@ -67,6 +67,7 @@ const graphQLMiddlewares = {
     applicationsByRole: authorizedByAllRoles(),
     userById: authorizedByAdmin(),
     userByEmail: authorizedByAdmin(),
+    login: authorizedByAdmin(),
     users: authorizedByAdmin(),
   },
   Mutation: {

@@ -1,12 +1,15 @@
 import { CookieOptions, Request, Response } from "express";
 
+import * as firebaseAdmin from "firebase-admin";
 import nodemailerConfig from "../../nodemailer.config";
 import AuthService from "../../services/implementations/authService";
 import EmailService from "../../services/implementations/emailService";
 import UserService from "../../services/implementations/userService";
 import IAuthService from "../../services/interfaces/authService";
 import IEmailService from "../../services/interfaces/emailService";
+import FirebaseRestClient from "../../utilities/firebaseRestClient";
 import IUserService from "../../services/interfaces/userService";
+import User from "../../models/user.model";
 import { AuthDTO, RegisterUserDTO } from "../../types";
 
 const userService: IUserService = new UserService();
@@ -19,26 +22,60 @@ const cookieOptions: CookieOptions = {
   secure: process.env.NODE_ENV === "production",
 };
 
+// Object to pass back when frontend queries a login request
+class LoginOK {
+  canLogin: boolean;
+
+  constructor(doesUserExist: boolean) {
+    this.canLogin = doesUserExist;
+  }
+}
+
+const splitName = function (
+  displayName: string,
+): { firstName: string; lastName: string } {
+  const splitted = displayName.split(" ", 2);
+  return { firstName: splitted[0], lastName: splitted[1] };
+};
+
 const authResolvers = {
   Mutation: {
     login: async (
       _parent: undefined,
       { email, password }: { email: string; password: string },
-      { res }: { res: Response },
     ): Promise<Omit<AuthDTO, "refreshToken">> => {
-      const authDTO = await authService.generateToken(email, password);
-      const { refreshToken, ...rest } = authDTO;
-      res.cookie("refreshToken", refreshToken, cookieOptions);
-      return rest;
+      try {
+        // Trying to log in with the given user and email
+        const authDTO = await authService.generateToken(email, password);
+        const { refreshToken, ...rest } = authDTO;
+        return rest;
+      } catch {
+        // If an error is thrown during generateToken we know that the user failed to login
+        // checking if this user can sign in to firebase with the given credentials, if not an error will be thrown
+        await FirebaseRestClient.signInWithPassword(email, password);
+        const firebaseUser = await firebaseAdmin.auth().getUserByEmail(email);
+        const { firstName, lastName } = splitName(firebaseUser.displayName!);
+        // Creating the user in our postgres
+        await User.create({
+          first_name: firstName,
+          last_name: lastName,
+          auth_id: firebaseUser.uid,
+          role: "User", // hard coding as user for now
+        });
+        // now generating a token
+        const authDTO = await authService.generateToken(email, password);
+        const { refreshToken, ...rest } = authDTO;
+        return rest;
+      }
     },
     loginWithGoogle: async (
       _parent: undefined,
       { idToken }: { idToken: string },
-      { res }: { res: Response },
-    ): Promise<Omit<AuthDTO, "refreshToken">> => {
+    ): // { res }: { res: Response },
+    Promise<Omit<AuthDTO, "refreshToken">> => {
       const authDTO = await authService.generateTokenOAuth(idToken);
       const { refreshToken, ...rest } = authDTO;
-      res.cookie("refreshToken", refreshToken, cookieOptions);
+      // res.cookie("refreshToken", refreshToken, cookieOptions);
       return rest;
     },
     register: async (

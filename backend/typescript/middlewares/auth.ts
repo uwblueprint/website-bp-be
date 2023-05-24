@@ -41,11 +41,11 @@ export const isAuthorizedByRole = (roles: Set<Role>) => {
     const authorized =
       accessToken && (await authService.isAuthorizedByRole(accessToken, roles));
 
-    // if (!authorized) {
-    //   throw new AuthenticationError(
-    //     "Failed authentication and/or authorization by role",
-    //   );
-    // }
+    if (!authorized) {
+      // throw new AuthenticationError(
+      //   "Failed authentication and/or authorization by role",
+      // );
+    }
 
     return resolve(parent, args, context, info);
   };

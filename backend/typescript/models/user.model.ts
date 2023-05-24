@@ -12,7 +12,7 @@ export default class User extends Model {
   @Column({ type: DataType.STRING })
   last_name!: string;
 
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.STRING, primaryKey: true })
   email!: string;
 
   @Column({ type: DataType.STRING })
