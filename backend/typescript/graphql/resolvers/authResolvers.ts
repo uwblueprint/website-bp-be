@@ -23,6 +23,7 @@ const cookieOptions: CookieOptions = {
 };
 
 // Object to pass back when frontend queries a login request
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class LoginOK {
   canLogin: boolean;
 
@@ -31,9 +32,9 @@ class LoginOK {
   }
 }
 
-const splitName = function (
+const splitName = (
   displayName: string,
-): { firstName: string; lastName: string } {
+): { firstName: string; lastName: string } => {
   const splitted = displayName.split(" ", 2);
   return { firstName: splitted[0], lastName: splitted[1] };
 };
@@ -54,7 +55,9 @@ const authResolvers = {
         // checking if this user can sign in to firebase with the given credentials, if not an error will be thrown
         await FirebaseRestClient.signInWithPassword(email, password);
         const firebaseUser = await firebaseAdmin.auth().getUserByEmail(email);
-        const { firstName, lastName } = splitName(firebaseUser.displayName!);
+        const { firstName, lastName } = firebaseUser.displayName
+          ? splitName(firebaseUser.displayName)
+          : { firstName: "", lastName: "" };
         // Creating the user in our postgres
         await User.create({
           first_name: firstName,
