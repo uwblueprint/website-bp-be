@@ -178,7 +178,7 @@ class AuthService implements IAuthService {
         .auth()
         .getUser(decodedIdToken.uid);
 
-      return roles.has(userRole);
+      return firebaseUser.emailVerified && roles.has(userRole);
     } catch (error) {
       return false;
     }
