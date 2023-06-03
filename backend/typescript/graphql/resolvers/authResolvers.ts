@@ -43,12 +43,16 @@ const authResolvers = {
   Query: {
     isAuthorizedByRole: async (
       _parent: undefined,
-      { accessToken, roles }: {accessToken: string, roles: Role[] }): Promise<Boolean> => {
-        const Logger = logger(__filename);
-        Logger.error(`foo bar baz ${roles} ${accessToken}`)
-        const isAuthorized = await authService.isAuthorizedByRole(accessToken, new Set(roles))
-        return isAuthorized
-      },
+      { accessToken, roles }: { accessToken: string; roles: Role[] },
+    ): Promise<boolean> => {
+      const Logger = logger(__filename);
+      Logger.error(`foo bar baz ${roles} ${accessToken}`);
+      const isAuthorized = await authService.isAuthorizedByRole(
+        accessToken,
+        new Set(roles),
+      );
+      return isAuthorized;
+    },
   },
   Mutation: {
     login: async (
