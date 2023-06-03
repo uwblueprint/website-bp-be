@@ -18,13 +18,13 @@ interface IAppDashboardService {
 
   /**
    * Bulk updates applications in reviewer dashboard
-   * @param applicationData 
+   * @param applicationData
    * @returns an array of the updated dashboard entry ids
    * @throws Error if batch update failed
    */
   updateBulkApplications(
     applicationData: Array<Partial<ApplicationDashboardDTO>>,
-  ): Promise<Array<number>>
+  ): Promise<Array<number>>;
 }
 
 export default IAppDashboardService;

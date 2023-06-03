@@ -1,6 +1,10 @@
 import AppDashboardService from "../../services/implementations/appDashboardService";
 import IAppDashboardService from "../../services/interfaces/appDashboardService";
-import { ApplicationDashboardDTO, ApplicationDTO, ApplicationDashboardInput } from "../../types";
+import {
+  ApplicationDashboardDTO,
+  ApplicationDTO,
+  ApplicationDashboardInput,
+} from "../../types";
 
 const dashboardService: IAppDashboardService = new AppDashboardService();
 
@@ -57,7 +61,7 @@ const dashboardResolvers = {
     },
     updateApplications: async (
       _parent: undefined,
-      {applications }: {applications: Array<ApplicationDashboardInput>},
+      { applications }: { applications: Array<ApplicationDashboardInput> },
     ): Promise<Array<number>> => {
       return dashboardService.updateBulkApplications(applications);
     },
