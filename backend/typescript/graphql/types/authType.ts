@@ -25,14 +25,13 @@ const authType = gql`
   extend type Query {
     login(email: String!, password: String!): loginOK!
     isAuthorizedByRole(accessToken: String!, roles: [Role!]!): Boolean!
-
   }
-  
+
   extend type Mutation {
     login(email: String!, password: String!): AuthDTO!
     loginWithGoogle(idToken: String!): AuthDTO!
     register(user: RegisterUserDTO!): AuthDTO!
-    refresh: String!
+    refresh(refreshToken: String!): String!
     logout(userId: ID!): ID
     resetPassword(email: String!): Boolean!
   }
