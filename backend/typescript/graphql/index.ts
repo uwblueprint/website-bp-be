@@ -79,6 +79,7 @@ const graphQLMiddlewares = {
     deleteSimpleEntity: authorizedByAllRoles(),
     changeRating: authorizedByAllRoles(),
     changeSkillCategory: authorizedByAllRoles(),
+    updateApplications: authorizedByAllRoles(),
     createUser: authorizedByAdmin(),
     updateUser: authorizedByAdmin(),
     deleteUserById: authorizedByAdmin(),

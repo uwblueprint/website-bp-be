@@ -203,6 +203,29 @@ class AppDashboardService implements IAppDashboardService {
       applicationId: dashboard.applicationId,
     };
   }
+
+  async updateBulkApplications(applicationData: Array<Partial<ApplicationDashboardDTO>>): Promise<Array<number>> {
+    let res: number[] = [];
+    await Promise.all(applicationData.map(update => {
+      const { id, ...values } = update;
+      if (id !== undefined && id ) {
+        res.push(id);
+      }
+
+      ApplicationDashboardTable.update(
+        values,
+        { where: { id }, returning: true }
+      ).catch((err: Error) => {
+        Logger.error("Error in application dashboard batch update: " + err.toString());
+        throw err;
+      });
+    })).catch(err => {
+      Logger.error("Failed application dashboard batch update");
+      throw err;
+    });
+
+    return res;
+  }
 }
 
 export default AppDashboardService;
