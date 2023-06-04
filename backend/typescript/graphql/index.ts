@@ -16,8 +16,6 @@ import simpleEntityType from "./types/simpleEntityType";
 import userResolvers from "./resolvers/userResolvers";
 import userType from "./types/userType";
 import dashboardType from "./types/dashboardType";
-import testResolver from "./resolvers/testResolver";
-import testType from "./types/testType";
 import dashboardResolvers from "./resolvers/dashboardResolvers";
 
 const query = gql`
@@ -41,14 +39,12 @@ const executableSchema = makeExecutableSchema({
     simpleEntityType,
     userType,
     dashboardType,
-    testType,
   ],
   resolvers: merge(
     authResolvers,
     entityResolvers,
     simpleEntityResolvers,
     userResolvers,
-    testResolver,
     dashboardResolvers,
   ),
 });

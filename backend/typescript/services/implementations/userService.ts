@@ -108,7 +108,6 @@ class UserService implements IUserService {
   }
 
   async getUsers(): Promise<Array<UserDTO>> {
-    console.log("0");
     let userDtos: Array<UserDTO> = [];
     try {
       const users: Array<User> = await User.findAll();
@@ -116,11 +115,9 @@ class UserService implements IUserService {
       userDtos = await Promise.all(
         users.map(async (user) => {
           let firebaseUser: firebaseAdmin.auth.UserRecord;
-          console.log("1");
 
           try {
             firebaseUser = await firebaseAdmin.auth().getUser(user.auth_id);
-            console.log("2");
           } catch (error) {
             Logger.error(
               `user with authId ${user.auth_id} could not be fetched from Firebase`,
