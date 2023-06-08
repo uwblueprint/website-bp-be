@@ -21,6 +21,8 @@ export type ApplicationDashboardDTO = {
   desireToLearn: number;
   skill: number;
   skillCategory: string;
+  reviewerComments: string;
+  recommendedSecondChoice: string;
   reviewerId: number;
   applicationId: number;
 };

@@ -16,6 +16,8 @@ const SEEDED_DATA = [
     teamPlayer: 0,
     desireToLearn: 0,
     skill: 0,
+    reviewerComments: "Great job presenting your case study!",
+    recommendedSecondChoice: "N/A",
     skillCategory: "junior",
   },
   {
@@ -27,6 +29,8 @@ const SEEDED_DATA = [
     teamPlayer: 0,
     desireToLearn: 0,
     skill: 0,
+    reviewerComments: "Very good!",
+    recommendedSecondChoice: "considered",
     skillCategory: "intermediate",
   },
 ];
@@ -77,6 +81,14 @@ export const up: Migration = async ({ context: sequelize }) => {
     },
     skillCategory: {
       type: DataType.ENUM("junior", "intermediate", "senior"),
+      allowNull: false,
+    },
+    reviewerComments: {
+      type: DataType.STRING,
+      allowNull: false,
+    },
+    recommendedSecondChoice: {
+      type: DataType.ENUM("N/A", "considered", "not considered"),
       allowNull: false,
     },
     createdAt: DataType.DATE,

@@ -39,6 +39,8 @@ class AppDashboardService implements IAppDashboardService {
       desireToLearn: dashboard.desireToLearn,
       skill: dashboard.skill,
       skillCategory: dashboard.skillCategory,
+      reviewerComments: dashboard.reviewerComments,
+      recommendedSecondChoice: dashboard.recommendedSecondChoice,
       reviewerId: dashboard.reviewerId,
       applicationId: dashboard.applicationId,
     };
@@ -119,6 +121,8 @@ class AppDashboardService implements IAppDashboardService {
           desireToLearn: dashboard.desireToLearn,
           skill: dashboard.skill,
           skillCategory: dashboard.skillCategory,
+          reviewerComments: dashboard.reviewerComments,
+          recommendedSecondChoice: dashboard.recommendedSecondChoice,
           reviewerId: dashboard.reviewerId,
           applicationId: dashboard.applicationId,
         };
@@ -171,6 +175,8 @@ class AppDashboardService implements IAppDashboardService {
       desireToLearn: dashboard.desireToLearn,
       skill: dashboard.skill,
       skillCategory: dashboard.skillCategory,
+      reviewerComments: dashboard.reviewerComments,
+      recommendedSecondChoice: dashboard.recommendedSecondChoice,
       reviewerId: dashboard.reviewerId,
       applicationId: dashboard.applicationId,
     };
@@ -199,6 +205,42 @@ class AppDashboardService implements IAppDashboardService {
       desireToLearn: dashboard.desireToLearn,
       skill: dashboard.skill,
       skillCategory: dashboard.skillCategory,
+      reviewerComments: dashboard.reviewerComments,
+      recommendedSecondChoice: dashboard.recommendedSecondChoice,
+      reviewerId: dashboard.reviewerId,
+      applicationId: dashboard.applicationId,
+    };
+  }
+
+  async mutateFinalComments(
+    id: number,
+    newComments: string,
+    newSkillCategory: string,
+    newRecommendedSecondChoice: string,
+  ): Promise<ApplicationDashboardDTO> {
+    const dashboard = await grabDashboard(id);
+    try {
+      dashboard.reviewerComments = newComments;
+      dashboard.skillCategory = newSkillCategory;
+      dashboard.recommendedSecondChoice = newRecommendedSecondChoice;
+      await dashboard.save();
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to update rating. Reason = ${getErrorMessage(error)}`,
+      );
+      throw error;
+    }
+
+    return {
+      id: dashboard.id,
+      reviewerEmail: dashboard.reviewerEmail,
+      passionFSG: dashboard.passionFSG,
+      teamPlayer: dashboard.teamPlayer,
+      desireToLearn: dashboard.desireToLearn,
+      skill: dashboard.skill,
+      skillCategory: dashboard.skillCategory,
+      reviewerComments: dashboard.reviewerComments,
+      recommendedSecondChoice: dashboard.recommendedSecondChoice,
       reviewerId: dashboard.reviewerId,
       applicationId: dashboard.applicationId,
     };

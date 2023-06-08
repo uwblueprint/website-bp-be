@@ -34,6 +34,12 @@ export default class ApplicationDashboardTable extends Model {
   @Column({ type: DataType.ENUM("junior", "intermediate", "senior") })
   skillCategory!: string;
 
+  @Column({ type: DataType.STRING })
+  reviewerComments!: string;
+
+  @Column({ type: DataType.ENUM("N/A", "considered", "not considered") })
+  recommendedSecondChoice!: string;
+
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER })
   reviewerId!: number;
