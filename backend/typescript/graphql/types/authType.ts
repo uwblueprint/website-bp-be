@@ -8,6 +8,7 @@ const authType = gql`
     email: String!
     role: Role!
     accessToken: String!
+    refreshToken: String!
   }
 
   type loginOK {

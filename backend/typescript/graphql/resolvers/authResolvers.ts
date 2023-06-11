@@ -87,11 +87,9 @@ const authResolvers = {
       _parent: undefined,
       { idToken }: { idToken: string },
     ): // { res }: { res: Response },
-    Promise<Omit<AuthDTO, "refreshToken">> => {
+    Promise<AuthDTO> => {
       const authDTO = await authService.generateTokenOAuth(idToken);
-      const { refreshToken, ...rest } = authDTO;
-      // res.cookie("refreshToken", refreshToken, cookieOptions);
-      return rest;
+      return authDTO;
     },
     register: async (
       _parent: undefined,
