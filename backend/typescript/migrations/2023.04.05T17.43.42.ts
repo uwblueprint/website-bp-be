@@ -3,56 +3,58 @@ import { DataType } from "sequelize-typescript";
 // import User from "../models/user.model";
 
 import { Migration } from "../umzug";
-import all_applications from "./applicationlist.json";
+import allApplications from "./applicationlist.json";
 
 const TABLE_NAME = "applicantresponse";
 
 // To get more application data, copy paste more info from http://localhost:5000/applications
 // into applicationlist.json (using applications endpoint in server.ts)
-const import_application_data: () => object[] = function() {
-  const seeded_data = [];
-  for (let i = 0; i < all_applications.length; i++) {
-    const curr_application = all_applications[i];
-    const application_data = {
-      academicYear: curr_application.academicYear,
-      binaryQuestion1: curr_application.binaryQuestion1,
-      binaryQuestion2: curr_application.binaryQuestion2,
-      binaryQuestions: curr_application.binaryQuestions.map(x => JSON.stringify(x)),
-      dropdownQuestion1: curr_application.dropdownQuestion1,
-      dropdownQuestions: curr_application.dropdownQuestions.map(x => JSON.stringify(x)),
-      email: curr_application.email,
-      firstName: curr_application.firstName,
-      lastName: curr_application.lastName,
-      positions: curr_application.positions,
-      program: curr_application.program,
-      question1: curr_application.question1,
-      question2: curr_application.question2,
-      question3: curr_application.question3,
-      question4: curr_application.question4,
-      question5: curr_application.question5,
-      questions: curr_application.questions.map(x => JSON.stringify(x)),
+const importApplicationData = () => {
+  const seededData = allApplications.map((currApplication) => {
+    return {
+      academicYear: currApplication.academicYear,
+      binaryQuestion1: currApplication.binaryQuestion1,
+      binaryQuestion2: currApplication.binaryQuestion2,
+      binaryQuestions: currApplication.binaryQuestions.map((x) =>
+        JSON.stringify(x),
+      ),
+      dropdownQuestion1: currApplication.dropdownQuestion1,
+      dropdownQuestions: currApplication.dropdownQuestions.map((x) =>
+        JSON.stringify(x),
+      ),
+      email: currApplication.email,
+      firstName: currApplication.firstName,
+      lastName: currApplication.lastName,
+      positions: currApplication.positions,
+      program: currApplication.program,
+      question1: currApplication.question1,
+      question2: currApplication.question2,
+      question3: currApplication.question3,
+      question4: currApplication.question4,
+      question5: currApplication.question5,
+      questions: currApplication.questions.map((x) => JSON.stringify(x)),
       resume: "C:\\fakepath\\resume (3).pdf",
-      resumeInput: curr_application.resumeInput,
-      resumeUrl: curr_application.resumeUrl,
-      roleQuestion1: curr_application.roleQuestion1,
-      roleQuestion2: curr_application.roleQuestion2,
-      roleQuestion3: curr_application.roleQuestion3,
-      roleQuestion4: curr_application.roleQuestion4,
-      roleQuestion5: curr_application.roleQuestion5,
-      roleQuestion6: curr_application.roleQuestion6,
-      roleQuestion7: curr_application.roleQuestion7,
-      roleQuestion8: curr_application.roleQuestion8,
-      roleQuestion9: curr_application.roleQuestion9,
-      roleSpecificQuestions: [JSON.stringify(curr_application.roleSpecificQuestions)],
-      status: curr_application.status,
-      timestamp: curr_application.timestamp,
+      resumeInput: currApplication.resumeInput,
+      resumeUrl: currApplication.resumeUrl,
+      roleQuestion1: currApplication.roleQuestion1,
+      roleQuestion2: currApplication.roleQuestion2,
+      roleQuestion3: currApplication.roleQuestion3,
+      roleQuestion4: currApplication.roleQuestion4,
+      roleQuestion5: currApplication.roleQuestion5,
+      roleQuestion6: currApplication.roleQuestion6,
+      roleQuestion7: currApplication.roleQuestion7,
+      roleQuestion8: currApplication.roleQuestion8,
+      roleQuestion9: currApplication.roleQuestion9,
+      roleSpecificQuestions: [
+        JSON.stringify(currApplication.roleSpecificQuestions),
+      ],
+      status: currApplication.status,
+      timestamp: currApplication.timestamp,
     };
-    seeded_data.push(application_data);
-  }
+  });
 
-  return seeded_data;
+  return seededData;
 };
-
 
 export const up: Migration = async ({ context: sequelize }) => {
   const binaryQuestions = sequelize.define(
@@ -201,7 +203,7 @@ export const up: Migration = async ({ context: sequelize }) => {
     updatedAt: DataType.DATE,
   });
 
-  const SEEDED_DATA = import_application_data();
+  const SEEDED_DATA = importApplicationData();
   await sequelize.getQueryInterface().bulkInsert(TABLE_NAME, SEEDED_DATA);
 };
 
