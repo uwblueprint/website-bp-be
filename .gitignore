@@ -13,3 +13,4 @@ backend/typescript/serviceAccount.json
 package-lock.json
 .gitignore
 package.json
+backend/typescript/migrations/applicationlist.json
