@@ -25,16 +25,7 @@ export type ApplicationDashboardDTO = {
   applicationId: number;
 };
 
-export type ApplicationDashboardInput = {
-  id: number;
-  reviewerEmail: string;
-  passionFSG: number;
-  teamPlayer: number;
-  desireToLearn: number;
-  skill: number;
-  skillCategory: string;
-  reviewerId: number;
-};
+export type ApplicationDashboardInput = Omit<ApplicationDashboardDTO, "applicationId">;
 
 export type ApplicationDTO = {
   id: number;
