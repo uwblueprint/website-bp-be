@@ -145,27 +145,20 @@ class UserService implements IUserService {
   async createUser(
     user: CreateUserDTO,
     authId?: string,
-    signUpMethod = "PASSWORD",
   ): Promise<UserDTO> {
     let newUser: User;
     let firebaseUser: firebaseAdmin.auth.UserRecord;
 
     try {
-      if (signUpMethod === "GOOGLE") {
-        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        firebaseUser = await firebaseAdmin.auth().getUser(authId!);
-      } else {
-        // signUpMethod === PASSWORD
-        firebaseUser = await firebaseAdmin.auth().createUser({
-          email: user.email,
-          password: user.password,
-        });
-      }
-
+      /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+      firebaseUser = await firebaseAdmin.auth().getUser(authId!);
+      if (!firebaseUser.displayName) throw Error("Firebase username and password not available")
+      const [firstName, lastName] = firebaseUser.displayName?.split(" ");
+      
       try {
         newUser = await User.create({
-          first_name: user.firstName,
-          last_name: user.lastName,
+          first_name: firstName,
+          last_name: lastName,
           auth_id: firebaseUser.uid,
           email: firebaseUser.email,
           role: user.role,

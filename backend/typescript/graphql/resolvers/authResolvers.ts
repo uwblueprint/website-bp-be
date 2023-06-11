@@ -91,21 +91,6 @@ const authResolvers = {
       const authDTO = await authService.generateTokenOAuth(idToken);
       return authDTO;
     },
-    register: async (
-      _parent: undefined,
-      { user }: { user: RegisterUserDTO },
-      { res }: { res: Response },
-    ): Promise<Omit<AuthDTO, "refreshToken">> => {
-      await userService.createUser({ ...user, role: "User" });
-      const authDTO = await authService.generateToken(
-        user.email,
-        user.password,
-      );
-      const { refreshToken, ...rest } = authDTO;
-      await authService.sendEmailVerificationLink(user.email);
-      res.cookie("refreshToken", refreshToken, cookieOptions);
-      return rest;
-    },
     registerFirebaseUser: async (
       _parent: undefined,
       {

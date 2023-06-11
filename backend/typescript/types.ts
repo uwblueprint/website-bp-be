@@ -61,7 +61,7 @@ export type ApplicationDTO = {
   timestamp: bigint;
 };
 
-export type CreateUserDTO = Omit<UserDTO, "id"> & { password: string };
+export type CreateUserDTO = Omit<UserDTO, "id" | "firstName" | "lastName">;
 
 export type UpdateUserDTO = Omit<UserDTO, "id">;
 
