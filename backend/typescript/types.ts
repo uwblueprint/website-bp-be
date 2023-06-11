@@ -25,7 +25,10 @@ export type ApplicationDashboardDTO = {
   applicationId: number;
 };
 
-export type ApplicationDashboardInput = Omit<ApplicationDashboardDTO, "applicationId">;
+export type ApplicationDashboardInput = Omit<
+  ApplicationDashboardDTO,
+  "applicationId"
+>;
 
 export type ApplicationDTO = {
   id: number;
