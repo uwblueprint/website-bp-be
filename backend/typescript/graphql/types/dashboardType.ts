@@ -13,6 +13,17 @@ const dashboardType = gql`
     applicationId: Int!
   }
 
+  input ApplicationDashboardInput {
+    id: Int!
+    reviewerEmail: String
+    passionFSG: Int
+    teamPlayer: Int
+    desireToLearn: Int
+    skill: Int
+    skillCategory: String
+    reviewerId: Int
+  }
+
   type ApplicationDTO {
     id: Int!
     academicYear: String
@@ -62,9 +73,8 @@ const dashboardType = gql`
       newValue: Int!
     ): ApplicationDashboardDTO!
     changeSkillCategory(id: Int!, newValue: String!): ApplicationDashboardDTO!
+    updateApplications(applications: [ApplicationDashboardInput]!): [Int]!
   }
 `;
 
 export default dashboardType;
-
-// changeSkillCategory(id: Int!, newValue: String!): ApplicationDashboardDTO!

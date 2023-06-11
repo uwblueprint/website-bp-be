@@ -1,12 +1,6 @@
 import { ApplicationDashboardDTO, ApplicationDTO } from "../../types";
 
 interface IAppDashboardService {
-  /**
-   * Get user associated with id
-   * @param id user's id
-   * @returns a UserDTO with user's information
-   * @throws Error if user retrieval fails
-   */
   getDashboardById(id: number): Promise<ApplicationDashboardDTO>;
   getApplicationsByRole(role: string): Promise<ApplicationDTO[]>;
   getDashboardsByApplicationId(
@@ -21,6 +15,16 @@ interface IAppDashboardService {
     id: number,
     newValue: string,
   ): Promise<ApplicationDashboardDTO>;
+
+  /**
+   * Bulk updates applications in reviewer dashboard
+   * @param applicationData
+   * @returns an array of the updated dashboard entry ids
+   * @throws Error if batch update failed
+   */
+  updateBulkApplications(
+    applicationData: Array<Partial<ApplicationDashboardDTO>>,
+  ): Promise<Array<number>>;
 }
 
 export default IAppDashboardService;
