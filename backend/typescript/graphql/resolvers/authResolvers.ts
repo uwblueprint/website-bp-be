@@ -10,7 +10,7 @@ import IEmailService from "../../services/interfaces/emailService";
 import FirebaseRestClient from "../../utilities/firebaseRestClient";
 import IUserService from "../../services/interfaces/userService";
 import User from "../../models/user.model";
-import { AuthDTO, RegisterUserDTO } from "../../types";
+import { AuthDTO, RegisterUserDTO, Role } from "../../types";
 
 const userService: IUserService = new UserService();
 const emailService: IEmailService = new EmailService(nodemailerConfig);
@@ -40,6 +40,18 @@ const splitName = (
 };
 
 const authResolvers = {
+  Query: {
+    isAuthorizedByRole: async (
+      _parent: undefined,
+      { accessToken, roles }: { accessToken: string; roles: Role[] },
+    ): Promise<boolean> => {
+      const isAuthorized = await authService.isAuthorizedByRole(
+        accessToken,
+        new Set(roles),
+      );
+      return isAuthorized;
+    },
+  },
   Mutation: {
     login: async (
       _parent: undefined,
@@ -75,26 +87,28 @@ const authResolvers = {
       _parent: undefined,
       { idToken }: { idToken: string },
     ): // { res }: { res: Response },
-    Promise<Omit<AuthDTO, "refreshToken">> => {
+    Promise<AuthDTO> => {
       const authDTO = await authService.generateTokenOAuth(idToken);
-      const { refreshToken, ...rest } = authDTO;
-      // res.cookie("refreshToken", refreshToken, cookieOptions);
-      return rest;
+      return authDTO;
     },
-    register: async (
+    registerFirebaseUser: async (
       _parent: undefined,
-      { user }: { user: RegisterUserDTO },
-      { res }: { res: Response },
-    ): Promise<Omit<AuthDTO, "refreshToken">> => {
-      await userService.createUser({ ...user, role: "User" });
-      const authDTO = await authService.generateToken(
-        user.email,
-        user.password,
-      );
-      const { refreshToken, ...rest } = authDTO;
-      await authService.sendEmailVerificationLink(user.email);
-      res.cookie("refreshToken", refreshToken, cookieOptions);
-      return rest;
+      {
+        user,
+        authId,
+        role,
+      }: { user: RegisterUserDTO; authId: string; role: Role },
+    ): Promise<boolean> => {
+      // If User is already in postgres, don't create a new entry
+      User.findOne({ where: { auth_id: authId } }).then(async (found) => {
+        if (found) {
+          User.update({ ...user, role }, { where: { auth_id: authId } });
+        } else {
+          await userService.createUser({ ...user, role }, authId, "GOOGLE");
+        }
+        await authService.sendEmailVerificationLink(user.email);
+      });
+      return true;
     },
     refresh: async (
       _parent: undefined,

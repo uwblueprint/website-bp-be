@@ -8,6 +8,7 @@ const authType = gql`
     email: String!
     role: Role!
     accessToken: String!
+    refreshToken: String!
   }
 
   type loginOK {
@@ -23,12 +24,17 @@ const authType = gql`
 
   extend type Query {
     login(email: String!, password: String!): loginOK!
+    isAuthorizedByRole(accessToken: String!, roles: [Role!]!): Boolean!
   }
 
   extend type Mutation {
     login(email: String!, password: String!): AuthDTO!
     loginWithGoogle(idToken: String!): AuthDTO!
-    register(user: RegisterUserDTO!): AuthDTO!
+    registerFirebaseUser(
+      user: RegisterUserDTO!
+      authId: String!
+      role: Role!
+    ): Boolean!
     refresh: String!
     logout(userId: ID!): ID
     resetPassword(email: String!): Boolean!

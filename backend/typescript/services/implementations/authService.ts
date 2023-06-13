@@ -60,11 +60,8 @@ class AuthService implements IAuthService {
 
       const user = await this.userService.createUser(
         {
-          firstName: googleUser.firstName,
-          lastName: googleUser.lastName,
           email: googleUser.email,
           role: "User",
-          password: "",
         },
         googleUser.localId,
         "GOOGLE",
@@ -157,7 +154,7 @@ class AuthService implements IAuthService {
       this.emailService.sendEmail(email, "Verify your email", emailBody);
     } catch (error) {
       Logger.error(
-        `Failed to generate email verification link for user with email ${email}`,
+        `Failed to generate email verification link for user with email ${email} ${error}`,
       );
       throw error;
     }
