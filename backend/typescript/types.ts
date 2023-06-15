@@ -68,6 +68,12 @@ export type ApplicationDTO = {
   timestamp: bigint;
 };
 
+export type ApplicationDashboardRowDTO = {
+  application: ApplicationDTO;
+  reviewDashboards: ApplicationDashboardDTO[];
+  reviewers: UserDTO[];
+};
+
 export type CreateUserDTO = Omit<UserDTO, "id" | "firstName" | "lastName">;
 
 export type UpdateUserDTO = Omit<UserDTO, "id">;

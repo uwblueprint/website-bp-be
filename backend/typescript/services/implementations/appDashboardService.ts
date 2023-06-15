@@ -1,10 +1,18 @@
-import { ApplicationDashboardDTO, ApplicationDTO } from "../../types";
+import {
+  ApplicationDashboardDTO,
+  ApplicationDTO,
+  ApplicationDashboardRowDTO,
+  UserDTO,
+} from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
 import ApplicationDashboardTable from "../../models/applicationDashboard.model";
 import IAppDashboardService from "../interfaces/appDashboardService";
 import Application from "../../models/application.model";
+import UserService from "./userService";
+import IUserService from "../interfaces/userService";
 
+const userService: IUserService = new UserService();
 const Logger = logger(__filename);
 const ratings = ["passionFSG", "teamPlayer", "desireToLearn", "skill"];
 
@@ -136,6 +144,34 @@ class AppDashboardService implements IAppDashboardService {
       throw error;
     }
     return applicationDashboardDTOs;
+  }
+
+  async getApplicationDashboardTable(
+    role: string,
+  ): Promise<ApplicationDashboardRowDTO[]> {
+    // get all the applications for the role
+    const applications: Array<ApplicationDTO> = await this.getApplicationsByRole(
+      role,
+    );
+    // get the dashboards associated with the applications
+    const appDashRows: Array<ApplicationDashboardRowDTO> = await Promise.all(
+      applications.map(async (application) => {
+        const reviewDashboards: Array<ApplicationDashboardDTO> = await this.getDashboardsByApplicationId(
+          application.id,
+        );
+        const reviewers: Array<UserDTO> = await Promise.all(
+          reviewDashboards.map(async (dash) => {
+            return userService.getUserByEmail(dash.reviewerEmail);
+          }),
+        );
+        return {
+          application,
+          reviewDashboards,
+          reviewers,
+        };
+      }),
+    );
+    return appDashRows;
   }
 
   async mutateRating(

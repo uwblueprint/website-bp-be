@@ -1,4 +1,8 @@
-import { ApplicationDashboardDTO, ApplicationDTO } from "../../types";
+import {
+  ApplicationDashboardDTO,
+  ApplicationDTO,
+  ApplicationDashboardRowDTO,
+} from "../../types";
 
 interface IAppDashboardService {
   getDashboardById(id: number): Promise<ApplicationDashboardDTO>;
@@ -6,6 +10,9 @@ interface IAppDashboardService {
   getDashboardsByApplicationId(
     applicationId: number,
   ): Promise<ApplicationDashboardDTO[]>;
+  getApplicationDashboardTable(
+    role: string,
+  ): Promise<ApplicationDashboardRowDTO[]>;
   mutateRating(
     id: number,
     ratingToBeChanged: string,
