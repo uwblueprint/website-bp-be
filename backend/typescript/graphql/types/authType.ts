@@ -35,7 +35,7 @@ const authType = gql`
       authId: String!
       role: Role!
     ): Boolean!
-    refresh: String!
+    refresh(refreshToken: String!): String!
     logout(userId: ID!): ID
     resetPassword(email: String!): Boolean!
   }

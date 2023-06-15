@@ -112,11 +112,9 @@ const authResolvers = {
     },
     refresh: async (
       _parent: undefined,
-      _args: Record<string, undefined>,
-      { req, res }: { req: Request; res: Response },
+      { refreshToken }: { refreshToken: string },
     ): Promise<string> => {
-      const token = await authService.renewToken(req.cookies.refreshToken);
-      res.cookie("refreshToken", token.refreshToken, cookieOptions);
+      const token = await authService.renewToken(refreshToken);
       return token.accessToken;
     },
     logout: async (
