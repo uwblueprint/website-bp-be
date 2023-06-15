@@ -37,16 +37,16 @@ class UserService implements IUserService {
 
   async getUserByEmail(email: string): Promise<UserDTO> {
     let user: User | null;
-    let firebaseUser: firebaseAdmin.auth.UserRecord;
+    // let firebaseUser: firebaseAdmin.auth.UserRecord;
 
     try {
-      firebaseUser = await firebaseAdmin.auth().getUserByEmail(email);
+      // firebaseUser = await firebaseAdmin.auth().getUserByEmail(email);
       user = await User.findOne({
-        where: { auth_id: firebaseUser.uid },
+        where: { email },
       });
 
       if (!user) {
-        throw new Error(`userId with authID ${firebaseUser.uid} not found.`);
+        throw new Error(`userId with authID ${email} not found.`);
       }
     } catch (error: unknown) {
       Logger.error(`Failed to get user. Reason = ${getErrorMessage(error)}`);
@@ -57,7 +57,7 @@ class UserService implements IUserService {
       id: String(user.id),
       firstName: user.first_name,
       lastName: user.last_name,
-      email: firebaseUser.email ?? "",
+      email: email ?? "",
       role: user.role,
     };
   }

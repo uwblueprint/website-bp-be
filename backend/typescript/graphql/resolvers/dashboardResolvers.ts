@@ -4,6 +4,7 @@ import {
   ApplicationDashboardDTO,
   ApplicationDTO,
   ApplicationDashboardInput,
+  ApplicationDashboardRowDTO,
 } from "../../types";
 
 const dashboardService: IAppDashboardService = new AppDashboardService();
@@ -34,6 +35,12 @@ const dashboardResolvers = {
         applicationId,
       );
       return dashboards;
+    },
+    applicationTable: async (
+      _parent: undefined,
+      { role }: { role: string },
+    ): Promise<ApplicationDashboardRowDTO[]> => {
+      return dashboardService.getApplicationDashboardTable(role);
     },
   },
   Mutation: {

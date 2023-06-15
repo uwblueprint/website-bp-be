@@ -60,10 +60,17 @@ const dashboardType = gql`
     timestamp: Int!
   }
 
+  type ApplicationDashboardRowDTO {
+    application: ApplicationDTO!
+    reviewDashboards: [ApplicationDashboardDTO]!
+    reviewers: [UserDTO]!
+  }
+
   extend type Query {
     dashboardById(id: Int!): ApplicationDashboardDTO!
     applicationsByRole(firstChoice: String!): [ApplicationDTO]!
     dashboardsByApplicationId(applicationId: Int!): [ApplicationDashboardDTO]!
+    applicationTable(role: String!): [ApplicationDashboardRowDTO]!
   }
 
   extend type Mutation {
