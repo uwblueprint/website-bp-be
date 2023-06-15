@@ -56,9 +56,9 @@
                 "selected": ""
             }
         ],
-        "email": "jmorris@uwaterloo.ca",
-        "firstName": "Jonathan",
-        "lastName": "Morris",
+        "email": "hpotter@uwaterloo.ca",
+        "firstName": "Harry",
+        "lastName": "Potter",
         "positions": [
             "Project Developer",
             "Product Designer",
@@ -173,9 +173,9 @@
                 "selected": ""
             }
         ],
-        "email": "ssterling@edu.uwaterloo.ca",
-        "firstName": "Steve",
-        "lastName": "Sterling",
+        "email": "jwick@edu.uwaterloo.ca",
+        "firstName": "Johnathan",
+        "lastName": "Wick",
         "positions": [
             "Project Developer",
             "Project Lead"
