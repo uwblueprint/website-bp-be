@@ -76,6 +76,7 @@ const graphQLMiddlewares = {
     changeRating: authorizedByAllRoles(),
     changeSkillCategory: authorizedByAllRoles(),
     updateApplications: authorizedByAllRoles(),
+    modifyFinalComments: authorizedByAllRoles(),
     createUser: authorizedByAdmin(),
     updateUser: authorizedByAdmin(),
     deleteUserById: authorizedByAdmin(),

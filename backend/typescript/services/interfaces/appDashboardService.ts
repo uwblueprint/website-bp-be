@@ -25,6 +25,12 @@ interface IAppDashboardService {
   updateBulkApplications(
     applicationData: Array<Partial<ApplicationDashboardDTO>>,
   ): Promise<Array<number>>;
+  mutateFinalComments(
+    id: number,
+    newComments: string,
+    newSkillCategory: string,
+    newRecommendedSecondChoice: string,
+  ): Promise<ApplicationDashboardDTO>;
 }
 
 export default IAppDashboardService;

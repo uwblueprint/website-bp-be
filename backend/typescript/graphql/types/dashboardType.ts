@@ -9,6 +9,8 @@ const dashboardType = gql`
     desireToLearn: Int!
     skill: Int!
     skillCategory: String!
+    reviewerComments: String!
+    recommendedSecondChoice: String!
     reviewerId: Int!
     applicationId: Int!
   }
@@ -74,6 +76,12 @@ const dashboardType = gql`
     ): ApplicationDashboardDTO!
     changeSkillCategory(id: Int!, newValue: String!): ApplicationDashboardDTO!
     updateApplications(applications: [ApplicationDashboardInput]!): [Int]!
+    modifyFinalComments(
+      id: Int!
+      newComments: String!
+      newSkillCategory: String!
+      newRecommendedSecondChoice: String
+    ): ApplicationDashboardDTO!
   }
 `;
 

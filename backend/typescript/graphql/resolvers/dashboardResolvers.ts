@@ -65,6 +65,28 @@ const dashboardResolvers = {
     ): Promise<Array<number>> => {
       return dashboardService.updateBulkApplications(applications);
     },
+    modifyFinalComments: async (
+      _parent: undefined,
+      {
+        id,
+        newComments,
+        newSkillCategory,
+        newRecommendedSecondChoice,
+      }: {
+        id: number;
+        newComments: string;
+        newSkillCategory: string;
+        newRecommendedSecondChoice: string;
+      },
+    ): Promise<ApplicationDashboardDTO> => {
+      const dashboard = dashboardService.mutateFinalComments(
+        id,
+        newComments,
+        newSkillCategory,
+        newRecommendedSecondChoice,
+      );
+      return dashboard;
+    },
   },
 };
 
