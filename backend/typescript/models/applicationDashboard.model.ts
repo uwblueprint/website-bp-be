@@ -16,7 +16,12 @@ export default class ApplicationDashboardTable extends Model {
   @Column({ type: DataType.STRING })
   reviewerEmail!: string;
 
-  @Column({ type: DataType.INTEGER, primaryKey: true, unique: true })
+  @Column({
+    type: DataType.INTEGER,
+    primaryKey: true,
+    unique: true,
+    autoIncrement: true,
+  })
   id!: number;
 
   @Column({ type: DataType.INTEGER })

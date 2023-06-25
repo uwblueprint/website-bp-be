@@ -26,7 +26,7 @@ const SEEDED_DATA = [
     last_name: "Blueprint",
     email: "recruitmenttools@uwblueprint.org",
     auth_id: "1Z4wyuonu9MhAi4VoAEiTMVj1iT2",
-    id: 4,
+    id: 3,
     role: "Admin",
   },
 ];
