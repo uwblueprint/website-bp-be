@@ -11,6 +11,12 @@ const dashboardService: IAppDashboardService = new AppDashboardService();
 
 const dashboardResolvers = {
   Query: {
+    dashboardsByApplicationAuthId: (
+      _parent: undefined,
+      { authId }: { authId: string },
+    ): Promise<ApplicationDashboardDTO[]> => {
+      return dashboardService.getDashboardsByApplicationAuthId(authId);
+    },
     dashboardById: async (
       _parent: undefined,
       { id }: { id: number },

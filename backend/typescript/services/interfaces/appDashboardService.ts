@@ -24,6 +24,16 @@ interface IAppDashboardService {
   ): Promise<ApplicationDashboardDTO>;
 
   /**
+   * Retireves all ApplicationDashboardRowDTO associated with the given reviewId
+   * @param authId firstbase user auth id of the reviewer
+   * @returns an array of the updated dashboard entry ids
+   * @throws Error is multiple or no user(s) with the same authId found
+   */
+  getDashboardsByApplicationAuthId(
+    authId: string,
+  ): Promise<ApplicationDashboardDTO[]>;
+
+  /**
    * Bulk updates applications in reviewer dashboard
    * @param applicationData
    * @returns an array of the updated dashboard entry ids

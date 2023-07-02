@@ -11,6 +11,7 @@ import IAppDashboardService from "../interfaces/appDashboardService";
 import Application from "../../models/application.model";
 import UserService from "./userService";
 import IUserService from "../interfaces/userService";
+import User from "../../models/user.model";
 
 const userService: IUserService = new UserService();
 const Logger = logger(__filename);
@@ -51,6 +52,7 @@ class AppDashboardService implements IAppDashboardService {
       recommendedSecondChoice: dashboard.recommendedSecondChoice,
       reviewerId: dashboard.reviewerId,
       applicationId: dashboard.applicationId,
+      reviewComplete: dashboard.reviewComplete,
     };
   }
 
@@ -133,6 +135,7 @@ class AppDashboardService implements IAppDashboardService {
           recommendedSecondChoice: dashboard.recommendedSecondChoice,
           reviewerId: dashboard.reviewerId,
           applicationId: dashboard.applicationId,
+          reviewComplete: dashboard.reviewComplete,
         };
       });
     } catch (error: unknown) {
@@ -215,6 +218,7 @@ class AppDashboardService implements IAppDashboardService {
       recommendedSecondChoice: dashboard.recommendedSecondChoice,
       reviewerId: dashboard.reviewerId,
       applicationId: dashboard.applicationId,
+      reviewComplete: dashboard.reviewComplete,
     };
   }
 
@@ -245,6 +249,7 @@ class AppDashboardService implements IAppDashboardService {
       recommendedSecondChoice: dashboard.recommendedSecondChoice,
       reviewerId: dashboard.reviewerId,
       applicationId: dashboard.applicationId,
+      reviewComplete: dashboard.reviewComplete,
     };
   }
 
@@ -279,6 +284,7 @@ class AppDashboardService implements IAppDashboardService {
       recommendedSecondChoice: dashboard.recommendedSecondChoice,
       reviewerId: dashboard.reviewerId,
       applicationId: dashboard.applicationId,
+      reviewComplete: dashboard.reviewComplete,
     };
   }
 
@@ -310,6 +316,44 @@ class AppDashboardService implements IAppDashboardService {
     });
 
     return res;
+  }
+
+  async getDashboardsByApplicationAuthId(
+    authId: string,
+  ): Promise<ApplicationDashboardDTO[]> {
+    // Get reviewerId of the user with authId
+    const users = await User.findAll({
+      where: { auth_id: authId },
+    });
+
+    if (users.length > 1) throw Error("Found no user with the same authId");
+    if (users.length > 1)
+      throw Error("Found multiple users with the same authId");
+    Logger.error("bar");
+    const reviewerId = users[0].id;
+
+    const dashboards = await ApplicationDashboardTable.findAll({
+      where: {
+        reviewerId,
+      },
+    });
+
+    return dashboards.map((dashboard) => {
+      return {
+        id: dashboard.id,
+        reviewerEmail: dashboard.reviewerEmail,
+        passionFSG: dashboard.passionFSG,
+        teamPlayer: dashboard.teamPlayer,
+        desireToLearn: dashboard.desireToLearn,
+        skill: dashboard.skill,
+        skillCategory: dashboard.skillCategory,
+        reviewerComments: dashboard.reviewerComments,
+        recommendedSecondChoice: dashboard.recommendedSecondChoice,
+        reviewerId: dashboard.reviewerId,
+        applicationId: dashboard.applicationId,
+        reviewComplete: dashboard.reviewComplete,
+      };
+    });
   }
 }
 

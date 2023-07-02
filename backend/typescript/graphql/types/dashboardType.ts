@@ -13,6 +13,7 @@ const dashboardType = gql`
     recommendedSecondChoice: String!
     reviewerId: Int!
     applicationId: Int!
+    reviewComplete: Boolean
   }
 
   input ApplicationDashboardInput {
@@ -24,6 +25,7 @@ const dashboardType = gql`
     skill: Int
     skillCategory: String
     reviewerId: Int
+    reviewComplete: Boolean
   }
 
   type ApplicationDTO {
@@ -73,6 +75,7 @@ const dashboardType = gql`
     applicationsByRole(firstChoice: String!): [ApplicationDTO]!
     dashboardsByApplicationId(applicationId: Int!): [ApplicationDashboardDTO]!
     applicationTable(role: String!): [ApplicationDashboardRowDTO]!
+    dashboardsByApplicationAuthId(authId: String!): [ApplicationDashboardDTO]!
   }
 
   extend type Mutation {

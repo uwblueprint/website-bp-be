@@ -16,6 +16,9 @@ export default class ApplicationDashboardTable extends Model {
   @Column({ type: DataType.STRING })
   reviewerEmail!: string;
 
+  @Column({ type: DataType.BOOLEAN })
+  reviewComplete!: boolean;
+
   @Column({ type: DataType.INTEGER, primaryKey: true, unique: true })
   id!: number;
 

@@ -25,6 +25,7 @@ export type ApplicationDashboardDTO = {
   recommendedSecondChoice: string;
   reviewerId: number;
   applicationId: number;
+  reviewComplete: boolean;
 };
 
 export type ApplicationDashboardInput = Omit<
