@@ -89,6 +89,18 @@ const dashboardType = gql`
       newSkillCategory: String!
       newRecommendedSecondChoice: String
     ): ApplicationDashboardDTO!
+    createApplicationDashboard(
+      reviewerEmail: String!
+      applicationId: Int!
+      reviewerAuthId: String!
+      passionFSG: Int!
+      teamPlayer: Int!
+      desireToLearn: Int!
+      skill: Int!
+      skillCategory: String!
+      reviwerComments: String!
+      recommendedSecondChoice: String!
+    ): ApplicationDashboardDTO!
   }
 `;
 
