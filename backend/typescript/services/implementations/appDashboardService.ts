@@ -222,6 +222,58 @@ class AppDashboardService implements IAppDashboardService {
     };
   }
 
+  async createApplicationDashboard(
+    reviewerEmail: string,
+    applicationId: number,
+    reviewerAuthId: string,
+    passionFSG: number,
+    teamPlayer: number,
+    desireToLearn: number,
+    skill: number,
+    skillCategory: string,
+    reviewerComments: string,
+    recommendedSecondChoice: string,
+  ): Promise<ApplicationDashboardDTO> {
+    try {
+      const reviewerId = await userService.getUserIdByAuthId(reviewerAuthId);
+      await ApplicationDashboardTable.sync();
+      Logger.error(`the creation:`);
+      const dashboard = await ApplicationDashboardTable.create({
+        reviewerEmail,
+        applicationId,
+        reviewerId,
+        passionFSG,
+        teamPlayer,
+        desireToLearn,
+        skill,
+        skillCategory,
+        reviewerComments,
+        recommendedSecondChoice,
+      });
+      Logger.error(`the data: ${JSON.stringify(dashboard)}`);
+      return {
+        id: dashboard.id,
+        reviewerEmail: dashboard.reviewerEmail,
+        passionFSG: dashboard.passionFSG,
+        teamPlayer: dashboard.teamPlayer,
+        desireToLearn: dashboard.desireToLearn,
+        skill: dashboard.skill,
+        skillCategory: dashboard.skillCategory,
+        reviewerComments: dashboard.reviewerComments,
+        recommendedSecondChoice: dashboard.recommendedSecondChoice,
+        reviewerId: dashboard.reviewerId,
+        applicationId: dashboard.applicationId,
+      };
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to create application dashboard. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
+  }
+
   async mutateSkillCategory(
     id: number,
     newValue: string,

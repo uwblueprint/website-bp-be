@@ -50,6 +50,45 @@ const dashboardResolvers = {
     },
   },
   Mutation: {
+    createApplicationDashboard: async (
+      _parent: undefined,
+      {
+        reviewerEmail,
+        applicationId,
+        reviewerAuthId,
+        passionFSG,
+        teamPlayer,
+        desireToLearn,
+        skill,
+        skillCategory,
+        reviwerComments,
+        recommendedSecondChoice,
+      }: {
+        reviewerEmail: string;
+        applicationId: number;
+        reviewerAuthId: string;
+        passionFSG: number;
+        teamPlayer: number;
+        desireToLearn: number;
+        skill: number;
+        skillCategory: string;
+        reviwerComments: string;
+        recommendedSecondChoice: string;
+      },
+    ): Promise<ApplicationDashboardDTO> => {
+      return dashboardService.createApplicationDashboard(
+        reviewerEmail,
+        applicationId,
+        reviewerAuthId,
+        passionFSG,
+        teamPlayer,
+        desireToLearn,
+        skill,
+        skillCategory,
+        reviwerComments,
+        recommendedSecondChoice,
+      );
+    },
     changeRating: async (
       _parent: undefined,
       {

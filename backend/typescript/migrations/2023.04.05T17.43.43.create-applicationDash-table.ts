@@ -8,7 +8,6 @@ const userEmails = ["johndoe@gmail.com", "janedoe@gmail.ca"];
 
 const SEEDED_DATA = [
   {
-    id: 1,
     applicationId: 1,
     reviewerId: 1,
     reviewerEmail: userEmails[0],
@@ -22,7 +21,6 @@ const SEEDED_DATA = [
     reviewComplete: false,
   },
   {
-    id: 2,
     applicationId: 1,
     reviewerId: 2,
     reviewerEmail: userEmails[1],
@@ -44,6 +42,7 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: false,
       primaryKey: true,
       unique: true,
+      autoIncrement: true,
     },
     applicationId: {
       type: DataType.INTEGER,

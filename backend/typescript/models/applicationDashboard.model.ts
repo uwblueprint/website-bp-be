@@ -19,7 +19,12 @@ export default class ApplicationDashboardTable extends Model {
   @Column({ type: DataType.BOOLEAN })
   reviewComplete!: boolean;
 
-  @Column({ type: DataType.INTEGER, primaryKey: true, unique: true })
+  @Column({
+    type: DataType.INTEGER,
+    primaryKey: true,
+    unique: true,
+    autoIncrement: true,
+  })
   id!: number;
 
   @Column({ type: DataType.INTEGER })
