@@ -10,7 +10,6 @@ const SEEDED_DATA = [
     last_name: "Doe",
     email: "johndoe@gmail.com",
     auth_id: "bide",
-    id: 1,
     role: "User",
   },
   {
@@ -18,7 +17,6 @@ const SEEDED_DATA = [
     last_name: "Doe",
     email: "janedoe@gmail.ca",
     auth_id: "none",
-    id: 2,
     role: "Admin",
   },
   {
@@ -26,7 +24,6 @@ const SEEDED_DATA = [
     last_name: "Blueprint",
     email: "recruitmenttools@uwblueprint.org",
     auth_id: "1Z4wyuonu9MhAi4VoAEiTMVj1iT2",
-    id: 3,
     role: "Admin",
   },
 ];
