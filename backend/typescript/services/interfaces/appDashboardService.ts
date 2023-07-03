@@ -24,7 +24,7 @@ interface IAppDashboardService {
   ): Promise<ApplicationDashboardDTO>;
 
   /**
-   * Retireves all ApplicationDashboardRowDTO associated with the given reviewId
+   * Retireves all ApplicationDashboardDTO associated with the given reviewer's firebase auth id
    * @param authId firstbase user auth id of the reviewer
    * @returns an array of the updated dashboard entry ids
    * @throws Error is multiple or no user(s) with the same authId found

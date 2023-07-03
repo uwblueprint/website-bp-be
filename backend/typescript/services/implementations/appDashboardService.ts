@@ -321,17 +321,7 @@ class AppDashboardService implements IAppDashboardService {
   async getDashboardsByApplicationAuthId(
     authId: string,
   ): Promise<ApplicationDashboardDTO[]> {
-    // Get reviewerId of the user with authId
-    const users = await User.findAll({
-      where: { auth_id: authId },
-    });
-
-    if (users.length > 1) throw Error("Found no user with the same authId");
-    if (users.length > 1)
-      throw Error("Found multiple users with the same authId");
-    Logger.error("bar");
-    const reviewerId = users[0].id;
-
+    const reviewerId = await userService.getUserIdByAuthId(authId)
     const dashboards = await ApplicationDashboardTable.findAll({
       where: {
         reviewerId,
