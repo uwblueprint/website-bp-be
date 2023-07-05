@@ -63,6 +63,7 @@ const dashboardResolvers = {
         skillCategory,
         reviwerComments,
         recommendedSecondChoice,
+        reviewComplete
       }: {
         reviewerEmail: string;
         applicationId: number;
@@ -74,6 +75,7 @@ const dashboardResolvers = {
         skillCategory: string;
         reviwerComments: string;
         recommendedSecondChoice: string;
+        reviewComplete: boolean;
       },
     ): Promise<ApplicationDashboardDTO> => {
       return dashboardService.createApplicationDashboard(
@@ -87,6 +89,7 @@ const dashboardResolvers = {
         skillCategory,
         reviwerComments,
         recommendedSecondChoice,
+        reviewComplete
       );
     },
     changeRating: async (

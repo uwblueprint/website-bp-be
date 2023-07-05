@@ -18,13 +18,15 @@ const dashboardType = gql`
 
   input ApplicationDashboardInput {
     id: Int!
-    reviewerEmail: String
-    passionFSG: Int
-    teamPlayer: Int
-    desireToLearn: Int
-    skill: Int
-    skillCategory: String
-    reviewerId: Int
+    reviewerEmail: String!
+    passionFSG: Int!
+    teamPlayer: Int!
+    desireToLearn: Int!
+    skill: Int!
+    skillCategory: String!
+    reviewerComments: String!
+    recommendedSecondChoice: String!
+    reviewerId: Int!
     reviewComplete: Boolean
   }
 
@@ -103,6 +105,7 @@ const dashboardType = gql`
       skillCategory: String!
       reviwerComments: String!
       recommendedSecondChoice: String!
+      reviewComplete: Boolean!
     ): ApplicationDashboardDTO!
   }
 `;

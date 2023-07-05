@@ -233,6 +233,7 @@ class AppDashboardService implements IAppDashboardService {
     skillCategory: string,
     reviewerComments: string,
     recommendedSecondChoice: string,
+    reviewComplete: boolean
   ): Promise<ApplicationDashboardDTO> {
     try {
       const reviewerId = await userService.getUserIdByAuthId(reviewerAuthId);
@@ -249,6 +250,7 @@ class AppDashboardService implements IAppDashboardService {
         skillCategory,
         reviewerComments,
         recommendedSecondChoice,
+        reviewComplete
       });
       Logger.error(`the data: ${JSON.stringify(dashboard)}`);
       return {
@@ -263,6 +265,7 @@ class AppDashboardService implements IAppDashboardService {
         recommendedSecondChoice: dashboard.recommendedSecondChoice,
         reviewerId: dashboard.reviewerId,
         applicationId: dashboard.applicationId,
+        reviewComplete: dashboard.reviewComplete,
       };
     } catch (error: unknown) {
       Logger.error(
@@ -351,7 +354,7 @@ class AppDashboardService implements IAppDashboardService {
           res.push(id);
         }
 
-        ApplicationDashboardTable.update(values, {
+        return ApplicationDashboardTable.update(values, {
           where: { id },
           returning: true,
         }).catch((err: Error) => {
@@ -360,13 +363,11 @@ class AppDashboardService implements IAppDashboardService {
           );
           throw err;
         });
-        return id;
       }),
     ).catch((err) => {
       Logger.error("Failed application dashboard batch update");
       throw err;
     });
-
     return res;
   }
 

@@ -38,9 +38,10 @@ interface IAppDashboardService {
    * @Param reviewerEmail the email of the reviewer
    * @param applicationId the id of the application (seperate from the postgres id field of the application)
    * @param reviewerAuthId the Firebase auth id of the user (This is NOT the same as the postgress id field of the user)
-   * @param passionFSG passion for social good rating of applicatn
-   * @param teamPlayer teamwork rating of applicatn
-   * @param skill skill rating of applicatn
+   * @param passionFSG passion for social good rating of applicant
+   * @param teamPlayer teamwork rating of applicant
+   * @param desireToLearn:desire to learn rating of applicant
+   * @param skill skill rating of applicant
    * @param skillCategory whether applicant is viewed as junior, intermediate, or senior
    * @param reviewerComments comments of the application from reviewer
    * @param recommendedSecondChoice an indication of whether 2nd choice is recommended
@@ -59,6 +60,7 @@ interface IAppDashboardService {
     skillCategory: string,
     reviewerComments: string,
     recommendedSecondChoice: string,
+    reviewComplete: boolean
   ): Promise<ApplicationDashboardDTO>;
 
   /**
