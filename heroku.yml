@@ -3,4 +3,5 @@ setup:
     - plan: heroku-postgresql
       as: DATABASE
 run:
-  web: backend/typescript/Procfile
+  docker:
+    web: backend/typescript/Dockerfile
