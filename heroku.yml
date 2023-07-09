@@ -2,6 +2,5 @@ setup:
   addons:
     - plan: heroku-postgresql
       as: DATABASE
-build:
-  docker:
-    web: backend/typescript/Procfile
+run:
+  web: backend/typescript/Procfile
