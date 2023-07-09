@@ -2,6 +2,8 @@ setup:
   addons:
     - plan: heroku-postgresql
       as: DATABASE
-run:
+build:
   docker:
     web: backend/typescript/Dockerfile
+run:
+  web: cd backend/typescript && node migrate up && node build/server.js
