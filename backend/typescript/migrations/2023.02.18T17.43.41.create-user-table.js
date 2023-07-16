@@ -1,6 +1,4 @@
-import { DataType } from "sequelize-typescript";
-
-import { Migration } from "../umzug";
+const { Sequelize, sequelize, db } = require("../models/index.js");
 
 const TABLE_NAME = "users";
 
@@ -32,43 +30,45 @@ const SEEDED_DATA = [
 ];
 // recruitmenttools@uwblueprint.org
 // myblueprint!
-export const up: Migration = async ({ context: sequelize }) => {
+const up = async ({ context: s }) => {
   await sequelize.getQueryInterface().createTable(TABLE_NAME, {
     id: {
-      type: DataType.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
       unique: true,
     },
     first_name: {
-      type: DataType.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     last_name: {
-      type: DataType.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     auth_id: {
-      type: DataType.STRING,
+      type: Sequelize.STRING,
       allowNull: true,
     },
     email: {
-      type: DataType.STRING,
+      type: Sequelize.STRING,
       primaryKey: true,
       allowNull: false,
     },
     role: {
-      type: DataType.ENUM("User", "Admin"),
+      type: Sequelize.ENUM("User", "Admin"),
       allowNull: false,
     },
-    createdAt: DataType.DATE,
-    updatedAt: DataType.DATE,
+    createdAt: Sequelize.DATE,
+    updatedAt: Sequelize.DATE,
   });
 
   await sequelize.getQueryInterface().bulkInsert(TABLE_NAME, SEEDED_DATA);
 };
 
-export const down: Migration = async ({ context: sequelize }) => {
+const down = async ({ context: s }) => {
   await sequelize.getQueryInterface().dropTable(TABLE_NAME);
 };
+
+module.exports = { up, down };
