@@ -1,9 +1,8 @@
-import { DataType } from "sequelize-typescript";
+const { Sequelize, sequelize, db } = require("../models/index.js");
 // import ApplicationDashboardTable from "../models/applicationDashboard.model";
 // import User from "../models/user.model";
 
-import { Migration } from "../umzug";
-import allApplications from "./applicationlist.json";
+// import { Migration } from "../umzug";
 
 const TABLE_NAME = "applicantresponse";
 
@@ -56,157 +55,159 @@ const importApplicationData = () => {
   return seededData;
 };
 
-export const up: Migration = async ({ context: sequelize }) => {
+const up = async ({ context: s }) => {
   const binaryQuestions = sequelize.define(
     "binaryQuestion",
-    { question: DataType.STRING(4000), selected: DataType.STRING(4000) },
+    { question: Sequelize.STRING(4000), selected: Sequelize.STRING(4000) },
     {},
   );
 
   await sequelize.getQueryInterface().createTable(TABLE_NAME, {
     id: {
-      type: DataType.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
       unique: true,
     },
     academicYear: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     binaryQuestion1: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     binaryQuestion2: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     binaryQuestions: {
-      type: DataType.ARRAY(DataType.STRING(4000)),
+      type: Sequelize.ARRAY(Sequelize.STRING(4000)),
       allowNull: true,
     },
     dropdownQuestion1: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     dropdownQuestions: {
-      type: DataType.ARRAY(DataType.STRING(4000)),
+      type: Sequelize.ARRAY(Sequelize.STRING(4000)),
       allowNull: true,
     },
     email: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     firstName: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     lastName: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     positions: {
-      type: DataType.ARRAY(DataType.STRING(4000)),
+      type: Sequelize.ARRAY(Sequelize.STRING(4000)),
       allowNull: true,
     },
     program: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     question1: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     question2: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     question3: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     question4: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     question5: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     questions: {
-      type: DataType.ARRAY(DataType.STRING(4000)),
+      type: Sequelize.ARRAY(Sequelize.STRING(4000)),
       allowNull: true,
     },
     resume: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     resumeInput: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     resumeUrl: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     roleQuestion1: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     roleQuestion2: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     roleQuestion3: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     roleQuestion4: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     roleQuestion5: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     roleQuestion6: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     roleQuestion7: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     roleQuestion8: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     roleQuestion9: {
-      type: DataType.STRING(4000),
+      type: Sequelize.STRING(4000),
       allowNull: true,
     },
     roleSpecificQuestions: {
-      type: DataType.ARRAY(DataType.STRING(4000)),
+      type: Sequelize.ARRAY(Sequelize.STRING(4000)),
       allowNull: true,
     },
     status: {
-      type: DataType.ENUM("pending", "accepted", "rejected"),
+      type: Sequelize.ENUM("pending", "accepted", "rejected"),
       allowNull: true,
     },
     timestamp: {
-      type: DataType.BIGINT,
+      type: Sequelize.BIGINT,
       allowNull: true,
     },
-    createdAt: DataType.DATE,
-    updatedAt: DataType.DATE,
+    createdAt: Sequelize.DATE,
+    updatedAt: Sequelize.DATE,
   });
 
   const SEEDED_DATA = importApplicationData();
   await sequelize.getQueryInterface().bulkInsert(TABLE_NAME, SEEDED_DATA);
 };
 
-export const down: Migration = async ({ context: sequelize }) => {
+const down = async ({ context: s }) => {
   await sequelize.getQueryInterface().dropTable(TABLE_NAME);
 };
+
+module.exports = { up, down };

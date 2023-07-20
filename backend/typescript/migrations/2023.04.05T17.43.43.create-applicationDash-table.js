@@ -1,6 +1,7 @@
-import { DataType } from "sequelize-typescript";
+const { Sequelize, sequelize, db } = require("../models/index.js");
+// import { DataType } from "sequelize-typescript";
 
-import { Migration } from "../umzug";
+// import { Migration } from "../umzug";
 
 const TABLE_NAME = "applicationdashboardtable";
 
@@ -35,16 +36,16 @@ const SEEDED_DATA = [
   },
 ];
 
-export const up: Migration = async ({ context: sequelize }) => {
+const up = async ({ context: s }) => {
   await sequelize.getQueryInterface().createTable(TABLE_NAME, {
     id: {
-      type: DataType.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       unique: true,
     },
     applicationId: {
-      type: DataType.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       references: {
         model: "applicantresponse",
@@ -52,7 +53,7 @@ export const up: Migration = async ({ context: sequelize }) => {
       },
     },
     reviewerId: {
-      type: DataType.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       references: {
         model: "users",
@@ -60,45 +61,47 @@ export const up: Migration = async ({ context: sequelize }) => {
       },
     },
     reviewerEmail: {
-      type: DataType.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     passionFSG: {
-      type: DataType.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
     },
     teamPlayer: {
-      type: DataType.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
     },
     desireToLearn: {
-      type: DataType.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
     },
     skill: {
-      type: DataType.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
     },
     skillCategory: {
-      type: DataType.ENUM("junior", "intermediate", "senior"),
+      type: Sequelize.ENUM("junior", "intermediate", "senior"),
       allowNull: false,
     },
     reviewerComments: {
-      type: DataType.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
     },
     recommendedSecondChoice: {
-      type: DataType.ENUM("N/A", "considered", "not considered"),
+      type: Sequelize.ENUM("N/A", "considered", "not considered"),
       allowNull: false,
     },
-    createdAt: DataType.DATE,
-    updatedAt: DataType.DATE,
+    createdAt: Sequelize.DATE,
+    updatedAt: Sequelize.DATE,
   });
   // Creating ForeignKey for User and Application table
   await sequelize.getQueryInterface().bulkInsert(TABLE_NAME, SEEDED_DATA);
   // Inserting users to User table
 };
 
-export const down: Migration = async ({ context: sequelize }) => {
+const down = async ({ context: s }) => {
   await sequelize.getQueryInterface().dropTable(TABLE_NAME);
 };
+
+module.exports = { up, down };
