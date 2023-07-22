@@ -1,3 +1,4 @@
+import { auth } from "firebase-admin";
 import AppDashboardService from "../../services/implementations/appDashboardService";
 import IAppDashboardService from "../../services/interfaces/appDashboardService";
 import {
@@ -119,6 +120,13 @@ const dashboardResolvers = {
       { applications }: { applications: Array<ApplicationDashboardInput> },
     ): Promise<Array<number>> => {
       return dashboardService.updateBulkApplications(applications);
+    },
+    updateApplicationByAuthIdAndApplicationId: async (
+      _parent: undefined,
+      { applicationId, authId, application }: { applicationId: number, authId: string, application: ApplicationDashboardInput },
+    ): Promise<ApplicationDashboardDTO> => {
+      dashboardService.updateBulkApplications([application])
+      return dashboardService.updateApplicationByAuthIdAndApplicationId(applicationId, authId, application);
     },
     modifyFinalComments: async (
       _parent: undefined,

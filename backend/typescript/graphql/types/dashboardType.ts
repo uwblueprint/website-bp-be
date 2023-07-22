@@ -30,6 +30,17 @@ const dashboardType = gql`
     reviewComplete: Boolean
   }
 
+  input ApplicationDashBoardScoreUpdate {
+    passionFSG: Int!
+    teamPlayer: Int!
+    desireToLearn: Int!
+    skill: Int!
+    skillCategory: String!
+    reviewerComments: String!
+    recommendedSecondChoice: String!
+    reviewComplete: Boolean 
+  }
+
   type ApplicationDTO {
     id: Int!
     academicYear: String
@@ -88,6 +99,7 @@ const dashboardType = gql`
     ): ApplicationDashboardDTO!
     changeSkillCategory(id: Int!, newValue: String!): ApplicationDashboardDTO!
     updateApplications(applications: [ApplicationDashboardInput]!): [Int]!
+    updateApplicationByAuthIdAndApplicationId(authId: String!, applicationId: Int!, application: ApplicationDashBoardScoreUpdate!): ApplicationDashboardDTO
     modifyFinalComments(
       id: Int!
       newComments: String!

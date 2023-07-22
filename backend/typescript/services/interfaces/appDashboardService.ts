@@ -78,6 +78,27 @@ interface IAppDashboardService {
     newSkillCategory: string,
     newRecommendedSecondChoice: string,
   ): Promise<ApplicationDashboardDTO>;
+
+    /**
+   * Bulk updates applications in reviewer dashboard. Identifies the application by application Id and the review firebase auth id
+   * @param application object with fields that should be updated in the application
+   * @param authid firebase auth id
+   * @param applicationId the id of the application
+   * @returns an array of the updated dashboard entry ids
+   * @throws Error if batch update failed
+   */
+    updateApplicationByAuthIdAndApplicationId(
+      applicationId: number, 
+      authId: string, 
+      application: Partial<ApplicationDashboardDTO>
+    ): Promise<ApplicationDashboardDTO>;
+    
+    mutateFinalComments(
+      id: number,
+      newComments: string,
+      newSkillCategory: string,
+      newRecommendedSecondChoice: string,
+    ): Promise<ApplicationDashboardDTO>;
 }
 
 export default IAppDashboardService;

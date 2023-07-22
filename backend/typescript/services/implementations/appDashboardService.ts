@@ -12,6 +12,7 @@ import Application from "../../models/application.model";
 import UserService from "./userService";
 import IUserService from "../interfaces/userService";
 import User from "../../models/user.model";
+import { Op } from "sequelize";
 
 const userService: IUserService = new UserService();
 const Logger = logger(__filename);
@@ -237,8 +238,6 @@ class AppDashboardService implements IAppDashboardService {
   ): Promise<ApplicationDashboardDTO> {
     try {
       const reviewerId = await userService.getUserIdByAuthId(reviewerAuthId);
-      await ApplicationDashboardTable.sync();
-      Logger.error(`the creation:`);
       const dashboard = await ApplicationDashboardTable.create({
         reviewerEmail,
         applicationId,
@@ -252,7 +251,6 @@ class AppDashboardService implements IAppDashboardService {
         recommendedSecondChoice,
         reviewComplete
       });
-      Logger.error(`the data: ${JSON.stringify(dashboard)}`);
       return {
         id: dashboard.id,
         reviewerEmail: dashboard.reviewerEmail,
@@ -327,6 +325,58 @@ class AppDashboardService implements IAppDashboardService {
       throw error;
     }
 
+    return {
+      id: dashboard.id,
+      reviewerEmail: dashboard.reviewerEmail,
+      passionFSG: dashboard.passionFSG,
+      teamPlayer: dashboard.teamPlayer,
+      desireToLearn: dashboard.desireToLearn,
+      skill: dashboard.skill,
+      skillCategory: dashboard.skillCategory,
+      reviewerComments: dashboard.reviewerComments,
+      recommendedSecondChoice: dashboard.recommendedSecondChoice,
+      reviewerId: dashboard.reviewerId,
+      applicationId: dashboard.applicationId,
+      reviewComplete: dashboard.reviewComplete,
+    };
+  }
+
+  async updateApplicationByAuthIdAndApplicationId(
+    applicationId: number, 
+    authId: string, 
+    application: Partial<ApplicationDashboardDTO>,
+  ): Promise<ApplicationDashboardDTO> {
+    const reviewerId = await userService.getUserIdByAuthId(authId)
+    await ApplicationDashboardTable.update(application, {
+      where: {
+        applicationId,
+        reviewerId
+      }
+    }).catch((err: Error) => {
+      Logger.error(
+        `Error in application dashboard update: ${err.toString()}`,
+      );
+      throw err
+    })
+
+    const applicationsUpdated = await ApplicationDashboardTable.findAll({
+      where: {
+        applicationId,
+        reviewerId
+      }
+    }).catch((err: Error) => {
+      Logger.error(
+        `Error in application retrieval after update: ${err.toString()}`
+      )
+    })
+
+    // Logger.error(JSON.stringify(applicationsUpdated))
+    // Logger.error(reviewerId)
+    // Logger.error(JSON.stringify(applicationId))
+    if (applicationsUpdated === undefined) throw Error("Application dashboard find query failed")
+    else if (Array.isArray(applicationsUpdated) && applicationsUpdated.length == 0) throw Error("No application dashboard found")
+    else if (Array.isArray(applicationsUpdated) && applicationsUpdated.length > 1) throw Error("Multiple applicaiton dashboards found")
+    const dashboard = ((applicationsUpdated as unknown) as ApplicationDashboardTable[])[0]
     return {
       id: dashboard.id,
       reviewerEmail: dashboard.reviewerEmail,
