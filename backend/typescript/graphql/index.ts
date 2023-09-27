@@ -17,6 +17,7 @@ import userResolvers from "./resolvers/userResolvers";
 import userType from "./types/userType";
 import dashboardType from "./types/dashboardType";
 import dashboardResolvers from "./resolvers/dashboardResolvers";
+import reviewType from "./types/reviewType";
 
 const query = gql`
   type Query {
@@ -35,6 +36,7 @@ const executableSchema = makeExecutableSchema({
     query,
     mutation,
     authType,
+    reviewType,
     entityType,
     simpleEntityType,
     userType,
