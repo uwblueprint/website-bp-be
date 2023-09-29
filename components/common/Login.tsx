@@ -17,7 +17,7 @@ const Login = (): ReactElement => {
       fetchGraphql(mutations.loginWithGoogle, { idToken: oauthIdToken }).then(
         (result) => {
           if (result.data) {
-            localStorage.setItem(
+            localStorage.setItem( 
               "accessToken",
               result.data.loginWithGoogle.accessToken,
             );
