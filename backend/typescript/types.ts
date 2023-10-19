@@ -34,37 +34,24 @@ export type ApplicationDashboardInput = Omit<
 
 export type ApplicationDTO = {
   id: number;
+  academicOrCoop: string;
   academicYear: string;
-  binaryQuestion1: string;
-  binaryQuestion2: string;
-  binaryQuestions: string[];
-  dropdownQuestion1: string;
-  dropdownQuestions: string[];
   email: string;
+  firstChoiceRole: string;
   firstName: string;
+  heardFrom: string;
   lastName: string;
-  positions: string[];
+  locationPreference: string;
   program: string;
-  question1: string;
-  question2: string;
-  question3: string;
-  question4: string;
-  question5: string;
-  questions: string[];
-  resume: string;
-  resumeInput: string;
+  pronouns: string;
+  pronounsSpecified: string;
   resumeUrl: string;
-  roleQuestion1: string;
-  roleQuestion2: string;
-  roleQuestion3: string;
-  roleQuestion4: string;
-  roleQuestion5: string;
-  roleQuestion6: string;
-  roleQuestion7: string;
-  roleQuestion8: string;
-  roleQuestion9: string;
   roleSpecificQuestions: string[];
+  secondChoiceRole: string;
+  shortAnswerQuestions: string[]
   status: string;
+  term: string;
+  timesApplied: string;
   timestamp: bigint;
 };
 

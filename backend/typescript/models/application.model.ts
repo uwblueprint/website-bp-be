@@ -9,99 +9,60 @@ export default class Application extends Model {
   id!: number;
 
   @Column({ type: DataType.STRING })
-  academicYear!: string;
-
-  @Column({ type: DataType.BOOLEAN })
-  binaryQuestion1!: string;
-
-  @Column({ type: DataType.BOOLEAN })
-  binaryQuestion2!: string;
-
-  @Column({ type: DataType.ARRAY(DataType.STRING) })
-  binaryQuestions!: string[];
+  academicOrCoop!: string;
 
   @Column({ type: DataType.STRING })
-  dropdownQuestion1!: string;
-
-  @Column({ type: DataType.ARRAY(DataType.STRING) })
-  dropdownQuestions!: string[];
+  academicYear!: string;
 
   @Column({ type: DataType.STRING })
   email!: string;
 
   @Column({ type: DataType.STRING })
+  firstChoiceRole!: string;
+
+  @Column({ type: DataType.STRING })
   firstName!: string;
+
+  @Column({ type: DataType.STRING })
+  heardFrom!: string;
 
   @Column({ type: DataType.STRING })
   lastName!: string;
 
-  @Column({ type: DataType.ARRAY(DataType.STRING) })
-  positions!: string[];
+  @Column({ type: DataType.STRING })
+  locationPreference!: string;
 
   @Column({ type: DataType.STRING })
   program!: string;
 
   @Column({ type: DataType.STRING })
-  question1!: string;
+  pronouns!: string;
 
   @Column({ type: DataType.STRING })
-  question2!: string;
-
-  @Column({ type: DataType.STRING })
-  question3!: string;
-
-  @Column({ type: DataType.STRING })
-  question4!: string;
-
-  @Column({ type: DataType.STRING })
-  question5!: string;
-
-  @Column({ type: DataType.ARRAY(DataType.STRING) })
-  questions!: string[];
-
-  @Column({ type: DataType.STRING })
-  resume!: string;
-
-  @Column({ type: DataType.STRING })
-  resumeInput!: string;
+  pronounsSpecified!: string;
 
   @Column({ type: DataType.STRING })
   resumeUrl!: string;
 
-  @Column({ type: DataType.STRING })
-  roleQuestion1!: string;
-
-  @Column({ type: DataType.STRING })
-  roleQuestion2!: string;
-
-  @Column({ type: DataType.STRING })
-  roleQuestion3!: string;
-
-  @Column({ type: DataType.STRING })
-  roleQuestion4!: string;
-
-  @Column({ type: DataType.STRING })
-  roleQuestion5!: string;
-
-  @Column({ type: DataType.STRING })
-  roleQuestion6!: string;
-
-  @Column({ type: DataType.STRING })
-  roleQuestion7!: string;
-
-  @Column({ type: DataType.STRING })
-  roleQuestion8!: string;
-
-  @Column({ type: DataType.STRING })
-  roleQuestion9!: string;
-
   @Column({ type: DataType.ARRAY(DataType.STRING) })
   roleSpecificQuestions!: string[];
 
-  @Column({ type: DataType.ENUM("pending", "accepted", "rejected") })
+  @Column({ type: DataType.STRING })
+  secondChoiceRole!: string;
+
+  @Column({ type: DataType.ARRAY(DataType.STRING) })
+  shortAnswerQuestions!: string[];
+
+  @Column({ type: DataType.ENUM("accepted", "applied", "interviewed", "in review", "pending", "rejected") })
   status!: string;
 
-  @Column({ type: DataType.BIGINT })
+  @Column({ type: DataType.STRING })
+  term!: string;
+
+  @Column({ type: DataType.STRING })
+  timesApplied!: string;
+
+  @Column({ type: DataType.STRING })
   timestamp!: bigint;
 
   @HasMany(() => ApplicationDashboardTable)

@@ -12,44 +12,29 @@ const TABLE_NAME = "applicantresponse";
 const importApplicationData = () => {
   const seededData = allApplications.map((currApplication) => {
     return {
+      academicOrCoop: currApplication.academicOrCoop,
       academicYear: currApplication.academicYear,
-      binaryQuestion1: currApplication.binaryQuestion1,
-      binaryQuestion2: currApplication.binaryQuestion2,
-      binaryQuestions: currApplication.binaryQuestions.map((x) =>
-        JSON.stringify(x),
-      ),
-      dropdownQuestion1: currApplication.dropdownQuestion1,
-      dropdownQuestions: currApplication.dropdownQuestions.map((x) =>
-        JSON.stringify(x),
-      ),
       email: currApplication.email,
+      firstChoiceRole: currApplication.firstChoiceRole,
       firstName: currApplication.firstName,
+      heardFrom: currApplication.heardFrom,
       lastName: currApplication.lastName,
-      positions: currApplication.positions,
+      locationPreference: currApplication.locationPreference,
       program: currApplication.program,
-      question1: currApplication.question1,
-      question2: currApplication.question2,
-      question3: currApplication.question3,
-      question4: currApplication.question4,
-      question5: currApplication.question5,
-      questions: currApplication.questions.map((x) => JSON.stringify(x)),
-      resume: "C:\\fakepath\\resume (3).pdf",
-      resumeInput: currApplication.resumeInput,
+      pronouns: currApplication.pronouns,
+      pronounsSpecified: currApplication.pronounsSpecified,
       resumeUrl: currApplication.resumeUrl,
-      roleQuestion1: currApplication.roleQuestion1,
-      roleQuestion2: currApplication.roleQuestion2,
-      roleQuestion3: currApplication.roleQuestion3,
-      roleQuestion4: currApplication.roleQuestion4,
-      roleQuestion5: currApplication.roleQuestion5,
-      roleQuestion6: currApplication.roleQuestion6,
-      roleQuestion7: currApplication.roleQuestion7,
-      roleQuestion8: currApplication.roleQuestion8,
-      roleQuestion9: currApplication.roleQuestion9,
       roleSpecificQuestions: [
         JSON.stringify(currApplication.roleSpecificQuestions),
       ],
+      secondChoiceRole: currApplication.secondChoiceRole,
+      shortAnswerQuestions: [
+        JSON.stringify(currApplication.shortAnswerQuestions),
+      ],
       status: currApplication.status,
-      timestamp: currApplication.timestamp,
+      term: currApplication.term,
+      timesApplied: currApplication.timesApplied,
+      timestamp: currApplication.timestamp // TODO: created + updated?
     };
   });
 
@@ -57,12 +42,6 @@ const importApplicationData = () => {
 };
 
 export const up: Migration = async ({ context: sequelize }) => {
-  const binaryQuestions = sequelize.define(
-    "binaryQuestion",
-    { question: DataType.STRING(4000), selected: DataType.STRING(4000) },
-    {},
-  );
-
   await sequelize.getQueryInterface().createTable(TABLE_NAME, {
     id: {
       type: DataType.INTEGER,
@@ -71,31 +50,19 @@ export const up: Migration = async ({ context: sequelize }) => {
       autoIncrement: true,
       unique: true,
     },
+    academicOrCoop: {
+      type: DataType.STRING(4000),
+      allowNull: true,
+    },
     academicYear: {
       type: DataType.STRING(4000),
       allowNull: true,
     },
-    binaryQuestion1: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    binaryQuestion2: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    binaryQuestions: {
-      type: DataType.ARRAY(DataType.STRING(4000)),
-      allowNull: true,
-    },
-    dropdownQuestion1: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    dropdownQuestions: {
-      type: DataType.ARRAY(DataType.STRING(4000)),
-      allowNull: true,
-    },
     email: {
+      type: DataType.STRING(4000),
+      allowNull: true,
+    },
+    firstChoiceRole: {
       type: DataType.STRING(4000),
       allowNull: true,
     },
@@ -103,47 +70,27 @@ export const up: Migration = async ({ context: sequelize }) => {
       type: DataType.STRING(4000),
       allowNull: true,
     },
+    heardFrom: {
+      type: DataType.STRING(4000),
+      allowNull: true,
+    },
     lastName: {
       type: DataType.STRING(4000),
       allowNull: true,
     },
-    positions: {
-      type: DataType.ARRAY(DataType.STRING(4000)),
+    locationPreference: {
+      type: DataType.STRING(4000),
       allowNull: true,
     },
     program: {
       type: DataType.STRING(4000),
       allowNull: true,
     },
-    question1: {
+    pronouns: {
       type: DataType.STRING(4000),
       allowNull: true,
     },
-    question2: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    question3: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    question4: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    question5: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    questions: {
-      type: DataType.ARRAY(DataType.STRING(4000)),
-      allowNull: true,
-    },
-    resume: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    resumeInput: {
+    pronounsSpecified: {
       type: DataType.STRING(4000),
       allowNull: true,
     },
@@ -151,48 +98,28 @@ export const up: Migration = async ({ context: sequelize }) => {
       type: DataType.STRING(4000),
       allowNull: true,
     },
-    roleQuestion1: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    roleQuestion2: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    roleQuestion3: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    roleQuestion4: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    roleQuestion5: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    roleQuestion6: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    roleQuestion7: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    roleQuestion8: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
-    roleQuestion9: {
-      type: DataType.STRING(4000),
-      allowNull: true,
-    },
     roleSpecificQuestions: {
       type: DataType.ARRAY(DataType.STRING(4000)),
       allowNull: true,
     },
+    secondChoiceRole: {
+      type: DataType.STRING(4000),
+      allowNull: true,
+    },
+    shortAnswerQuestions: {
+      type: DataType.ARRAY(DataType.STRING(4000)),
+      allowNull: true,
+    },
     status: {
-      type: DataType.ENUM("pending", "accepted", "rejected"),
+      type: DataType.ENUM("accepted", "applied", "interviewed", "in review", "pending", "rejected"),
+      allowNull: true,
+    },
+    term: {
+      type: DataType.STRING(4000),
+      allowNull: true,
+    },
+    timesApplied: {
+      type: DataType.STRING(4000),
       allowNull: true,
     },
     timestamp: {
