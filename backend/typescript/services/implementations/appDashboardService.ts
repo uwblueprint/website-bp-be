@@ -99,6 +99,66 @@ class AppDashboardService implements IAppDashboardService {
     return applicationsByRoleDTO;
   }
 
+//Takes in an application id and returns an array of applicants with same id
+  async getApplicationsById(id: number): Promise<ApplicationDTO> {
+    let applications: Array<Application> | null;
+    let applicationById: Application |undefined;
+    let applicationByIdDTO: ApplicationDTO;
+    try {
+      applications = await Application.findAll();
+      applicationById =  applications.find(application => application.id == id);
+
+      if (applicationById === undefined) {
+        // Handle the case when no application is found
+        throw new Error(`Application with id ${id} not found`);
+      }
+  
+      applicationByIdDTO = {
+          id: applicationById.id,
+          academicYear: applicationById.academicYear,
+          binaryQuestion1: applicationById.binaryQuestion1,
+          binaryQuestion2: applicationById.binaryQuestion2,
+          binaryQuestions: applicationById.binaryQuestions,
+          dropdownQuestion1: applicationById.dropdownQuestion1,
+          dropdownQuestions: applicationById.dropdownQuestions,
+          email: applicationById.email,
+          firstName: applicationById.firstName,
+          lastName: applicationById.lastName,
+          positions: applicationById.positions,
+          program: applicationById.program,
+          question1: applicationById.question1,
+          question2: applicationById.question2,
+          question3: applicationById.question3,
+          question4: applicationById.question4,
+          question5: applicationById.question5,
+          questions: applicationById.questions,
+          resume: applicationById.resume,
+          resumeInput: applicationById.resumeInput,
+          resumeUrl: applicationById.resumeUrl,
+          roleQuestion1: applicationById.roleQuestion1,
+          roleQuestion2: applicationById.roleQuestion2,
+          roleQuestion3: applicationById.roleQuestion3,
+          roleQuestion4: applicationById.roleQuestion4,
+          roleQuestion5: applicationById.roleQuestion5,
+          roleQuestion6: applicationById.roleQuestion6,
+          roleQuestion7: applicationById.roleQuestion7,
+          roleQuestion8: applicationById.roleQuestion8,
+          roleQuestion9: applicationById.roleQuestion9,
+          roleSpecificQuestions: applicationById.roleSpecificQuestions,
+          status: applicationById.status,
+          timestamp: applicationById.timestamp,
+        };
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to get applications by id = ${id}. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
+    return applicationByIdDTO;
+  }
+
   async getDashboardsByApplicationId(
     applicationId: number,
   ): Promise<ApplicationDashboardDTO[]> {
