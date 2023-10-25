@@ -37,7 +37,7 @@ const importApplicationData = () => {
       timestamp: currApplication.timestamp // TODO: created + updated?
     };
   });
-
+  
   return seededData;
 };
 
