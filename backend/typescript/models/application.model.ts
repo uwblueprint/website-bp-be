@@ -56,9 +56,9 @@ export default class Application extends Model {
   @Column({ type: DataType.ENUM("accepted", "applied", "interviewed", "in review", "pending", "rejected") })
   status!: string;
 
-  @Column({ 
-    type: DataType.ENUM("considered", "not considered", "n/a", "interview", "recommended", "in review", "interview", "no interview"), 
-    defaultValue: "n/a" 
+  @Column({
+    type: DataType.ENUM("considered", "not considered", "n/a", "recommended", "in review", "interview", "no interview"), 
+    defaultValue: "n/a"
   })
   secondChoiceStatus!: string;
 

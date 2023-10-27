@@ -44,6 +44,7 @@ const dashboardType = gql`
     secondChoiceRole: String!
     shortAnswerQuestions: [String!]!
     status: String!
+    secondChoiceStatus: String!
     term: String!
     timesApplied: String!
     timestamp: Int!

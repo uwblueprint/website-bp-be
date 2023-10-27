@@ -82,6 +82,7 @@ class AppDashboardService implements IAppDashboardService {
           secondChoiceRole: application.secondChoiceRole,
           shortAnswerQuestions: application.shortAnswerQuestions,
           status: application.status,
+          secondChoiceStatus: application.secondChoiceStatus,
           term: application.term,
           timesApplied: application.timesApplied,
           timestamp: application.timestamp

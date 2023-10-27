@@ -50,6 +50,7 @@ export type ApplicationDTO = {
   secondChoiceRole: string;
   shortAnswerQuestions: string[]
   status: string;
+  secondChoiceStatus: string;
   term: string;
   timesApplied: string;
   timestamp: bigint;

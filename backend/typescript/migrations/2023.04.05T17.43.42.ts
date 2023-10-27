@@ -4,6 +4,7 @@ import { DataType } from "sequelize-typescript";
 
 import { Migration } from "../umzug";
 import allApplications from "./applicationlist.json";
+import { simpleEntityRequestDtoValidator } from "../middlewares/validators/simpleEntityValidators";
 
 const TABLE_NAME = "applicantresponse";
 
@@ -34,7 +35,7 @@ const importApplicationData = () => {
       status: currApplication.status,
       term: currApplication.term,
       timesApplied: currApplication.timesApplied,
-      timestamp: currApplication.timestamp // TODO: created + updated?
+      timestamp: currApplication.timestamp
     };
   });
   
@@ -112,6 +113,11 @@ export const up: Migration = async ({ context: sequelize }) => {
     },
     status: {
       type: DataType.ENUM("accepted", "applied", "interviewed", "in review", "pending", "rejected"),
+      allowNull: true,
+    },
+    secondChoiceStatus: {
+      type: DataType.ENUM("considered", "not considered", "n/a", "interview", "recommended", "in review", "interview", "no interview"),
+      defaultValue: "n/a",
       allowNull: true,
     },
     term: {
