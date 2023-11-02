@@ -61,43 +61,31 @@ class AppDashboardService implements IAppDashboardService {
     try {
       applications = await Application.findAll();
       applicationsByRole = await applications.filter((application) => {
-        return application.positions[0].toLowerCase() === role.toLowerCase();
+        return application.firstChoiceRole.toLowerCase() === role.toLowerCase();
       });
       applicationsByRoleDTO = await applicationsByRole.map((application) => {
         return {
           id: application.id,
+          academicOrCoop: application.academicOrCoop,
           academicYear: application.academicYear,
-          binaryQuestion1: application.binaryQuestion1,
-          binaryQuestion2: application.binaryQuestion2,
-          binaryQuestions: application.binaryQuestions,
-          dropdownQuestion1: application.dropdownQuestion1,
-          dropdownQuestions: application.dropdownQuestions,
           email: application.email,
+          firstChoiceRole: application.firstChoiceRole,
           firstName: application.firstName,
+          heardFrom: application.heardFrom,
           lastName: application.lastName,
-          positions: application.positions,
+          locationPreference: application.locationPreference,
           program: application.program,
-          question1: application.question1,
-          question2: application.question2,
-          question3: application.question3,
-          question4: application.question4,
-          question5: application.question5,
-          questions: application.questions,
-          resume: application.resume,
-          resumeInput: application.resumeInput,
+          pronouns: application.pronouns,
+          pronounsSpecified: application.pronounsSpecified,
           resumeUrl: application.resumeUrl,
-          roleQuestion1: application.roleQuestion1,
-          roleQuestion2: application.roleQuestion2,
-          roleQuestion3: application.roleQuestion3,
-          roleQuestion4: application.roleQuestion4,
-          roleQuestion5: application.roleQuestion5,
-          roleQuestion6: application.roleQuestion6,
-          roleQuestion7: application.roleQuestion7,
-          roleQuestion8: application.roleQuestion8,
-          roleQuestion9: application.roleQuestion9,
           roleSpecificQuestions: application.roleSpecificQuestions,
+          secondChoiceRole: application.secondChoiceRole,
+          shortAnswerQuestions: application.shortAnswerQuestions,
           status: application.status,
-          timestamp: application.timestamp,
+          secondChoiceStatus: application.secondChoiceStatus,
+          term: application.term,
+          timesApplied: application.timesApplied,
+          timestamp: application.timestamp
         };
       });
     } catch (error: unknown) {

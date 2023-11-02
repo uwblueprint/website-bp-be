@@ -28,37 +28,25 @@ const dashboardType = gql`
 
   type ApplicationDTO {
     id: Int!
-    academicYear: String
-    binaryQuestion1: String!
-    binaryQuestion2: String!
-    binaryQuestions: [String!]!
-    dropdownQuestion1: String!
-    dropdownQuestions: [String!]!
+    academicOrCoop: String!
+    academicYear: String!
     email: String!
+    firstChoiceRole: String!
     firstName: String!
+    heardFrom: String!
     lastName: String!
-    positions: [String!]!
+    locationPreference: String!
     program: String!
-    question1: String!
-    question2: String!
-    question3: String!
-    question4: String!
-    question5: String!
-    questions: [String!]!
-    resume: String!
-    resumeInput: String!
+    pronouns: String!
+    pronounsSpecified: String!
     resumeUrl: String!
-    roleQuestion1: String!
-    roleQuestion2: String!
-    roleQuestion3: String!
-    roleQuestion4: String!
-    roleQuestion5: String!
-    roleQuestion6: String!
-    roleQuestion7: String!
-    roleQuestion8: String!
-    roleQuestion9: String!
     roleSpecificQuestions: [String!]!
+    secondChoiceRole: String!
+    shortAnswerQuestions: [String!]!
     status: String!
+    secondChoiceStatus: String!
+    term: String!
+    timesApplied: String!
     timestamp: Int!
   }
 
