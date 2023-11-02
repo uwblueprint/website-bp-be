@@ -3,7 +3,7 @@
 import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
 import ApplicationDashboardTable from "./applicationDashboard.model";
 import { DataTypes, Sequelize } from "sequelize";
-import { secondChoiceStatusType } from "../types";
+import { statusType, secondChoiceStatusType } from "../types";
 
 
 @Table({ tableName: "applicantresponse" })
@@ -56,8 +56,11 @@ export default class Application extends Model {
   @Column({ type: DataType.ARRAY(DataType.STRING) })
   shortAnswerQuestions!: string[];
 
-  @Column({ type: DataType.ENUM("accepted", "applied", "interviewed", "in review", "pending", "rejected") })
-  status!: string;
+  @Column({ 
+    type: DataType.ENUM(...Object.values(statusType)),
+    defaultValue: statusType.PENDING
+  })
+  status!: statusType;
 
   @Column({
     type: DataTypes.ENUM(...Object.values(secondChoiceStatusType)),

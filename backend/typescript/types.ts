@@ -1,5 +1,15 @@
 export type Role = "User" | "Admin";
 
+
+export enum statusType {
+  ACCEPTED = "accepted",
+  APPLIED = "applied",
+  INTERVIEWED = "interviewed",
+  IN_REVIEW = "in review",
+  PENDING = "pending",
+  REJECTED = "rejected"
+}
+
 export enum secondChoiceStatusType {
   CONSIDERED = "considered",
   NOT_CONSIDERED = "not considered",

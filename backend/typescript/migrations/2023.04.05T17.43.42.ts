@@ -5,7 +5,7 @@ import { DataType } from "sequelize-typescript";
 import { Migration } from "../umzug";
 import allApplications from "./applicationlist.json";
 import { DataTypes } from "sequelize";
-import { secondChoiceStatusType } from "../types";
+import { statusType, secondChoiceStatusType } from "../types";
 
 const TABLE_NAME = "applicantresponse";
 
@@ -113,8 +113,9 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: true,
     },
     status: {
-      type: DataType.ENUM("accepted", "applied", "interviewed", "in review", "pending", "rejected"),
-      allowNull: true,
+      type: DataType.ENUM(...Object.values(statusType)),
+      allowNull: false,
+      defaultValue: statusType.PENDING
     },
     secondChoiceStatus: {
       type: DataTypes.ENUM(...Object.values(secondChoiceStatusType)),
