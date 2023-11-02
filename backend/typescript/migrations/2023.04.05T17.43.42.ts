@@ -4,7 +4,8 @@ import { DataType } from "sequelize-typescript";
 
 import { Migration } from "../umzug";
 import allApplications from "./applicationlist.json";
-import { simpleEntityRequestDtoValidator } from "../middlewares/validators/simpleEntityValidators";
+import { DataTypes } from "sequelize";
+import { secondChoiceStatusType } from "../types";
 
 const TABLE_NAME = "applicantresponse";
 
@@ -97,7 +98,7 @@ export const up: Migration = async ({ context: sequelize }) => {
     },
     resumeUrl: {
       type: DataType.STRING(4000),
-      allowNull: true,
+    allowNull: true,
     },
     roleSpecificQuestions: {
       type: DataType.ARRAY(DataType.STRING(4000)),
@@ -116,9 +117,9 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: true,
     },
     secondChoiceStatus: {
-      type: DataType.ENUM("considered", "not considered", "n/a", "interview", "recommended", "in review", "interview", "no interview"),
-      defaultValue: "n/a",
-      allowNull: true,
+      type: DataTypes.ENUM(...Object.values(secondChoiceStatusType)),
+      allowNull: false,
+      defaultValue: secondChoiceStatusType.NOT_APPLICABLE
     },
     term: {
       type: DataType.STRING(4000),
@@ -137,7 +138,9 @@ export const up: Migration = async ({ context: sequelize }) => {
   });
 
   const SEEDED_DATA = importApplicationData();
+
   await sequelize.getQueryInterface().bulkInsert(TABLE_NAME, SEEDED_DATA);
+
 };
 
 export const down: Migration = async ({ context: sequelize }) => {

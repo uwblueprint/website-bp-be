@@ -1,5 +1,15 @@
 export type Role = "User" | "Admin";
 
+export enum secondChoiceStatusType {
+  CONSIDERED = "considered",
+  NOT_CONSIDERED = "not considered",
+  NOT_APPLICABLE = "n/a",
+  RECOMMENDED = "recommended",
+  IN_REVIEW = "in review",
+  INTERVIEW = "interview",
+  NO_INTERVIEW = "no interview"
+}
+
 export type Token = {
   accessToken: string;
   refreshToken: string;
