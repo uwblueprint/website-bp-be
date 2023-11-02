@@ -7,6 +7,7 @@ import { sequelize } from "./models";
 import schema from "./graphql";
 import Application from "./models/application.model";
 
+
 const CORS_ALLOW_LIST = [
   "http://localhost:3000",
   "https://uw-blueprint-starter-code.firebaseapp.com",
@@ -63,6 +64,7 @@ admin.initializeApp({
 const db = admin.database();
 const ref = db.ref("studentApplications");
 
+
 app.get("/termApplications", async (req, res) => {
   ref.orderByChild("term").equalTo("Fall 2023").once("value", function (snapshot) {
     const applications: Application[] = [];
@@ -71,7 +73,7 @@ app.get("/termApplications", async (req, res) => {
     });
     res.status(200).json(applications);
   })});
-
+  
 app.get("/applications", async (req, res) => {
   try {
     const snapshot = await ref.once("value");
