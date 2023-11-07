@@ -7,10 +7,14 @@ import {
 interface IAppDashboardService {
   getDashboardById(id: number): Promise<ApplicationDashboardDTO>;
   getApplicationsByRole(role: string): Promise<ApplicationDTO[]>;
+  getApplicationsBySecondChoiceRole(role: string): Promise<ApplicationDTO[]>;
   getDashboardsByApplicationId(
     applicationId: number,
   ): Promise<ApplicationDashboardDTO[]>;
   getApplicationDashboardTable(
+    role: string,
+  ): Promise<ApplicationDashboardRowDTO[]>;
+  getApplicationBySecondChoiceRoleDashboardTable(
     role: string,
   ): Promise<ApplicationDashboardRowDTO[]>;
   mutateRating(

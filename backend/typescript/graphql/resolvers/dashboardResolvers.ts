@@ -27,6 +27,15 @@ const dashboardResolvers = {
       );
       return applications;
     },
+    applicationsBySecondChoiceRole: async (
+      _parent: undefined,
+      { secondChoice }: { secondChoice: string },
+    ): Promise<Array<ApplicationDTO>> => {
+      const applications = await dashboardService.getApplicationsBySecondChoiceRole(
+        secondChoice,
+      );
+      return applications;
+    },
     dashboardsByApplicationId: async (
       _parent: undefined,
       { applicationId }: { applicationId: number },
@@ -41,6 +50,12 @@ const dashboardResolvers = {
       { role }: { role: string },
     ): Promise<ApplicationDashboardRowDTO[]> => {
       return dashboardService.getApplicationDashboardTable(role);
+    },
+    secondChoiceRoleApplicationTable: async (
+      _parent: undefined,
+      { role }: { role: string },
+    ): Promise<ApplicationDashboardRowDTO[]> => {
+      return dashboardService.getApplicationBySecondChoiceRoleDashboardTable(role);
     },
   },
   Mutation: {

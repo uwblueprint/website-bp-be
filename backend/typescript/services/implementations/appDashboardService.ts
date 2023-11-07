@@ -99,6 +99,51 @@ class AppDashboardService implements IAppDashboardService {
     return applicationsByRoleDTO;
   }
 
+  async getApplicationsBySecondChoiceRole(role: string): Promise<Array<ApplicationDTO>> {
+    let applications: Array<Application> | null;
+    let applicationsBySecondChoiceRole: Array<Application> | null;
+    let applicationsBySecondChoiceRoleDTO: Array<ApplicationDTO> = [];
+    try {
+      applications = await Application.findAll();
+      applicationsBySecondChoiceRole = await applications.filter((application) => {
+        return application.secondChoiceRole.toLowerCase() === role.toLowerCase();
+      });
+      applicationsBySecondChoiceRoleDTO = await applicationsBySecondChoiceRole.map((application) => {
+        return {
+          id: application.id,
+          academicOrCoop: application.academicOrCoop,
+          academicYear: application.academicYear,
+          email: application.email,
+          firstChoiceRole: application.firstChoiceRole,
+          firstName: application.firstName,
+          heardFrom: application.heardFrom,
+          lastName: application.lastName,
+          locationPreference: application.locationPreference,
+          program: application.program,
+          pronouns: application.pronouns,
+          pronounsSpecified: application.pronounsSpecified,
+          resumeUrl: application.resumeUrl,
+          roleSpecificQuestions: application.roleSpecificQuestions,
+          secondChoiceRole: application.secondChoiceRole,
+          shortAnswerQuestions: application.shortAnswerQuestions,
+          status: application.status,
+          secondChoiceStatus: application.secondChoiceStatus,
+          term: application.term,
+          timesApplied: application.timesApplied,
+          timestamp: application.timestamp
+        };
+      });
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to get applications by this role = ${role}. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
+    return applicationsBySecondChoiceRoleDTO;
+  }
+
   async getDashboardsByApplicationId(
     applicationId: number,
   ): Promise<ApplicationDashboardDTO[]> {
@@ -139,6 +184,34 @@ class AppDashboardService implements IAppDashboardService {
   ): Promise<ApplicationDashboardRowDTO[]> {
     // get all the applications for the role
     const applications: Array<ApplicationDTO> = await this.getApplicationsByRole(
+      role,
+    );
+    // get the dashboards associated with the applications
+    const appDashRows: Array<ApplicationDashboardRowDTO> = await Promise.all(
+      applications.map(async (application) => {
+        const reviewDashboards: Array<ApplicationDashboardDTO> = await this.getDashboardsByApplicationId(
+          application.id,
+        );
+        const reviewers: Array<UserDTO> = await Promise.all(
+          reviewDashboards.map(async (dash) => {
+            return userService.getUserByEmail(dash.reviewerEmail);
+          }),
+        );
+        return {
+          application,
+          reviewDashboards,
+          reviewers,
+        };
+      }),
+    );
+    return appDashRows;
+  }
+
+  async getApplicationBySecondChoiceRoleDashboardTable(
+    role: string,
+  ): Promise<ApplicationDashboardRowDTO[]> {
+    // get all the applications for the role
+    const applications: Array<ApplicationDTO> = await this.getApplicationsBySecondChoiceRole(
       role,
     );
     // get the dashboards associated with the applications
