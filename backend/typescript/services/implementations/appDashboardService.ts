@@ -104,48 +104,48 @@ async getApplicationsById(id: number): Promise<ApplicationDTO> {
     let applications: Array<Application> | null;
     let applicationById: Application |undefined;
     let applicationByIdDTO: ApplicationDTO;
-  //   try {
-  //     applications = await Application.findAll();
-  //     applicationById =  applications.find(application => application.id == id);
+    try {
+      applications = await Application.findAll();
+      applicationById =  applications.find(application => application.id == id);
 
-  //     if (applicationById === undefined) {
-  //       // Handle the case when no application is found
-  //       throw new Error(`Application with id ${id} not found`);
-  //     }
+      if (applicationById === undefined) {
+        // Handle the case when no application is found
+        throw new Error(`Application with id ${id} not found`);
+      }
   
-  //     applicationByIdDTO = {
-  //       id: applicationById.id,
-  //       academicOrCoop: applicationById.academicOrCoop,
-  //       academicYear: applicationById.academicYear,
-  //       email: applicationById.email,
-  //       firstChoiceRole: applicationById.firstChoiceRole,
-  //       firstName: applicationById.firstName,
-  //       heardFrom: applicationById.heardFrom,
-  //       lastName: applicationById.lastName,
-  //       locationPreference: applicationById.locationPreference,
-  //       program: applicationById.program,
-  //       pronouns: applicationById.pronouns,
-  //       pronounsSpecified: applicationById.pronounsSpecified,
-  //       resumeUrl: applicationById.resumeUrl,
-  //       roleSpecificQuestions: applicationById.roleSpecificQuestions,
-  //       secondChoiceRole: applicationById.secondChoiceRole,
-  //       shortAnswerQuestions: applicationById.shortAnswerQuestions,
-  //       status: applicationById.status,
-  //       term: applicationById.term,
-  //       timesApplied: applicationById.timesApplied,
-  //       timestamp: applicationById.timestamp
-  //       };
-  //   } catch (error: unknown) {
-  //     Logger.error(
-  //       `Failed to get applications by id = ${id}. Reason = ${getErrorMessage(
-  //         error,
-  //       )}`,
-  //     );
-  //     throw error;
-  //   }
+      applicationByIdDTO = {
+        id: applicationById.id,
+        academicOrCoop: applicationById.academicOrCoop,
+        academicYear: applicationById.academicYear,
+        email: applicationById.email,
+        firstChoiceRole: applicationById.firstChoiceRole,
+        firstName: applicationById.firstName,
+        heardFrom: applicationById.heardFrom,
+        lastName: applicationById.lastName,
+        locationPreference: applicationById.locationPreference,
+        program: applicationById.program,
+        pronouns: applicationById.pronouns,
+        pronounsSpecified: applicationById.pronounsSpecified,
+        resumeUrl: applicationById.resumeUrl,
+        roleSpecificQuestions: applicationById.roleSpecificQuestions,
+        secondChoiceRole: applicationById.secondChoiceRole,
+        shortAnswerQuestions: applicationById.shortAnswerQuestions,
+        secondChoiceStatus: applicationById.secondChoiceStatus,
+        status: applicationById.status,
+        term: applicationById.term,
+        timesApplied: applicationById.timesApplied,
+        timestamp: applicationById.timestamp
+        };
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to get applications by id = ${id}. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
      return applicationByIdDTO;
   }
-
 
   async getDashboardsByApplicationId(
     applicationId: number,
