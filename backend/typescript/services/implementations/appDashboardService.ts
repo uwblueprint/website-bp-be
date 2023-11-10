@@ -135,7 +135,7 @@ class AppDashboardService implements IAppDashboardService {
       });
     } catch (error: unknown) {
       Logger.error(
-        `Failed to get applications by this role = ${role}. Reason = ${getErrorMessage(
+        `Failed to get applications by this second choice role = ${role}. Reason = ${getErrorMessage(
           error,
         )}`,
       );
