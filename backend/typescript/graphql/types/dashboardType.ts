@@ -13,17 +13,32 @@ const dashboardType = gql`
     recommendedSecondChoice: String!
     reviewerId: Int!
     applicationId: Int!
+    reviewComplete: Boolean
   }
 
   input ApplicationDashboardInput {
     id: Int!
-    reviewerEmail: String
-    passionFSG: Int
-    teamPlayer: Int
-    desireToLearn: Int
-    skill: Int
-    skillCategory: String
-    reviewerId: Int
+    reviewerEmail: String!
+    passionFSG: Int!
+    teamPlayer: Int!
+    desireToLearn: Int!
+    skill: Int!
+    skillCategory: String!
+    reviewerComments: String!
+    recommendedSecondChoice: String!
+    reviewerId: Int!
+    reviewComplete: Boolean
+  }
+
+  input ApplicationDashBoardScoreUpdate {
+    passionFSG: Int!
+    teamPlayer: Int!
+    desireToLearn: Int!
+    skill: Int!
+    skillCategory: String!
+    reviewerComments: String!
+    recommendedSecondChoice: String!
+    reviewComplete: Boolean 
   }
 
   type ApplicationDTO {
@@ -62,6 +77,7 @@ const dashboardType = gql`
     applicationsById(id: Int!): ApplicationDTO!
     dashboardsByApplicationId(applicationId: Int!): [ApplicationDashboardDTO]!
     applicationTable(role: String!): [ApplicationDashboardRowDTO]!
+    dashboardsByApplicationAuthId(authId: String!): [ApplicationDashboardDTO]!
   }
 
   extend type Mutation {
@@ -72,6 +88,7 @@ const dashboardType = gql`
     ): ApplicationDashboardDTO!
     changeSkillCategory(id: Int!, newValue: String!): ApplicationDashboardDTO!
     updateApplications(applications: [ApplicationDashboardInput]!): [Int]!
+    updateApplicationByAuthIdAndApplicationId(authId: String!, applicationId: Int!, application: ApplicationDashBoardScoreUpdate!): ApplicationDashboardDTO
     modifyFinalComments(
       id: Int!
       newComments: String!
@@ -89,6 +106,7 @@ const dashboardType = gql`
       skillCategory: String!
       reviwerComments: String!
       recommendedSecondChoice: String!
+      reviewComplete: Boolean!
     ): ApplicationDashboardDTO!
   }
 `;

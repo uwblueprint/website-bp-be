@@ -18,6 +18,7 @@ const SEEDED_DATA = [
     reviewerComments: "Great job presenting your case study!",
     recommendedSecondChoice: "N/A",
     skillCategory: "junior",
+    reviewComplete: false,
   },
   {
     applicationId: 1,
@@ -30,6 +31,7 @@ const SEEDED_DATA = [
     reviewerComments: "Very good!",
     recommendedSecondChoice: "considered",
     skillCategory: "intermediate",
+    reviewComplete: true,
   },
 ];
 
@@ -88,6 +90,10 @@ export const up: Migration = async ({ context: sequelize }) => {
     },
     recommendedSecondChoice: {
       type: DataType.ENUM("N/A", "considered", "not considered"),
+      allowNull: false,
+    },
+    reviewComplete: {
+      type: DataType.BOOLEAN,
       allowNull: false,
     },
     createdAt: DataType.DATE,

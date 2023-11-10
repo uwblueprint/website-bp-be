@@ -1,3 +1,4 @@
+import { auth } from "firebase-admin";
 import AppDashboardService from "../../services/implementations/appDashboardService";
 import IAppDashboardService from "../../services/interfaces/appDashboardService";
 import {
@@ -11,6 +12,12 @@ const dashboardService: IAppDashboardService = new AppDashboardService();
 
 const dashboardResolvers = {
   Query: {
+    dashboardsByApplicationAuthId: (
+      _parent: undefined,
+      { authId }: { authId: string },
+    ): Promise<ApplicationDashboardDTO[]> => {
+      return dashboardService.getDashboardsByApplicationAuthId(authId);
+    },
     dashboardById: async (
       _parent: undefined,
       { id }: { id: number },
@@ -65,6 +72,7 @@ const dashboardResolvers = {
         skillCategory,
         reviwerComments,
         recommendedSecondChoice,
+        reviewComplete
       }: {
         reviewerEmail: string;
         applicationId: number;
@@ -76,6 +84,7 @@ const dashboardResolvers = {
         skillCategory: string;
         reviwerComments: string;
         recommendedSecondChoice: string;
+        reviewComplete: boolean;
       },
     ): Promise<ApplicationDashboardDTO> => {
       return dashboardService.createApplicationDashboard(
@@ -89,6 +98,7 @@ const dashboardResolvers = {
         skillCategory,
         reviwerComments,
         recommendedSecondChoice,
+        reviewComplete
       );
     },
     changeRating: async (
@@ -118,6 +128,13 @@ const dashboardResolvers = {
       { applications }: { applications: Array<ApplicationDashboardInput> },
     ): Promise<Array<number>> => {
       return dashboardService.updateBulkApplications(applications);
+    },
+    updateApplicationByAuthIdAndApplicationId: async (
+      _parent: undefined,
+      { applicationId, authId, application }: { applicationId: number, authId: string, application: ApplicationDashboardInput },
+    ): Promise<ApplicationDashboardDTO> => {
+      dashboardService.updateBulkApplications([application])
+      return dashboardService.updateApplicationByAuthIdAndApplicationId(applicationId, authId, application);
     },
     modifyFinalComments: async (
       _parent: undefined,

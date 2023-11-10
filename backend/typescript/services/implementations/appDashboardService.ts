@@ -11,6 +11,8 @@ import IAppDashboardService from "../interfaces/appDashboardService";
 import Application from "../../models/application.model";
 import UserService from "./userService";
 import IUserService from "../interfaces/userService";
+import User from "../../models/user.model";
+import { Op } from "sequelize";
 
 const userService: IUserService = new UserService();
 const Logger = logger(__filename);
@@ -51,6 +53,7 @@ class AppDashboardService implements IAppDashboardService {
       recommendedSecondChoice: dashboard.recommendedSecondChoice,
       reviewerId: dashboard.reviewerId,
       applicationId: dashboard.applicationId,
+      reviewComplete: dashboard.reviewComplete,
     };
   }
 
@@ -169,6 +172,7 @@ async getApplicationsById(id: number): Promise<ApplicationDTO> {
           recommendedSecondChoice: dashboard.recommendedSecondChoice,
           reviewerId: dashboard.reviewerId,
           applicationId: dashboard.applicationId,
+          reviewComplete: dashboard.reviewComplete,
         };
       });
     } catch (error: unknown) {
@@ -251,6 +255,7 @@ async getApplicationsById(id: number): Promise<ApplicationDTO> {
       recommendedSecondChoice: dashboard.recommendedSecondChoice,
       reviewerId: dashboard.reviewerId,
       applicationId: dashboard.applicationId,
+      reviewComplete: dashboard.reviewComplete,
     };
   }
 
@@ -265,11 +270,10 @@ async getApplicationsById(id: number): Promise<ApplicationDTO> {
     skillCategory: string,
     reviewerComments: string,
     recommendedSecondChoice: string,
+    reviewComplete: boolean
   ): Promise<ApplicationDashboardDTO> {
     try {
       const reviewerId = await userService.getUserIdByAuthId(reviewerAuthId);
-      await ApplicationDashboardTable.sync();
-      Logger.error(`the creation:`);
       const dashboard = await ApplicationDashboardTable.create({
         reviewerEmail,
         applicationId,
@@ -281,8 +285,8 @@ async getApplicationsById(id: number): Promise<ApplicationDTO> {
         skillCategory,
         reviewerComments,
         recommendedSecondChoice,
+        reviewComplete
       });
-      Logger.error(`the data: ${JSON.stringify(dashboard)}`);
       return {
         id: dashboard.id,
         reviewerEmail: dashboard.reviewerEmail,
@@ -295,6 +299,7 @@ async getApplicationsById(id: number): Promise<ApplicationDTO> {
         recommendedSecondChoice: dashboard.recommendedSecondChoice,
         reviewerId: dashboard.reviewerId,
         applicationId: dashboard.applicationId,
+        reviewComplete: dashboard.reviewComplete,
       };
     } catch (error: unknown) {
       Logger.error(
@@ -333,6 +338,7 @@ async getApplicationsById(id: number): Promise<ApplicationDTO> {
       recommendedSecondChoice: dashboard.recommendedSecondChoice,
       reviewerId: dashboard.reviewerId,
       applicationId: dashboard.applicationId,
+      reviewComplete: dashboard.reviewComplete,
     };
   }
 
@@ -367,6 +373,59 @@ async getApplicationsById(id: number): Promise<ApplicationDTO> {
       recommendedSecondChoice: dashboard.recommendedSecondChoice,
       reviewerId: dashboard.reviewerId,
       applicationId: dashboard.applicationId,
+      reviewComplete: dashboard.reviewComplete,
+    };
+  }
+
+  async updateApplicationByAuthIdAndApplicationId(
+    applicationId: number, 
+    authId: string, 
+    application: Partial<ApplicationDashboardDTO>,
+  ): Promise<ApplicationDashboardDTO> {
+    const reviewerId = await userService.getUserIdByAuthId(authId)
+    await ApplicationDashboardTable.update(application, {
+      where: {
+        applicationId,
+        reviewerId
+      }
+    }).catch((err: Error) => {
+      Logger.error(
+        `Error in application dashboard update: ${err.toString()}`,
+      );
+      throw err
+    })
+
+    const applicationsUpdated = await ApplicationDashboardTable.findAll({
+      where: {
+        applicationId,
+        reviewerId
+      }
+    }).catch((err: Error) => {
+      Logger.error(
+        `Error in application retrieval after update: ${err.toString()}`
+      )
+    })
+
+    // Logger.error(JSON.stringify(applicationsUpdated))
+    // Logger.error(reviewerId)
+    // Logger.error(JSON.stringify(applicationId))
+    if (applicationsUpdated === undefined) throw Error("Application dashboard find query failed")
+    else if (Array.isArray(applicationsUpdated) && applicationsUpdated.length == 0) throw Error("No application dashboard found")
+    else if (Array.isArray(applicationsUpdated) && applicationsUpdated.length > 1) throw Error("Multiple applicaiton dashboards found")
+    const dashboard = ((applicationsUpdated as unknown) as ApplicationDashboardTable[])[0]
+    return {
+      id: dashboard.id,
+      reviewerEmail: dashboard.reviewerEmail,
+      passionFSG: dashboard.passionFSG,
+      teamPlayer: dashboard.teamPlayer,
+      desireToLearn: dashboard.desireToLearn,
+      skill: dashboard.skill,
+      skillCategory: dashboard.skillCategory,
+      reviewerComments: dashboard.reviewerComments,
+      recommendedSecondChoice: dashboard.recommendedSecondChoice,
+      reviewerId: dashboard.reviewerId,
+      applicationId: dashboard.applicationId,
+      reviewComplete: dashboard.reviewComplete,
     };
   }
 
@@ -381,7 +440,7 @@ async getApplicationsById(id: number): Promise<ApplicationDTO> {
           res.push(id);
         }
 
-        ApplicationDashboardTable.update(values, {
+        return ApplicationDashboardTable.update(values, {
           where: { id },
           returning: true,
         }).catch((err: Error) => {
@@ -390,14 +449,40 @@ async getApplicationsById(id: number): Promise<ApplicationDTO> {
           );
           throw err;
         });
-        return id;
       }),
     ).catch((err) => {
       Logger.error("Failed application dashboard batch update");
       throw err;
     });
-
     return res;
+  }
+
+  async getDashboardsByApplicationAuthId(
+    authId: string,
+  ): Promise<ApplicationDashboardDTO[]> {
+    const reviewerId = await userService.getUserIdByAuthId(authId)
+    const dashboards = await ApplicationDashboardTable.findAll({
+      where: {
+        reviewerId,
+      },
+    });
+
+    return dashboards.map((dashboard) => {
+      return {
+        id: dashboard.id,
+        reviewerEmail: dashboard.reviewerEmail,
+        passionFSG: dashboard.passionFSG,
+        teamPlayer: dashboard.teamPlayer,
+        desireToLearn: dashboard.desireToLearn,
+        skill: dashboard.skill,
+        skillCategory: dashboard.skillCategory,
+        reviewerComments: dashboard.reviewerComments,
+        recommendedSecondChoice: dashboard.recommendedSecondChoice,
+        reviewerId: dashboard.reviewerId,
+        applicationId: dashboard.applicationId,
+        reviewComplete: dashboard.reviewComplete,
+      };
+    });
   }
 }
 
