@@ -63,6 +63,7 @@ const graphQLMiddlewares = {
     simpleEntities: authorizedByAllRoles(),
     dashboardById: authorizedByAllRoles(),
     applicationsByRole: authorizedByAllRoles(),
+    applicationsById: authorizedByAllRoles(),
     applicationTable: authorizedByAllRoles(),
     userById: authorizedByAdmin(),
     userByEmail: authorizedByAdmin(),

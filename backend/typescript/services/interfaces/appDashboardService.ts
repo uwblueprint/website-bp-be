@@ -7,6 +7,7 @@ import {
 interface IAppDashboardService {
   getDashboardById(id: number): Promise<ApplicationDashboardDTO>;
   getApplicationsByRole(role: string): Promise<ApplicationDTO[]>;
+  getApplicationsById(id: number): Promise<ApplicationDTO>;
   getDashboardsByApplicationId(
     applicationId: number,
   ): Promise<ApplicationDashboardDTO[]>;

@@ -74,6 +74,7 @@ export type ApplicationDTO = {
   term: string;
   timesApplied: string;
   timestamp: bigint;
+
 };
 
 export type ApplicationDashboardRowDTO = {
