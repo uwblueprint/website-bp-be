@@ -82,6 +82,14 @@ interface IAuthService {
     accessToken: string,
     requestedEmail: string,
   ): Promise<boolean>;
+
+  /**
+   * Sends an email to the input with a sign in link to the application. This will be used to create a user in firebase for current term BP members who are not in the database.
+   * @param email email of user to be created
+   * @throws Error if unable to generate link or send email
+   * @returns true if email sent successfully
+   */
+  sendSignInLink(email: string): Promise<boolean>;
 }
 
 export default IAuthService;
