@@ -69,23 +69,11 @@ app.get("/diff", async (req, res) => {
   const currentTerm = memeberData.term;
   const currentTermMembers: string[] = [];
 
-  // const teamToMembers : Record<string, string[]> = {};
   memeberData.members.forEach((member) => {
     if (member.term === currentTerm) {
       currentTermMembers.push(member.name);
-      // if (teamToMembers[member.teams[0]]) {
-      //   teamToMembers[member.teams[0]].push(member.name);
-      // } else {
-      //   teamToMembers[member.teams[0]] = [member.name];
-      // }
     }
   });
-
-  // const teamToMemberSize : Record<string, number> = {};
-  // (Object.keys(teamToMembers)).forEach((team) => {
-  //   teamToMemberSize[team] = teamToMembers[team].length;
-  // }
-  // )
 
   const firebaseUsers: Record<string, string | undefined> = {};
   firebaseAuthUsers.forEach((user) => {
@@ -127,9 +115,9 @@ app.get("/authUsers", async (req, res) => {
 app.get("/termApplications", async (req, res) => {
   ref
     .orderByChild("term")
-    .equalTo("Fall 2023")
-
-    .once("value", function fn(snapshot) {
+    .equalTo("Fall 2023") // Fetch all applications for <term> (e.g. Fall 2023)
+    // eslint-disable-next-line func-names
+    .once("value", function (snapshot) {
       const applications: Application[] = [];
       snapshot.forEach((childSnapshot) => {
         applications.push(childSnapshot.val());
