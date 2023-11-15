@@ -3,7 +3,7 @@
 import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
 import ApplicationDashboardTable from "./applicationDashboard.model";
 import { DataTypes, Sequelize } from "sequelize";
-import { statusType, secondChoiceStatusType, ApplicantRole } from "../types";
+import { statusType, secondChoiceStatusType } from "../types";
 
 
 @Table({ tableName: "applicantresponse" })
