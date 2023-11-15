@@ -3,6 +3,7 @@ import {
   ApplicationDTO,
   ApplicationDashboardRowDTO,
   UserDTO,
+  ApplicantRole
 } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
@@ -54,7 +55,7 @@ class AppDashboardService implements IAppDashboardService {
     };
   }
 
-  async getApplicationsByRole(role: string): Promise<Array<ApplicationDTO>> {
+  async getApplicationsByRole(role: ApplicantRole): Promise<Array<ApplicationDTO>> {
     let applications: Array<Application> | null;
     let applicationsByRole: Array<Application> | null;
     let applicationsByRoleDTO: Array<ApplicationDTO> = [];
@@ -99,7 +100,7 @@ class AppDashboardService implements IAppDashboardService {
     return applicationsByRoleDTO;
   }
 
-  async getApplicationsBySecondChoiceRole(role: string): Promise<Array<ApplicationDTO>> {
+  async getApplicationsBySecondChoiceRole(role: ApplicantRole): Promise<Array<ApplicationDTO>> {
     let applications: Array<Application> | null;
     let applicationsBySecondChoiceRole: Array<Application> | null;
     let applicationsBySecondChoiceRoleDTO: Array<ApplicationDTO> = [];
@@ -180,7 +181,7 @@ class AppDashboardService implements IAppDashboardService {
   }
 
   async getApplicationDashboardTable(
-    role: string,
+    role: ApplicantRole,
   ): Promise<ApplicationDashboardRowDTO[]> {
     // get all the applications for the role
     const applications: Array<ApplicationDTO> = await this.getApplicationsByRole(
@@ -208,7 +209,7 @@ class AppDashboardService implements IAppDashboardService {
   }
 
   async getApplicationBySecondChoiceRoleDashboardTable(
-    role: string,
+    role: ApplicantRole,
   ): Promise<ApplicationDashboardRowDTO[]> {
     // get all the applications for the role
     const applications: Array<ApplicationDTO> = await this.getApplicationsBySecondChoiceRole(
