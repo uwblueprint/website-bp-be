@@ -9,6 +9,8 @@ interface IAppDashboardService {
   getDashboardById(id: number): Promise<ApplicationDashboardDTO>;
   getApplicationsByRole(role: ApplicantRole): Promise<ApplicationDTO[]>;
   getApplicationsBySecondChoiceRole(role: ApplicantRole): Promise<ApplicationDTO[]>;
+  getApplicationsByRole(role: string): Promise<ApplicationDTO[]>;
+  getApplicationsById(id: number): Promise<ApplicationDTO>;
   getDashboardsByApplicationId(
     applicationId: number,
   ): Promise<ApplicationDashboardDTO[]>;

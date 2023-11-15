@@ -64,6 +64,7 @@ const graphQLMiddlewares = {
     dashboardById: authorizedByAllRoles(),
     applicationsByRole: authorizedByAllRoles(),
     applicationsBySecondChoiceRole: authorizedByAllRoles(),
+    applicationsById: authorizedByAllRoles(),
     applicationTable: authorizedByAllRoles(),
     secondChoiceRoleApplicationTable: authorizedByAllRoles(),
     userById: authorizedByAdmin(),

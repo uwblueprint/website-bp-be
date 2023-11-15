@@ -27,6 +27,14 @@ const dashboardResolvers = {
         firstChoice,
       );
       return applications;
+    },applicationsById: async (
+      _parent: undefined,
+      { id }: { id: number },
+    ): Promise<ApplicationDTO> => {
+      const application = await dashboardService.getApplicationsById(
+        id,
+      );
+      return application;
     },
     applicationsBySecondChoiceRole: async (
       _parent: undefined,
