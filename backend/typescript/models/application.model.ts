@@ -1,10 +1,9 @@
 /* eslint import/no-cycle: 0 */
 
 import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
+import { DataTypes } from "sequelize";
 import ApplicationDashboardTable from "./applicationDashboard.model";
-import { DataTypes, Sequelize } from "sequelize";
-import { statusType, secondChoiceStatusType } from "../types";
-
+import { StatusType, SecondChoiceStatusType } from "../types";
 
 @Table({ tableName: "applicantresponse" })
 export default class Application extends Model {
@@ -56,17 +55,17 @@ export default class Application extends Model {
   @Column({ type: DataType.ARRAY(DataType.STRING) })
   shortAnswerQuestions!: string[];
 
-  @Column({ 
-    type: DataType.ENUM(...Object.values(statusType)),
-    defaultValue: statusType.PENDING
+  @Column({
+    type: DataType.ENUM(...Object.values(StatusType)),
+    defaultValue: StatusType.PENDING,
   })
-  status!: statusType;
+  status!: StatusType;
 
   @Column({
-    type: DataTypes.ENUM(...Object.values(secondChoiceStatusType)),
-    defaultValue: secondChoiceStatusType.NOT_APPLICABLE
+    type: DataTypes.ENUM(...Object.values(SecondChoiceStatusType)),
+    defaultValue: SecondChoiceStatusType.NOT_APPLICABLE,
   })
-  secondChoiceStatus!: secondChoiceStatusType;
+  secondChoiceStatus!: SecondChoiceStatusType;
 
   @Column({ type: DataType.STRING })
   term!: string;

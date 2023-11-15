@@ -1,4 +1,4 @@
-import { CookieOptions, Request, Response } from "express";
+// import { CookieOptions } from "express";
 
 import * as firebaseAdmin from "firebase-admin";
 import nodemailerConfig from "../../nodemailer.config";
@@ -19,11 +19,11 @@ const emailService: IEmailService = new EmailService(nodemailerConfig);
 const authService: IAuthService = new AuthService(userService, emailService);
 const reviewService: IReviewService = new ReviewService();
 
-const cookieOptions: CookieOptions = {
-  httpOnly: true,
-  sameSite: process.env.PREVIEW_DEPLOY ? "none" : "strict",
-  secure: process.env.NODE_ENV === "production",
-};
+// const cookieOptions: CookieOptions = {
+//   httpOnly: true,
+//   sameSite: process.env.PREVIEW_DEPLOY ? "none" : "strict",
+//   secure: process.env.NODE_ENV === "production",
+// };
 
 // Object to pass back when frontend queries a login request
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
