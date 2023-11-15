@@ -2,23 +2,17 @@ import {
   ApplicationDashboardDTO,
   ApplicationDTO,
   ApplicationDashboardRowDTO,
-  ApplicantRole
 } from "../../types";
 
 interface IAppDashboardService {
   getDashboardById(id: number): Promise<ApplicationDashboardDTO>;
-  getApplicationsByRole(role: ApplicantRole): Promise<ApplicationDTO[]>;
-  getApplicationsBySecondChoiceRole(role: ApplicantRole): Promise<ApplicationDTO[]>;
   getApplicationsByRole(role: string): Promise<ApplicationDTO[]>;
   getApplicationsById(id: number): Promise<ApplicationDTO>;
   getDashboardsByApplicationId(
     applicationId: number,
   ): Promise<ApplicationDashboardDTO[]>;
   getApplicationDashboardTable(
-    role: ApplicantRole,
-  ): Promise<ApplicationDashboardRowDTO[]>;
-  getApplicationBySecondChoiceRoleDashboardTable(
-    role: ApplicantRole,
+    role: string,
   ): Promise<ApplicationDashboardRowDTO[]>;
   mutateRating(
     id: number,
