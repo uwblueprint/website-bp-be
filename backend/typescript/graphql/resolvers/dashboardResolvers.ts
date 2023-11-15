@@ -26,13 +26,12 @@ const dashboardResolvers = {
         firstChoice,
       );
       return applications;
-    },applicationsById: async (
+    },
+    applicationsById: async (
       _parent: undefined,
       { id }: { id: number },
     ): Promise<ApplicationDTO> => {
-      const application = await dashboardService.getApplicationsById(
-        id,
-      );
+      const application = await dashboardService.getApplicationsById(id);
       return application;
     },
     dashboardsByApplicationId: async (

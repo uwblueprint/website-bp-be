@@ -2,10 +2,10 @@ import { DataType } from "sequelize-typescript";
 // import ApplicationDashboardTable from "../models/applicationDashboard.model";
 // import User from "../models/user.model";
 
+import { DataTypes } from "sequelize";
 import { Migration } from "../umzug";
 import allApplications from "./applicationlist.json";
-import { DataTypes } from "sequelize";
-import { statusType, secondChoiceStatusType } from "../types";
+import { StatusType, SecondChoiceStatusType } from "../types";
 
 const TABLE_NAME = "applicantresponse";
 
@@ -36,10 +36,10 @@ const importApplicationData = () => {
       status: currApplication.status,
       term: currApplication.term,
       timesApplied: currApplication.timesApplied,
-      timestamp: currApplication.timestamp
+      timestamp: currApplication.timestamp,
     };
   });
-  
+
   return seededData;
 };
 
@@ -98,7 +98,7 @@ export const up: Migration = async ({ context: sequelize }) => {
     },
     resumeUrl: {
       type: DataType.STRING(4000),
-    allowNull: true,
+      allowNull: true,
     },
     roleSpecificQuestions: {
       type: DataType.ARRAY(DataType.STRING(4000)),
@@ -113,14 +113,14 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: true,
     },
     status: {
-      type: DataType.ENUM(...Object.values(statusType)),
+      type: DataType.ENUM(...Object.values(StatusType)),
       allowNull: false,
-      defaultValue: statusType.PENDING
+      defaultValue: StatusType.PENDING,
     },
     secondChoiceStatus: {
-      type: DataTypes.ENUM(...Object.values(secondChoiceStatusType)),
+      type: DataTypes.ENUM(...Object.values(SecondChoiceStatusType)),
       allowNull: false,
-      defaultValue: secondChoiceStatusType.NOT_APPLICABLE
+      defaultValue: SecondChoiceStatusType.NOT_APPLICABLE,
     },
     term: {
       type: DataType.STRING(4000),
@@ -141,7 +141,6 @@ export const up: Migration = async ({ context: sequelize }) => {
   const SEEDED_DATA = importApplicationData();
 
   await sequelize.getQueryInterface().bulkInsert(TABLE_NAME, SEEDED_DATA);
-
 };
 
 export const down: Migration = async ({ context: sequelize }) => {

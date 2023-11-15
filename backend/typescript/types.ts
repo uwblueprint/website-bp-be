@@ -1,23 +1,22 @@
 export type Role = "User" | "Admin";
 
-
-export enum statusType {
+export enum StatusType {
   ACCEPTED = "accepted",
   APPLIED = "applied",
   INTERVIEWED = "interviewed",
   IN_REVIEW = "in review",
   PENDING = "pending",
-  REJECTED = "rejected"
+  REJECTED = "rejected",
 }
 
-export enum secondChoiceStatusType {
+export enum SecondChoiceStatusType {
   CONSIDERED = "considered",
   NOT_CONSIDERED = "not considered",
   NOT_APPLICABLE = "n/a",
   RECOMMENDED = "recommended",
   IN_REVIEW = "in review",
   INTERVIEW = "interview",
-  NO_INTERVIEW = "no interview"
+  NO_INTERVIEW = "no interview",
 }
 
 export type Token = {
@@ -68,13 +67,12 @@ export type ApplicationDTO = {
   resumeUrl: string;
   roleSpecificQuestions: string[];
   secondChoiceRole: string;
-  shortAnswerQuestions: string[]
+  shortAnswerQuestions: string[];
   status: string;
   secondChoiceStatus: string;
   term: string;
   timesApplied: string;
   timestamp: bigint;
-
 };
 
 export type ApplicationDashboardRowDTO = {

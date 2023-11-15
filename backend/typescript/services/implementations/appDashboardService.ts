@@ -85,7 +85,7 @@ class AppDashboardService implements IAppDashboardService {
           secondChoiceStatus: application.secondChoiceStatus,
           term: application.term,
           timesApplied: application.timesApplied,
-          timestamp: application.timestamp
+          timestamp: application.timestamp,
         };
       });
     } catch (error: unknown) {
@@ -99,20 +99,22 @@ class AppDashboardService implements IAppDashboardService {
     return applicationsByRoleDTO;
   }
 
-//Takes in an application id and returns an array of applicants with same id
-async getApplicationsById(id: number): Promise<ApplicationDTO> {
+  // Takes in an application id and returns an array of applicants with same id
+  async getApplicationsById(id: number): Promise<ApplicationDTO> {
     let applications: Array<Application> | null;
-    let applicationById: Application |undefined;
+    let applicationById: Application | undefined;
     let applicationByIdDTO: ApplicationDTO;
     try {
       applications = await Application.findAll();
-      applicationById =  applications.find(application => application.id == id);
+      applicationById = applications.find(
+        (application) => application.id === id,
+      );
 
       if (applicationById === undefined) {
         // Handle the case when no application is found
         throw new Error(`Application with id ${id} not found`);
       }
-  
+
       applicationByIdDTO = {
         id: applicationById.id,
         academicOrCoop: applicationById.academicOrCoop,
@@ -134,8 +136,8 @@ async getApplicationsById(id: number): Promise<ApplicationDTO> {
         status: applicationById.status,
         term: applicationById.term,
         timesApplied: applicationById.timesApplied,
-        timestamp: applicationById.timestamp
-        };
+        timestamp: applicationById.timestamp,
+      };
     } catch (error: unknown) {
       Logger.error(
         `Failed to get applications by id = ${id}. Reason = ${getErrorMessage(
@@ -144,7 +146,7 @@ async getApplicationsById(id: number): Promise<ApplicationDTO> {
       );
       throw error;
     }
-     return applicationByIdDTO;
+    return applicationByIdDTO;
   }
 
   async getDashboardsByApplicationId(
