@@ -5,6 +5,7 @@ import {
   ApplicationDTO,
   ApplicationDashboardInput,
   ApplicationDashboardRowDTO,
+  ApplicantRole
 } from "../../types";
 
 const dashboardService: IAppDashboardService = new AppDashboardService();
@@ -20,7 +21,7 @@ const dashboardResolvers = {
     },
     applicationsByRole: async (
       _parent: undefined,
-      { firstChoice }: { firstChoice: string },
+      { firstChoice }: { firstChoice: ApplicantRole },
     ): Promise<Array<ApplicationDTO>> => {
       const applications = await dashboardService.getApplicationsByRole(
         firstChoice,
@@ -35,6 +36,15 @@ const dashboardResolvers = {
       );
       return application;
     },
+    applicationsBySecondChoiceRole: async (
+      _parent: undefined,
+      { secondChoice }: { secondChoice: ApplicantRole },
+    ): Promise<Array<ApplicationDTO>> => {
+      const applications = await dashboardService.getApplicationsBySecondChoiceRole(
+        secondChoice,
+      );
+      return applications;
+    },
     dashboardsByApplicationId: async (
       _parent: undefined,
       { applicationId }: { applicationId: number },
@@ -46,9 +56,15 @@ const dashboardResolvers = {
     },
     applicationTable: async (
       _parent: undefined,
-      { role }: { role: string },
+      { role }: { role: ApplicantRole },
     ): Promise<ApplicationDashboardRowDTO[]> => {
       return dashboardService.getApplicationDashboardTable(role);
+    },
+    secondChoiceRoleApplicationTable: async (
+      _parent: undefined,
+      { role }: { role: ApplicantRole },
+    ): Promise<ApplicationDashboardRowDTO[]> => {
+      return dashboardService.getApplicationBySecondChoiceRoleDashboardTable(role);
     },
   },
   Mutation: {

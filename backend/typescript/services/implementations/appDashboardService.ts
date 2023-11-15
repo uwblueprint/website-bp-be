@@ -3,6 +3,7 @@ import {
   ApplicationDTO,
   ApplicationDashboardRowDTO,
   UserDTO,
+  ApplicantRole
 } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
@@ -54,7 +55,7 @@ class AppDashboardService implements IAppDashboardService {
     };
   }
 
-  async getApplicationsByRole(role: string): Promise<Array<ApplicationDTO>> {
+  async getApplicationsByRole(role: ApplicantRole): Promise<Array<ApplicationDTO>> {
     let applications: Array<Application> | null;
     let applicationsByRole: Array<Application> | null;
     let applicationsByRoleDTO: Array<ApplicationDTO> = [];
@@ -99,52 +100,84 @@ class AppDashboardService implements IAppDashboardService {
     return applicationsByRoleDTO;
   }
 
-//Takes in an application id and returns an array of applicants with same id
-async getApplicationsById(id: number): Promise<ApplicationDTO> {
+  async getApplicationsBySecondChoiceRole(role: ApplicantRole): Promise<Array<ApplicationDTO>> {
     let applications: Array<Application> | null;
-    let applicationById: Application |undefined;
-    let applicationByIdDTO: ApplicationDTO;
+    let applicationsBySecondChoiceRole: Array<Application> | null;
+    let applicationsBySecondChoiceRoleDTO: Array<ApplicationDTO> = [];
     try {
       applications = await Application.findAll();
-      applicationById =  applications.find(application => application.id == id);
-
-      if (applicationById === undefined) {
-        // Handle the case when no application is found
-        throw new Error(`Application with id ${id} not found`);
-      }
-  
-      applicationByIdDTO = {
-        id: applicationById.id,
-        academicOrCoop: applicationById.academicOrCoop,
-        academicYear: applicationById.academicYear,
-        email: applicationById.email,
-        firstChoiceRole: applicationById.firstChoiceRole,
-        firstName: applicationById.firstName,
-        heardFrom: applicationById.heardFrom,
-        lastName: applicationById.lastName,
-        locationPreference: applicationById.locationPreference,
-        program: applicationById.program,
-        pronouns: applicationById.pronouns,
-        pronounsSpecified: applicationById.pronounsSpecified,
-        resumeUrl: applicationById.resumeUrl,
-        roleSpecificQuestions: applicationById.roleSpecificQuestions,
-        secondChoiceRole: applicationById.secondChoiceRole,
-        shortAnswerQuestions: applicationById.shortAnswerQuestions,
-        secondChoiceStatus: applicationById.secondChoiceStatus,
-        status: applicationById.status,
-        term: applicationById.term,
-        timesApplied: applicationById.timesApplied,
-        timestamp: applicationById.timestamp
+      applicationsBySecondChoiceRole = await applications.filter((application) => {
+        return application.secondChoiceRole.toLowerCase() === role.toLowerCase();
+      });
+      applicationsBySecondChoiceRoleDTO = await applicationsBySecondChoiceRole.map((application) => {
+        return {
+          id: application.id,
+          academicOrCoop: application.academicOrCoop,
+          academicYear: application.academicYear,
+          email: application.email,
+          firstChoiceRole: application.firstChoiceRole,
+          firstName: application.firstName,
+          heardFrom: application.heardFrom,
+          lastName: application.lastName,
+          locationPreference: application.locationPreference,
+          program: application.program,
+          pronouns: application.pronouns,
+          pronounsSpecified: application.pronounsSpecified,
+          resumeUrl: application.resumeUrl,
+          roleSpecificQuestions: application.roleSpecificQuestions,
+          secondChoiceRole: application.secondChoiceRole,
+          shortAnswerQuestions: application.shortAnswerQuestions,
+          status: application.status,
+          secondChoiceStatus: application.secondChoiceStatus,
+          term: application.term,
+          timesApplied: application.timesApplied,
+          timestamp: application.timestamp
         };
+      });
     } catch (error: unknown) {
       Logger.error(
-        `Failed to get applications by id = ${id}. Reason = ${getErrorMessage(
+        `Failed to get applications by this second choice role = ${role}. Reason = ${getErrorMessage(
           error,
         )}`,
       );
       throw error;
     }
-     return applicationByIdDTO;
+    return applicationsBySecondChoiceRoleDTO;
+  }
+
+  async getDashboardsByApplicationId(
+    applicationId: number,
+  ): Promise<ApplicationDashboardDTO[]> {
+    let dashboards: ApplicationDashboardTable[] = [];
+    let applicationDashboardDTOs: Array<ApplicationDashboardDTO> = [];
+    try {
+      dashboards = await ApplicationDashboardTable.findAll({
+        where: { applicationId },
+      });
+      applicationDashboardDTOs = await dashboards.map((dashboard) => {
+        return {
+          id: dashboard.id,
+          reviewerEmail: dashboard.reviewerEmail,
+          passionFSG: dashboard.passionFSG,
+          teamPlayer: dashboard.teamPlayer,
+          desireToLearn: dashboard.desireToLearn,
+          skill: dashboard.skill,
+          skillCategory: dashboard.skillCategory,
+          reviewerComments: dashboard.reviewerComments,
+          recommendedSecondChoice: dashboard.recommendedSecondChoice,
+          reviewerId: dashboard.reviewerId,
+          applicationId: dashboard.applicationId,
+        };
+      });
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to get dashboards by this applicationId = ${applicationId}. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
+    return applicationDashboardDTOs;
   }
 
   async getDashboardsByApplicationId(
@@ -183,10 +216,38 @@ async getApplicationsById(id: number): Promise<ApplicationDTO> {
   }
 
   async getApplicationDashboardTable(
-    role: string,
+    role: ApplicantRole,
   ): Promise<ApplicationDashboardRowDTO[]> {
     // get all the applications for the role
     const applications: Array<ApplicationDTO> = await this.getApplicationsByRole(
+      role,
+    );
+    // get the dashboards associated with the applications
+    const appDashRows: Array<ApplicationDashboardRowDTO> = await Promise.all(
+      applications.map(async (application) => {
+        const reviewDashboards: Array<ApplicationDashboardDTO> = await this.getDashboardsByApplicationId(
+          application.id,
+        );
+        const reviewers: Array<UserDTO> = await Promise.all(
+          reviewDashboards.map(async (dash) => {
+            return userService.getUserByEmail(dash.reviewerEmail);
+          }),
+        );
+        return {
+          application,
+          reviewDashboards,
+          reviewers,
+        };
+      }),
+    );
+    return appDashRows;
+  }
+
+  async getApplicationBySecondChoiceRoleDashboardTable(
+    role: ApplicantRole,
+  ): Promise<ApplicationDashboardRowDTO[]> {
+    // get all the applications for the role
+    const applications: Array<ApplicationDTO> = await this.getApplicationsBySecondChoiceRole(
       role,
     );
     // get the dashboards associated with the applications

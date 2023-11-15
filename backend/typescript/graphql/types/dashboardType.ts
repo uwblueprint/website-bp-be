@@ -59,9 +59,11 @@ const dashboardType = gql`
   extend type Query {
     dashboardById(id: Int!): ApplicationDashboardDTO!
     applicationsByRole(firstChoice: String!): [ApplicationDTO]!
+    applicationsBySecondChoiceRole(secondChoice: String!): [ApplicationDTO]!
     applicationsById(id: Int!): ApplicationDTO!
     dashboardsByApplicationId(applicationId: Int!): [ApplicationDashboardDTO]!
     applicationTable(role: String!): [ApplicationDashboardRowDTO]!
+    secondChoiceRoleApplicationTable(role: String!): [ApplicationDashboardRowDTO]!
   }
 
   extend type Mutation {
