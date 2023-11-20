@@ -1,5 +1,4 @@
 // import { CookieOptions } from "express";
-
 import * as firebaseAdmin from "firebase-admin";
 import nodemailerConfig from "../../nodemailer.config";
 import AuthService from "../../services/implementations/authService";
@@ -15,7 +14,10 @@ import IReviewService from "../../services/interfaces/reviewService";
 import ReviewService from "../../services/implementations/reviewService";
 
 const userService: IUserService = new UserService();
-const emailService: IEmailService = new EmailService(nodemailerConfig);
+const emailService: IEmailService = new EmailService(
+  nodemailerConfig,
+  "UW Blueprint Internal Tools Team",
+);
 const authService: IAuthService = new AuthService(userService, emailService);
 const reviewService: IReviewService = new ReviewService();
 
@@ -140,6 +142,15 @@ const authResolvers = {
       { email }: { email: string },
     ): Promise<boolean> => {
       await authService.resetPassword(email);
+      return true;
+    },
+    sendSignInLink: async (
+      _parent: undefined,
+      { email }: { email: string },
+    ): Promise<boolean> => {
+      await authService.sendSignInLink(email).catch((err) => {
+        throw err;
+      });
       return true;
     },
   },

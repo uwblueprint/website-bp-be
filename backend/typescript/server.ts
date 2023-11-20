@@ -6,6 +6,8 @@ import { ApolloServer } from "apollo-server-express";
 import { sequelize } from "./models";
 import schema from "./graphql";
 import Application from "./models/application.model";
+import memeberData from "./graphql/sampleData/members.json";
+import firebaseAuthUsers from "./graphql/sampleData/users.json";
 
 const CORS_ALLOW_LIST = [
   "http://localhost:3000",
@@ -63,12 +65,59 @@ admin.initializeApp({
 const db = admin.database();
 const ref = db.ref("studentApplications");
 
+app.get("/diff", async (req, res) => {
+  const currentTerm = memeberData.term;
+  const currentTermMembers: string[] = [];
+
+  memeberData.members.forEach((member) => {
+    if (member.term === currentTerm) {
+      currentTermMembers.push(member.name);
+    }
+  });
+
+  const firebaseUsers: Record<string, string | undefined> = {};
+  firebaseAuthUsers.forEach((user) => {
+    firebaseUsers[user.uid] = user.displayName;
+  });
+
+  // see if all currentTermMembers have their name in firebase_users
+  const missingMembersFromFirebaseAuth: string[] = [];
+
+  currentTermMembers.forEach((member) => {
+    if (!Object.values(firebaseUsers).includes(member)) {
+      missingMembersFromFirebaseAuth.push(member);
+    }
+  });
+
+  res.status(200).json({
+    currentTerm,
+    currentTermMembers,
+    firebaseUsers,
+    missingMembersFromFirebaseAuth,
+  });
+});
+
+app.get("/authUsers", async (req, res) => {
+  try {
+    admin
+      .auth()
+      .listUsers()
+      .then((data) => {
+        res.status(200).json(data.users);
+      });
+  } catch (error) {
+    res
+      .status(500)
+      .send("An error occurred while retrieving the applications.");
+  }
+});
+
 app.get("/termApplications", async (req, res) => {
   ref
     .orderByChild("term")
-    .equalTo("Fall 2023")
-
-    .once("value", function fn(snapshot) {
+    .equalTo("Fall 2023") // Fetch all applications for <term> (e.g. Fall 2023)
+    // eslint-disable-next-line func-names
+    .once("value", function (snapshot) {
       const applications: Application[] = [];
       snapshot.forEach((childSnapshot) => {
         applications.push(childSnapshot.val());
@@ -103,7 +152,6 @@ app.get("/applications/:id", async (req, res) => {
       res.status(404).send("Student application not found.");
     }
   } catch (error) {
-    console.error(error);
     res
       .status(500)
       .send("An error occurred while retrieving the student application.");
@@ -111,5 +159,6 @@ app.get("/applications/:id", async (req, res) => {
 });
 
 app.listen({ port: process.env.PORT || 5000 }, () => {
+  // eslint-disable-next-line no-console
   console.info(`Server is listening on port ${process.env.PORT || 5000}!`);
 });

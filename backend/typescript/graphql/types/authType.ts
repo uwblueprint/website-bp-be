@@ -38,6 +38,7 @@ const authType = gql`
     refresh(refreshToken: String!): String!
     logout(userId: ID!): ID
     resetPassword(email: String!): Boolean!
+    sendSignInLink(email: String!): Boolean!
   }
 `;
 

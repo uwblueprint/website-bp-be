@@ -226,6 +226,55 @@ class AuthService implements IAuthService {
       return false;
     }
   }
+
+  async sendSignInLink(email: string): Promise<boolean> {
+    if (!this.emailService) {
+      const errorMessage =
+        "Attempted to call sendEmailVerificationLink but this instance of AuthService does not have an EmailService instance";
+      Logger.error(errorMessage);
+      throw new Error(errorMessage);
+    }
+
+    if (!email.endsWith("@uwblueprint.org")) {
+      const errorMessage = `Attempted to call sendEmailVerificationLink with an email, ${email}, that does not end with @uwblueprint.org`;
+      Logger.error(errorMessage);
+      throw new Error(errorMessage);
+    }
+
+    try {
+      await firebaseAdmin
+        .auth()
+        .generateSignInWithEmailLink(email, {
+          url: `${process.env.FIREBASE_REQUEST_URI}/admin`,
+          handleCodeInApp: true,
+        })
+        .then((link) => {
+          const emailBody = `
+          Hello,
+          <br><br>
+          We noticed that you are a current UW Blueprint member but do not have an account in our internal recruitment tool. Please click the following link to sign in with your blueprint email.
+          <br><br>
+          <a href=${link}>Sign into internal recruitment tool</a>`;
+
+          return this.emailService?.sendEmail(
+            email,
+            "Sign into internal recruitment tool",
+            emailBody,
+          );
+        })
+        .catch((error) => {
+          Logger.error("Failed to send email sign in link to user with email");
+          throw error;
+        });
+
+      return true;
+    } catch (error) {
+      Logger.error(
+        `Failed to generate email sign in link for user with email ${email} ${error}`,
+      );
+      throw error;
+    }
+  }
 }
 
 export default AuthService;

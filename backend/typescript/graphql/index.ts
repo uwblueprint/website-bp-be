@@ -89,6 +89,7 @@ const graphQLMiddlewares = {
     deleteUserByEmail: authorizedByAdmin(),
     logout: isAuthorizedByUserId("userId"),
     resetPassword: isAuthorizedByEmail("email"),
+    sendSignInLink: authorizedByAllRoles(),
   },
 };
 
