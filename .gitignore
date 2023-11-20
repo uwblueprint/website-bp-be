@@ -13,4 +13,3 @@ backend/typescript/serviceAccount.json
 package-lock.json
 .gitignore
 package.json
-backend/typescript/graphql/sampleData/users.json

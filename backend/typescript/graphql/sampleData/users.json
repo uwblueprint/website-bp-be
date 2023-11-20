@@ -1,0 +1,24 @@
+[
+  {
+    "uid": "12345",
+    "email": "test@uwblueprint.org",
+    "emailVerified": true,
+    "displayName": "First and last",
+    "photoURL": "some link",
+    "disabled": false,
+    "metadata": {
+      "lastSignInTime": "last sign in time",
+      "creationTime": "creation time"
+    },
+    "tokensValidAfterTime": "tokens valid after time",
+    "providerData": [
+      {
+        "uid": "12345",
+        "displayName": "First and last",
+        "email": "test@uwblueprint.org",
+        "photoURL": "some link",
+        "providerId": "google.com"
+      }
+    ]
+  }
+]
