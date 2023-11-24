@@ -106,6 +106,7 @@ export type SignUpMethod = "PASSWORD" | "GOOGLE";
 
 export enum ApplicantRole {
   pres = "president", // community tab
+  co_pres = "co-president", // community tab
   int_dir = "internal director",
   ext_dir = "external director",
   vpe = "vp engineering", // eng tab
@@ -116,12 +117,12 @@ export enum ApplicantRole {
   vp_int = "vp internal", // community tab
   vp_comms = "vp communications", // community tab
   vp_scoping = "vp scoping", // community tab
-  vp_finance = "vp finance & operations", // community tab
-  pm = "project manager", // prod tab
-  pl = "project lead", // eng tab
+  vp_finance = "vp finance", // community tab
+  pm = "product manager", // prod tab
+  pl = "technical lead", // eng tab
   design_mentor = "design mentor", // design tab
   graphic_design = "graphic designer", // design tab
-  product_design = "product designer", // design tab
+  product_design = "designer", // design tab
   uxr = "user researcher", // design tab
-  dev = "project developer", // eng tab
+  dev = "developer", // eng tab
 }
