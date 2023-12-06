@@ -11,6 +11,12 @@ import firebaseAuthUsers from "./graphql/sampleData/users.json";
 import { ApplicantRole } from "./types";
 import fs from 'fs';
 
+
+import IMatchingService from "./services/interfaces/matchingService";
+import MatchingService from "./services/implementations/matchingService";
+
+const matchingService: IMatchingService = new MatchingService();
+
 const CORS_ALLOW_LIST = [
   "http://localhost:3000",
   "https://uw-blueprint-starter-code.firebaseapp.com",
@@ -117,40 +123,15 @@ app.get("/authUsers", async (req, res) => {
 
 app.get("/addMemberUids", async (req, res) => {
   const term = memberData.term;
-  const firebaseUsers = await admin.auth().listUsers();
-  const users = firebaseUsers.users;
-  const members = memberData.members;
-  const duplicateUsers: Record<string, any[] | undefined> = {};
-
-  const updatedMembers = members.map((member) => {
-    const membersWithName = users.filter((user) => user.displayName === member.name && member.term === term);
-    const numEntries = membersWithName.length;
-    if (numEntries > 1) {
-      duplicateUsers[member.name] = membersWithName;
-      for (const memberWithName of membersWithName) {
-        if (memberWithName?.email?.includes("@uwblueprint.org")) {
-          return {
-            ...member,
-            uid: memberWithName.uid,
-          };
-        }
-      }
-    } else if (numEntries === 1) {
-      return {
-        ...member,
-        uid: membersWithName[0].uid,
-      };
-    }
-    return member;
-  });
-
-  const updatedData = {
-    term: term,
+  const updatedData = await matchingService.linkMemberUids(term);
+  const updatedMembers = {
+    term: memberData.term,
     teams: memberData.teams,
-    members: updatedMembers,
-  };
+    members: updatedData.updatedMembers
+  }
+  const duplicateUsers = updatedData.duplicateUsers;
 
-  fs.writeFileSync('./graphql/sampleData/members.json', JSON.stringify(updatedData));
+  fs.writeFileSync('./graphql/sampleData/members.json', JSON.stringify(updatedMembers));
 
   res.status(200).json({
     message: "Successfully added uids for current blueprint members, and resolved duplicates.",
@@ -158,30 +139,16 @@ app.get("/addMemberUids", async (req, res) => {
   });
 });
 
-app.get("/membersByRole", async (req, res) => {
+app.get("/match", async (req, res) => {
   const roles = Object.values(ApplicantRole);
-  const term = memberData.term;
-  const members = memberData.members.filter((member) => member.term === term);
-  const memberRoleBreakdown = roles.map((role) => {
-    const roleMembers = members.filter((member) => member.role === role);
-    return {
-      role,
-      members: roleMembers,
-      count: roleMembers.length,
-    };
-  });
+  const memberRoleBreakdown = await Promise.all(roles.map(async (role) => {
+    const applications = await matchingService.matchApplicationsForRole(role);
+    return applications
+  }));
+  
   res.status(200).json({
-    term,
     memberRoleBreakdown,
   });
-  // const firebaseUsers: Record<string, string | undefined> = {};
-  // firebaseAuthUsers.forEach((user) => {
-  //   firebaseUsers[user.uid] = user.displayName;
-  // });
-
-  // Add each user to a user database so they can be used later for ranking purposes. TODO: Where do I include the role?
-  // Or just dont let it get to that, can do the matching before storing the users in the database because you already have the data.
-  // two pointer to track which two members are reviewing the same application. modulo total number of applications, will eventually need to loop back to index 0
 });
 
 app.get("/termApplications", async (req, res) => {

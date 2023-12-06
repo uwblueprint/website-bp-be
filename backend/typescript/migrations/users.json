@@ -1,0 +1,53 @@
+{
+    "term": 1236,
+    "teams": [
+        {
+            "name": "Executive Team",
+            "id": "executive"
+        },
+        {
+            "name": "Internal Tools",
+            "id": "internal-tools"
+        },
+        {
+            "name": "Supportive Housing of Waterloo",
+            "id": "shw"
+        },
+        {
+            "name": "Children’s Aid Society of Algoma",
+            "id": "casa"
+        },
+        {
+            "name": "Feeding Canadian Kids",
+            "id": "fck"
+        },
+        {
+            "name": "Haven",
+            "id": "haven"
+        },
+        {
+            "name": "A Better Tent City",
+            "id": "abtc"
+        },
+        {
+            "name": "Marillac Place",
+            "id": "mp"
+        },
+        {
+            "name": "Infrastructure",
+            "id": "infra"
+        }
+    ],
+    "members": [
+        {
+            "name": "First Last",
+            "role": "developer",
+            "term": 1236,
+            "teams": [
+                "infra"
+            ],
+            "img": "",
+            "uid": "qwertyuiop"
+        }
+    ]
+}
