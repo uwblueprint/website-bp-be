@@ -4,12 +4,7 @@ import {
   } from "../../types";
 import * as admin from "firebase-admin";
 import memberData from "../../graphql/sampleData/members.json";
-
-
-import User from "../../models/user.model";
 import IMatchingService from "../interfaces/matchingService";
-import ApplicationDashboardTable from "../../models/applicationDashboard.model";
-
 import IAppDashboardService from "../interfaces/appDashboardService";
 import AppDashboardService from "./appDashboardService";
 
@@ -19,11 +14,8 @@ class MatchingService implements IMatchingService {
   /* eslint-disable class-methods-use-this */
   async matchApplicationsForRole(role: ApplicantRole): Promise<any> {
     const application: Array<ApplicationDTO> | null = await appDashboardService.getApplicationsByRole(role);
-    // const roles = Object.values(ApplicantRole);
     const term = memberData.term;   
     const roleMembers = memberData.members.filter((member) => member.term === term && member.role === role);
-    // For each role, just do it here no?
-    // how do i read from the applicantresponse database?
     const memberRoleBreakdown = {
         role,
         members: roleMembers,
@@ -31,11 +23,6 @@ class MatchingService implements IMatchingService {
     };
 
     return memberRoleBreakdown;
-
-    // For each of the roles, I need to get the applications for that role.
-    // Then I need to get the members for that role.
-    // Then I need to match them, and assign two members to each application.
-    // Then I need to save the assignments to the database, so each applicaiton will have two entries in the db, one for each reviewer.
   }
 
   async linkMemberUids(term: number): Promise<any> {

@@ -44,7 +44,7 @@ const importUserData = () => {
       };
     });
 
-  return seededData
+  return seededData;
 };
 // recruitmenttools@uwblueprint.org
 // myblueprint!
@@ -82,8 +82,7 @@ export const up: Migration = async ({ context: sequelize }) => {
     updatedAt: DataType.DATE,
   });
 
-  const SEEDED_DATA = importUserData()
-  
+  const SEEDED_DATA = importUserData();
   await sequelize.getQueryInterface().bulkInsert(TABLE_NAME, ORIGINAL_SEEDED_DATA);
   await sequelize.getQueryInterface().bulkInsert(TABLE_NAME, SEEDED_DATA);
 };

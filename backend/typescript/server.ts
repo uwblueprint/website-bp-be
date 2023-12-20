@@ -1,3 +1,4 @@
+import fs from "fs";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
@@ -9,7 +10,7 @@ import Application from "./models/application.model";
 import memberData from "./graphql/sampleData/members.json";
 import firebaseAuthUsers from "./graphql/sampleData/users.json";
 import { ApplicantRole } from "./types";
-import fs from 'fs';
+
 
 
 import IMatchingService from "./services/interfaces/matchingService";
@@ -120,19 +121,17 @@ app.get("/authUsers", async (req, res) => {
   }
 });
 
-
 app.get("/addMemberUids", async (req, res) => {
-  const term = memberData.term;
+  const { term, teams } = memberData;
   const updatedData = await matchingService.linkMemberUids(term);
   const updatedMembers = {
-    term: memberData.term,
-    teams: memberData.teams,
-    members: updatedData.updatedMembers
-  }
+    term: term,
+    teams: teams,
+    members: updatedData.updatedMembers,
+  };
   const duplicateUsers = updatedData.duplicateUsers;
 
   fs.writeFileSync('./graphql/sampleData/members.json', JSON.stringify(updatedMembers));
-
   res.status(200).json({
     message: "Successfully added uids for current blueprint members, and resolved duplicates.",
     data: duplicateUsers
