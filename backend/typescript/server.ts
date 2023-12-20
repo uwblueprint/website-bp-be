@@ -10,9 +10,6 @@ import Application from "./models/application.model";
 import memberData from "./graphql/sampleData/members.json";
 import firebaseAuthUsers from "./graphql/sampleData/users.json";
 import { ApplicantRole } from "./types";
-
-
-
 import IMatchingService from "./services/interfaces/matchingService";
 import MatchingService from "./services/implementations/matchingService";
 
