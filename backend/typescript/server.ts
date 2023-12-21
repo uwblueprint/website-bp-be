@@ -121,17 +121,18 @@ app.get("/authUsers", async (req, res) => {
 app.get("/addMemberUids", async (req, res) => {
   const { term, teams } = memberData;
   const updatedData = await matchingService.linkMemberUids(term);
-  const updatedMembers = {
+  const {updatedMembers, duplicateUsers} = updatedData;
+  
+  const members = {
     term: term,
     teams: teams,
     members: updatedData.updatedMembers,
   };
-  const duplicateUsers = updatedData.duplicateUsers;
 
-  fs.writeFileSync('./graphql/sampleData/members.json', JSON.stringify(updatedMembers));
+  fs.writeFileSync('./graphql/sampleData/members.json', JSON.stringify(members));
   res.status(200).json({
     message: "Successfully added uids for current blueprint members, and resolved duplicates.",
-    data: duplicateUsers
+    data: duplicateUsers,
   });
 });
 
