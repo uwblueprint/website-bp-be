@@ -40,13 +40,14 @@
     ],
     "members": [
         {
-            "name": "John Abraham",
-            "role": "co-president",
+            "name": "First Last",
+            "role": "developer",
             "term": 1236,
             "teams": [
-                "executive"
+                "infra"
             ],
-            "img": ""
+            "img": "",
+            "uid": "qwertyuiop"
         }
     ]
 }

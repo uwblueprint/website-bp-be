@@ -1,3 +1,4 @@
+import fs from "fs";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
@@ -6,8 +7,13 @@ import { ApolloServer } from "apollo-server-express";
 import { sequelize } from "./models";
 import schema from "./graphql";
 import Application from "./models/application.model";
-import memeberData from "./graphql/sampleData/members.json";
+import memberData from "./graphql/sampleData/members.json";
 import firebaseAuthUsers from "./graphql/sampleData/users.json";
+import { ApplicantRole } from "./types";
+import IMatchingService from "./services/interfaces/matchingService";
+import MatchingService from "./services/implementations/matchingService";
+
+const matchingService: IMatchingService = new MatchingService();
 
 const CORS_ALLOW_LIST = [
   "http://localhost:3000",
@@ -66,10 +72,10 @@ const db = admin.database();
 const ref = db.ref("studentApplications");
 
 app.get("/diff", async (req, res) => {
-  const currentTerm = memeberData.term;
+  const currentTerm = memberData.term;
   const currentTermMembers: string[] = [];
 
-  memeberData.members.forEach((member) => {
+  memberData.members.forEach((member) => {
     if (member.term === currentTerm) {
       currentTermMembers.push(member.name);
     }
@@ -110,6 +116,36 @@ app.get("/authUsers", async (req, res) => {
       .status(500)
       .send("An error occurred while retrieving the applications.");
   }
+});
+
+app.get("/addMemberUids", async (req, res) => {
+  const { term, teams } = memberData;
+  const updatedData = await matchingService.linkMemberUids(term);
+  const {updatedMembers, duplicateUsers} = updatedData;
+  
+  const members = {
+    term: term,
+    teams: teams,
+    members: updatedData.updatedMembers,
+  };
+
+  fs.writeFileSync('./graphql/sampleData/members.json', JSON.stringify(members));
+  res.status(200).json({
+    message: "Successfully added uids for current blueprint members, and resolved duplicates.",
+    data: duplicateUsers,
+  });
+});
+
+app.get("/match", async (req, res) => {
+  const roles = Object.values(ApplicantRole);
+  const memberRoleBreakdown = await Promise.all(roles.map(async (role) => {
+    const applications = await matchingService.matchApplicationsForRole(role);
+    return applications
+  }));
+  
+  res.status(200).json({
+    memberRoleBreakdown,
+  });
 });
 
 app.get("/termApplications", async (req, res) => {

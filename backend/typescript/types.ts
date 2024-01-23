@@ -117,7 +117,7 @@ export enum ApplicantRole {
   vp_comms = "vp communications", // community tab
   vp_scoping = "vp scoping", // community tab
   vp_finance = "vp finance & operations", // community tab
-  pm = "project manager", // prod tab
+  pm = "product manager", // prod tab
   pl = "project lead", // eng tab
   design_mentor = "design mentor", // design tab
   graphic_design = "graphic designer", // design tab
