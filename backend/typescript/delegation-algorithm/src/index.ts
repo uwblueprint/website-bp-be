@@ -1,4 +1,4 @@
-import { sequelize } from "../../models";
+import { sequelize } from '../../models';
 
 import Application from '../../models/application.model';
 import ApplicationDashboardModel from '../../models/applicationDashboard.model';
@@ -16,22 +16,26 @@ async function delegationAlgorithm() {
   const uniquePairs = roundRobinPairs(reviewers);
   const totalPairs = assignApplicationsToPairs(uniquePairs, applications);
 
-  await Promise.all(applications.map(async function (application, i) {
-    return Promise.all(totalPairs[i].map(async function (reviewer) {
-      await ApplicationDashboardModel.create({
-        applicationId: application.id,
-        reviewerId: reviewer.id,
-        reviewerEmail: reviewer.email,
-        passionFSG: 0,
-        teamPlayer: 0,
-        desireToLearn: 0,
-        skill: 0,
-        skillCategory: 'junior',
-        reviewerComments: '',
-        recommendedSecondChoice: 'N/A'
-      });
-    }));
-  }));
+  await Promise.all(
+    applications.map(async function (application, i) {
+      return Promise.all(
+        totalPairs[i].map(async function (reviewer) {
+          await ApplicationDashboardModel.create({
+            applicationId: application.id,
+            reviewerId: reviewer.id,
+            reviewerEmail: reviewer.email,
+            passionFSG: 0,
+            teamPlayer: 0,
+            desireToLearn: 0,
+            skill: 0,
+            skillCategory: 'junior',
+            reviewerComments: '',
+            recommendedSecondChoice: 'N/A'
+          });
+        })
+      );
+    })
+  );
 }
 
 async function loadReviewers(): Promise<User[]> {
