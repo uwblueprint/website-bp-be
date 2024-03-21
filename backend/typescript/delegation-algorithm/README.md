@@ -11,7 +11,7 @@ npm install -g ts-node
 Run the algorithm:
 
 ```
-ts-node utilities/delegation-algorithm/index.ts
+ts-node /delegation-algorithm/src/index.ts
 ```
 
 The `applicationdashboardtable` should be populated with the review data.
