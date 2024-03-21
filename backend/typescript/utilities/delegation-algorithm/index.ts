@@ -30,8 +30,8 @@ async function delegationAlgorithm() {
         reviewerComments: '',
         recommendedSecondChoice: 'N/A'
       });
-    }))
-  }))
+    }));
+  }));
 }
 
 async function loadReviewers(): Promise<User[]> {
