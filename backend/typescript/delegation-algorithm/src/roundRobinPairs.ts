@@ -1,30 +1,30 @@
-import { isEqual } from 'lodash';
+import { isEqual } from "lodash";
 
-import Application from '../../models/application.model';
-import User from '../../models/user.model';
+import Application from "../../models/application.model";
+import User from "../../models/user.model";
 
 
 // Generate a list of all unique pairs of users — from a given list of users
 // Uses Round Robin algorithm for optimized time complexity
-export function roundRobinPairs(developers: (User | {})[]): [User, User][] {
-  if (developers.length % 2 !== 0) {
-    developers.push({});
+export function roundRobinPairs(reviewers: (User | {})[]): [User, User][] {
+  if (reviewers.length % 2 !== 0) {
+    reviewers.push({});
   }
 
-  const fixedDeveloper = developers[0];
-  let rotatingDevelopers = developers.slice(1);
+  const fixedReviewer = reviewers[0];
+  let rotatingReviewers = reviewers.slice(1);
   const pairs: [(User | {}), (User | {})][] = [];
 
-  for (let i = 0; i < developers.length - 1; i++) {
-    for (let j = 0; j < developers.length / 2 - 1; j++) {
-      if (!isEqual(rotatingDevelopers[j], {}) && !isEqual(rotatingDevelopers[developers.length - j - 2], {})) {
-        pairs.push([rotatingDevelopers[j], rotatingDevelopers[developers.length - j - 2]]);
+  for (let i = 0; i < reviewers.length - 1; i++) {
+    for (let j = 0; j < reviewers.length / 2 - 1; j++) {
+      if (!isEqual(rotatingReviewers[j], {}) && !isEqual(rotatingReviewers[reviewers.length - j - 2], {})) {
+        pairs.push([rotatingReviewers[j], rotatingReviewers[reviewers.length - j - 2]]);
       }
     }
-    if (!isEqual(fixedDeveloper, {}) && !isEqual(rotatingDevelopers[Math.floor(developers.length / 2) - 1], {})) {
-      pairs.push([fixedDeveloper, rotatingDevelopers[Math.floor(developers.length / 2) - 1]]);
+    if (!isEqual(fixedReviewer, {}) && !isEqual(rotatingReviewers[Math.floor(reviewers.length / 2) - 1], {})) {
+      pairs.push([fixedReviewer, rotatingReviewers[Math.floor(reviewers.length / 2) - 1]]);
     }
-    rotatingDevelopers = rotatingDevelopers.slice(1).concat(rotatingDevelopers.slice(0, 1));  //rotate list
+    rotatingReviewers = rotatingReviewers.slice(1).concat(rotatingReviewers.slice(0, 1));  //rotate list
   }
 
   shuffleArray(pairs);

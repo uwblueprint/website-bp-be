@@ -1,17 +1,26 @@
-import { sequelize } from '../../models';
+import Sequelize from "sequelize"
 
-import Application from '../../models/application.model';
-import ApplicationDashboardModel from '../../models/applicationDashboard.model';
-import User from '../../models/user.model';
+import Application from "../../models/application.model";
+import ApplicationDashboardModel from "../../models/applicationDashboard.model";
+import User from "../../models/user.model";
+import { sequelize } from "../../models";
 
-import { roundRobinPairs, assignApplicationsToPairs } from './roundRobinPairs';
+import { roundRobinPairs, assignApplicationsToPairs } from "./roundRobinPairs";
 
 
-async function delegationAlgorithm() {
+const roles = ["Developer", "Designer"];
+
+async function runDelegationAlgorithms() {
+  await Promise.all(roles.map(async function (role) {
+    await delegationAlgorithm(role);
+  }))
+}
+
+async function delegationAlgorithm(role: string) {
   sequelize.authenticate();
 
-  const applications = await loadApplications();
-  const reviewers = await loadReviewers();
+  const applications = await loadApplications(role);
+  const reviewers = await loadReviewers(role);
 
   const uniquePairs = roundRobinPairs(reviewers);
   const totalPairs = assignApplicationsToPairs(uniquePairs, applications);
@@ -28,9 +37,9 @@ async function delegationAlgorithm() {
             teamPlayer: 0,
             desireToLearn: 0,
             skill: 0,
-            skillCategory: 'junior',
-            reviewerComments: '',
-            recommendedSecondChoice: 'N/A'
+            skillCategory: "junior",
+            reviewerComments: "",
+            recommendedSecondChoice: "N/A"
           });
         })
       );
@@ -38,16 +47,18 @@ async function delegationAlgorithm() {
   );
 }
 
-async function loadReviewers(): Promise<User[]> {
+async function loadReviewers(role: string): Promise<User[]> {
   return await User.findAll({
-    attributes: ['id', 'email'],
+    attributes: ["id", "email"],
+    where: { role: role }
   });
 }
 
-async function loadApplications(): Promise<Application[]> {
+async function loadApplications(role: string): Promise<Application[]> {
   return await Application.findAll({
-    attributes: ['id']
+    attributes: ["id"],
+    where: { firstChoiceRole: { [Sequelize.Op.like]: `%${role}%` } }
   });
 }
 
-delegationAlgorithm();
+runDelegationAlgorithms()
