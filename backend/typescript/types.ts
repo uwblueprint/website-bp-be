@@ -1,4 +1,6 @@
-export type Role = "User" | "Admin";
+export type Permission = "VP Talent" | "Eteam" | "Engineering" | "Product" | "Design" | "Reviewers";
+
+export type Role = "Developer" | "Designer";
 
 export enum StatusType {
   ACCEPTED = "accepted",

@@ -10,21 +10,24 @@ const SEEDED_DATA = [
     last_name: "Doe",
     email: "johndoe@gmail.com",
     auth_id: "bide",
-    role: "User",
+    permission: "Reviewers",
+    role: "Developer",
   },
   {
     first_name: "Jane",
     last_name: "Doe",
     email: "janedoe@gmail.ca",
     auth_id: "none",
-    role: "Admin",
+    permission: "Reviewers",
+    role: "Developer",
   },
   {
     first_name: "UW",
     last_name: "Blueprint",
     email: "recruitmenttools@uwblueprint.org",
     auth_id: "1Z4wyuonu9MhAi4VoAEiTMVj1iT2",
-    role: "Admin",
+    permission: "Reviewers",
+    role: "Developer",
   },
 ];
 // recruitmenttools@uwblueprint.org
@@ -55,8 +58,13 @@ export const up: Migration = async ({ context: sequelize }) => {
       primaryKey: true,
       allowNull: false,
     },
+    permission: {
+      type: DataType.ENUM("VP Talent", "Eteam", "Engineering", "Product", "Design", "Reviewers"),
+      allowNull: false,
+      defaultValue: "Reviewers"
+    },
     role: {
-      type: DataType.ENUM("User", "Admin"),
+      type: DataType.ENUM("Developer", "Designer"),
       allowNull: false,
     },
     createdAt: DataType.DATE,
