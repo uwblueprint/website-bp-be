@@ -11,7 +11,7 @@ const SEEDED_DATA = [
     email: "johndoe@gmail.com",
     auth_id: "bide",
     permission: "Reviewers",
-    role: "Developer",
+    role: "Project Developer",
   },
   {
     first_name: "Jane",
@@ -19,7 +19,7 @@ const SEEDED_DATA = [
     email: "janedoe@gmail.ca",
     auth_id: "none",
     permission: "Reviewers",
-    role: "Developer",
+    role: "Project Developer",
   },
   {
     first_name: "UW",
@@ -27,7 +27,7 @@ const SEEDED_DATA = [
     email: "recruitmenttools@uwblueprint.org",
     auth_id: "1Z4wyuonu9MhAi4VoAEiTMVj1iT2",
     permission: "Reviewers",
-    role: "Developer",
+    role: "Project Developer",
   },
 ];
 // recruitmenttools@uwblueprint.org
@@ -64,7 +64,11 @@ export const up: Migration = async ({ context: sequelize }) => {
       defaultValue: "Reviewers"
     },
     role: {
-      type: DataType.ENUM("Developer", "Designer"),
+      type: DataType.ENUM(
+        "Co-President", "Director Lead", "Internal Director", "External Director",
+        "VP Engineering", "VP Design", "VP Product", "VP Project Scoping", "VP Finance & Operations", "VP Talent",
+        "Graphic Designer", "Marketing & Outreach Director", "Product Manager", "Project Lead", "Project Developer", "Product Designer"
+      ),
       allowNull: false,
     },
     createdAt: DataType.DATE,

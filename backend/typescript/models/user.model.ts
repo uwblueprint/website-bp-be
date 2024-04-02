@@ -24,7 +24,13 @@ export default class User extends Model {
   @Column({ type: DataType.ENUM("VP Talent", "Eteam", "Engineering", "Product", "Design", "Reviewers"), allowNull: false, defaultValue: 'Reviewers' })
   permission!: Permission;
 
-  @Column({ type: DataType.ENUM("Developer, Designer"), allowNull: false })
+  @Column({
+    type: DataType.ENUM(
+      "Co-President", "Director Lead", "Internal Director", "External Director",
+      "VP Engineering", "VP Design", "VP Product", "VP Project Scoping", "VP Finance & Operations", "VP Talent",
+      "Graphic Designer", "Marketing & Outreach Director", "Product Manager", "Project Lead", "Project Developer", "Product Designer"
+    ), allowNull: false
+  })
   role!: Role;
 
   @HasMany(() => ApplicationDashboardTable)

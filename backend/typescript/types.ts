@@ -1,6 +1,8 @@
 export type Permission = "VP Talent" | "Eteam" | "Engineering" | "Product" | "Design" | "Reviewers";
 
-export type Role = "Developer" | "Designer";
+export type Role = "Co-President" | "Director Lead" | "Internal Director" | "External Director" |
+  "VP Engineering" | "VP Design" | "VP Product" | "VP Project Scoping" | "VP Finance & Operations" | "VP Talent" |
+  "Graphic Designer" | "Marketing & Outreach Director" | "Product Manager" | "Project Lead" | "Project Developer" | "Product Designer";
 
 export enum StatusType {
   ACCEPTED = "accepted",
