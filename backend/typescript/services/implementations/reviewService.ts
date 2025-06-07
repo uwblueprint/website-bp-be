@@ -15,14 +15,13 @@ class ReviewService implements IReviewService {
     });
     if (users && users.length === 1) {
       const user = users[0];
-      const application: ApplicationDashboardTable | null = await ApplicationDashboardTable.findOne(
-        {
+      const application: ApplicationDashboardTable | null =
+        await ApplicationDashboardTable.findOne({
           where: {
             reviewerId: user.id,
             applicationId,
           },
-        },
-      );
+        });
       if (application) return true;
       return false;
     }
