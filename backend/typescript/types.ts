@@ -51,6 +51,7 @@ export type ApplicationDashboardInput = Omit<
   "applicationId"
 >;
 
+// DEPRECATED - TO BE REMOVED AT THE END OF S25
 export type ApplicationDTO = {
   id: number;
   academicOrCoop: string;
@@ -74,6 +75,46 @@ export type ApplicationDTO = {
   timesApplied: string;
   timestamp: bigint;
 };
+
+export type ApplicantDTO = {
+  id: string;
+  academicOrCoop: string;
+  academicYear: string; // MAYBE CHANGE WITH ENUM
+  email: string;
+  firstName: string;
+  lastName: string;
+  heardFrom: string;
+  locationPreference: string;
+  program: string;
+  pronouns: string;
+  pronounsSpecified: string;
+  resumeUrl: string;
+  timesApplied: string;
+  shortAnswerQuestions: string[];
+  term: string;
+  submittedAt: string;
+};
+
+export type ApplicantRecordDTO = {
+  id: number;
+  applicantId: string;
+  role: string;
+  roleSpecificQuestions: string[];
+  choice: number;
+  status: ApplicationStatus;
+  skillCategory?: SkillCategory;
+};
+
+export type ApplicationStatus =
+  | "Applied"
+  | "In Review"
+  | "Reviewed"
+  | "Interview"
+  | "Interview Complete"
+  | "Offer"
+  | "Not Considered";
+
+export type SkillCategory = "Junior" | "Intermediate" | "Senior";
 
 export type ApplicationDashboardRowDTO = {
   application: ApplicationDTO;
