@@ -125,3 +125,15 @@ export enum ApplicantRole {
   uxr = "user researcher", // design tab
   dev = "project developer", // eng tab
 }
+
+export enum Department {
+  ENGINEERING = "Engineering",
+  DESIGN = "Design",
+  PRODUCT = "Product",
+  COMMUNITY = "Community",
+}
+
+export type Position = {
+  title: string;
+  department: Department;
+};
