@@ -8,7 +8,7 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { PositionTitle, Role } from "../types";
+import { PositionTitle, PositionTitles, Role } from "../types";
 import ApplicationDashboardTable from "./applicationDashboard.model";
 import Position from "./position.model";
 
@@ -33,8 +33,8 @@ export default class User extends Model {
   role!: Role;
 
   @ForeignKey(() => Position)
-  @Column({ type: DataType.STRING })
-  position!: PositionTitle;
+  @Column({ type: DataType.ENUM(...Object.values(PositionTitles)) })
+  position?: PositionTitle;
 
   @HasMany(() => ApplicationDashboardTable)
   applicationDashboards?: ApplicationDashboardTable[];
