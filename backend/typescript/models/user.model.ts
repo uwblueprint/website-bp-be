@@ -8,7 +8,7 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { Role } from "../types";
+import { PositionTitle, Role } from "../types";
 import ApplicationDashboardTable from "./applicationDashboard.model";
 import Position from "./position.model";
 
@@ -34,7 +34,7 @@ export default class User extends Model {
 
   @ForeignKey(() => Position)
   @Column({ type: DataType.STRING })
-  position!: string;
+  position!: PositionTitle;
 
   @HasMany(() => ApplicationDashboardTable)
   applicationDashboards?: ApplicationDashboardTable[];

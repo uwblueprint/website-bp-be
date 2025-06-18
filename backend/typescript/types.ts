@@ -127,13 +127,44 @@ export enum ApplicantRole {
 }
 
 export enum Department {
-  ENGINEERING = "Engineering",
-  DESIGN = "Design",
-  PRODUCT = "Product",
-  COMMUNITY = "Community",
+  Engineering = "Engineering",
+  Design = "Design",
+  Product = "Product",
+  Community = "Community",
 }
 
-export type Position = {
-  title: string;
-  department: Department;
-};
+export const EngineeringPositionTitles = [
+  "Project Lead",
+  "Developer",
+  "VP Engineering",
+] as const;
+export const DesignPositionTitles = [
+  "Designer",
+  "VP Design",
+  "Graphic Designer",
+] as const;
+export const ProductPositionTitles = ["Product Manager", "VP Product"] as const;
+export const CommunityPositionTitles = [
+  "President",
+  "VP Scoping",
+  "VP Talent",
+  "VP Finance",
+  "Director Lead",
+  "Internal Director",
+  "External Director",
+  "Content Strategist",
+] as const;
+
+export const PositionTitles = [
+  ...EngineeringPositionTitles,
+  ...DesignPositionTitles,
+  ...ProductPositionTitles,
+  ...CommunityPositionTitles,
+] as const;
+
+// Union types
+export type EngineeringPositionTitle = typeof EngineeringPositionTitles[number];
+export type DesignPositionTitle = typeof DesignPositionTitles[number];
+export type ProductPositionTitle = typeof ProductPositionTitles[number];
+export type CommunityPositionTitle = typeof CommunityPositionTitles[number];
+export type PositionTitle = typeof PositionTitles[number];

@@ -6,6 +6,7 @@ import {
   Table,
 } from "sequelize-typescript";
 import User from "./user.model";
+import { Department } from "../types";
 
 @Table({ tableName: "admins" })
 export default class Admin extends Model {
@@ -13,6 +14,6 @@ export default class Admin extends Model {
   @Column({ type: DataType.STRING, primaryKey: true })
   userId!: string;
 
-  @Column({ type: DataType.ARRAY(DataType.STRING) })
-  authorizedDepartments!: string[];
+  @Column({ type: DataType.ARRAY(DataType.ENUM(...Object.values(Department))) })
+  authorizedDepartments!: Department[];
 }
