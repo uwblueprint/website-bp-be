@@ -21,9 +21,9 @@ export default class ApplicantRecord extends Model {
   @Column({ type: DataType.STRING })
   applicantId!: string;
 
-  @ForeignKey(() => Role)
-  @Column({ type: DataType.STRING })
-  role!: string;
+  // @ForeignKey(() => Role)
+  // @Column({ type: DataType.STRING })
+  // role!: string;
 
   @Column({ type: DataType.ARRAY(DataType.STRING) })
   roleSpecificQuestions!: string[];
