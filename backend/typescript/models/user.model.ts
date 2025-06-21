@@ -1,8 +1,16 @@
 /* eslint import/no-cycle: 0 */
 
-import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
-import { Role } from "../types";
+import {
+  Column,
+  DataType,
+  ForeignKey,
+  HasMany,
+  Model,
+  Table,
+} from "sequelize-typescript";
+import { PositionTitle, PositionTitles, Role } from "../types";
 import ApplicationDashboardTable from "./applicationDashboard.model";
+import Position from "./position.model";
 
 @Table({ tableName: "users" })
 export default class User extends Model {
@@ -23,6 +31,10 @@ export default class User extends Model {
 
   @Column({ type: DataType.ENUM("User", "Admin") })
   role!: Role;
+
+  @ForeignKey(() => Position)
+  @Column({ type: DataType.ENUM(...Object.values(PositionTitles)) })
+  position?: PositionTitle;
 
   @HasMany(() => ApplicationDashboardTable)
   applicationDashboards?: ApplicationDashboardTable[];
