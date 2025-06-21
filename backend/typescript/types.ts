@@ -160,8 +160,9 @@ export const PositionTitles = [
 ] as const;
 
 // Union types
-export type EngineeringPositionTitle = typeof EngineeringPositionTitles[number];
-export type DesignPositionTitle = typeof DesignPositionTitles[number];
-export type ProductPositionTitle = typeof ProductPositionTitles[number];
-export type CommunityPositionTitle = typeof CommunityPositionTitles[number];
-export type PositionTitle = typeof PositionTitles[number];
+export type EngineeringPositionTitle =
+  (typeof EngineeringPositionTitles)[number];
+export type DesignPositionTitle = (typeof DesignPositionTitles)[number];
+export type ProductPositionTitle = (typeof ProductPositionTitles)[number];
+export type CommunityPositionTitle = (typeof CommunityPositionTitles)[number];
+export type PositionTitle = (typeof PositionTitles)[number];
