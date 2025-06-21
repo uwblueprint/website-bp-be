@@ -138,11 +138,7 @@ export const EngineeringPositionTitles = [
   "Developer",
   "VP Engineering",
 ] as const;
-export const DesignPositionTitles = [
-  "Designer",
-  "VP Design",
-  "Graphic Designer",
-] as const;
+export const DesignPositionTitles = ["Designer", "VP Design"] as const;
 export const ProductPositionTitles = ["Product Manager", "VP Product"] as const;
 export const CommunityPositionTitles = [
   "President",
@@ -153,6 +149,7 @@ export const CommunityPositionTitles = [
   "Internal Director",
   "External Director",
   "Content Strategist",
+  "Graphic Designer",
 ] as const;
 
 export const PositionTitles = [
