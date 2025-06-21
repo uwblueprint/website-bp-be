@@ -80,6 +80,6 @@
     "graphql-upload": "^11.0.0"
   },
   "engines": {
-    "node": "20.12.2"
+    "node": ">=20.12.2"
   }
 }
