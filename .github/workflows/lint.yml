@@ -33,12 +33,11 @@ jobs:
       
       - name: Set up Node.js
         if: steps.changes.outputs.typescript-backend == 'true'
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: "14.15.5"
+          node-version: "20.12.2"
           cache: "yarn"
-          cache-dependency-path: |
-            backend/typescript/yarn.lock
+          cache-dependency-path: "backend/typescript/yarn.lock"
 
       - name: Install Node.js dependencies
         if: steps.changes.outputs.typescript-backend == 'true'
