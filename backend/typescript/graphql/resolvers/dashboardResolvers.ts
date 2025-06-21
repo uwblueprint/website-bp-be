@@ -39,9 +39,8 @@ const dashboardResolvers = {
       _parent: undefined,
       { secondChoice }: { secondChoice: ApplicantRole },
     ): Promise<Array<ApplicationDTO>> => {
-      const applications = await dashboardService.getApplicationsBySecondChoiceRole(
-        secondChoice,
-      );
+      const applications =
+        await dashboardService.getApplicationsBySecondChoiceRole(secondChoice);
       return applications;
     },
     dashboardsByApplicationId: async (

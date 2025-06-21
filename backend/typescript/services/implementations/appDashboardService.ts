@@ -166,8 +166,8 @@ class AppDashboardService implements IAppDashboardService {
           );
         },
       );
-      applicationsBySecondChoiceRoleDTO = await applicationsBySecondChoiceRole.map(
-        (application) => {
+      applicationsBySecondChoiceRoleDTO =
+        await applicationsBySecondChoiceRole.map((application) => {
           return {
             id: application.id,
             academicOrCoop: application.academicOrCoop,
@@ -191,8 +191,7 @@ class AppDashboardService implements IAppDashboardService {
             timesApplied: application.timesApplied,
             timestamp: application.timestamp,
           };
-        },
-      );
+        });
     } catch (error: unknown) {
       Logger.error(
         `Failed to get applications by this second choice role = ${role}. Reason = ${getErrorMessage(
@@ -243,15 +242,13 @@ class AppDashboardService implements IAppDashboardService {
     role: ApplicantRole,
   ): Promise<ApplicationDashboardRowDTO[]> {
     // get all the applications for the role
-    const applications: Array<ApplicationDTO> = await this.getApplicationsByRole(
-      role,
-    );
+    const applications: Array<ApplicationDTO> =
+      await this.getApplicationsByRole(role);
     // get the dashboards associated with the applications
     const appDashRows: Array<ApplicationDashboardRowDTO> = await Promise.all(
       applications.map(async (application) => {
-        const reviewDashboards: Array<ApplicationDashboardDTO> = await this.getDashboardsByApplicationId(
-          application.id,
-        );
+        const reviewDashboards: Array<ApplicationDashboardDTO> =
+          await this.getDashboardsByApplicationId(application.id);
         const reviewers: Array<UserDTO> = await Promise.all(
           reviewDashboards.map(async (dash) => {
             return userService.getUserByEmail(dash.reviewerEmail);
@@ -271,15 +268,13 @@ class AppDashboardService implements IAppDashboardService {
     role: ApplicantRole,
   ): Promise<ApplicationDashboardRowDTO[]> {
     // get all the applications for the role
-    const applications: Array<ApplicationDTO> = await this.getApplicationsBySecondChoiceRole(
-      role,
-    );
+    const applications: Array<ApplicationDTO> =
+      await this.getApplicationsBySecondChoiceRole(role);
     // get the dashboards associated with the applications
     const appDashRows: Array<ApplicationDashboardRowDTO> = await Promise.all(
       applications.map(async (application) => {
-        const reviewDashboards: Array<ApplicationDashboardDTO> = await this.getDashboardsByApplicationId(
-          application.id,
-        );
+        const reviewDashboards: Array<ApplicationDashboardDTO> =
+          await this.getDashboardsByApplicationId(application.id);
         const reviewers: Array<UserDTO> = await Promise.all(
           reviewDashboards.map(async (dash) => {
             return userService.getUserByEmail(dash.reviewerEmail);
