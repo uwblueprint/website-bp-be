@@ -229,3 +229,10 @@ export type Review = {
   skillCategory?: SkillCategory;
   comments?: string;
 };
+
+export type ReviewedApplicantRecordDTO = {
+  applicantRecordId: string;
+  reviewerId: number;
+  review: Review;
+  status: ReviewStatus;
+};
