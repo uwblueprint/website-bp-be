@@ -59,4 +59,3 @@ export default class ApplicationDashboardTable extends Model {
   @BelongsTo(() => Application)
   application!: Application;
 }
-

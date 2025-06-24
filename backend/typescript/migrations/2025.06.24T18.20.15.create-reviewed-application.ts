@@ -1,44 +1,39 @@
 import { DataType } from "sequelize-typescript";
-
 import { Migration } from "../umzug";
+import { ReviewStatusEnum } from "../types";
 
-const TABLE_NAME = "reviewed-applications";
+const TABLE_NAME = "reviewed_applicant_records";
 
 export const up: Migration = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().createTable(TABLE_NAME, {
-    id: {
+    applicantId: {
+      type: DataType.STRING,
+      allowNull: false,
+      references: {
+        model: "applicant_records",
+        key: "id",
+      },
+      primaryKey: true,
+    },
+    reviewerId: {
       type: DataType.INTEGER,
       allowNull: false,
+      references: {
+        model: "users",
+        key: "id",
+      },
       primaryKey: true,
-      autoIncrement: true,
-      unique: true,
-    },
-    applicationId: {
-      type: DataType.STRING,
-      allowNull: false,
-    },
-    reveiweId: {
-      type: DataType.STRING,
-      allowNull: false,
     },
     review: {
-      type: DataType.STRING,
+      type: DataType.JSONB,
       allowNull: true,
     },
-    email: {
+    status: {
       type: DataType.STRING,
-      primaryKey: true,
       allowNull: false,
+      defaultValue: ReviewStatusEnum.TODO,
     },
-    role: {
-      type: DataType.ENUM("User", "Admin"),
-      allowNull: false,
-    },
-    createdAt: DataType.DATE,
-    updatedAt: DataType.DATE,
   });
-
-//   await sequelize.getQueryInterface().bulkInsert(TABLE_NAME, SEEDED_DATA);
 };
 
 export const down: Migration = async ({ context: sequelize }) => {
