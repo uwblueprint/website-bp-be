@@ -4,28 +4,28 @@ import { Migration } from "../umzug";
 
 const TABLE_NAME = "applicants";
 
-const SEEDED_DATA = [
-  {
-    id: "123",
-    academicOrCoop: "Academic",
-    academicYear: "2024",
-    email: "jj2huang@uwaterloo.ca",
-    firstName: "Jesse",
-    lastName: "Huang",
-    heardFrom: "LinkedIn",
-    locationPreference: "Waterloo",
-    program: "Computer Science",
-    pronouns: "he/him",
-    resumeUrl:
-      "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1",
-    timesApplied: 1,
-    shortAnswerQuestions: ["hi", "bye"],
-    term: "S25",
-    submittedAt: "2025-06-21T07:02:40.000Z",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+// const SEEDED_DATA = [
+//   {
+//     id: "123",
+//     academicOrCoop: "Academic",
+//     academicYear: "2024",
+//     email: "jj2huang@uwaterloo.ca",
+//     firstName: "Jesse",
+//     lastName: "Huang",
+//     heardFrom: "LinkedIn",
+//     locationPreference: "Waterloo",
+//     program: "Computer Science",
+//     pronouns: "he/him",
+//     resumeUrl:
+//       "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1",
+//     timesApplied: 1,
+//     shortAnswerQuestions: ["hi", "bye"],
+//     term: "S25",
+//     submittedAt: "2025-06-21T07:02:40.000Z",
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//   },
+// ];
 
 export const up: Migration = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().createTable(TABLE_NAME, {
@@ -99,7 +99,6 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: false,
     },
   });
-  await sequelize.getQueryInterface().bulkInsert(TABLE_NAME, SEEDED_DATA);
 };
 
 export const down: Migration = async ({ context: sequelize }) => {

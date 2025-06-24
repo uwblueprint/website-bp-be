@@ -1,21 +1,22 @@
 import { DataType } from "sequelize-typescript";
 import { Migration } from "../umzug";
+import { PositionTitles } from "../types";
 
 const TABLE_NAME = "applicant_records"; // Changed table name to differentiate from applicantresponse
 
-const SEEDED_DATA = [
-  {
-    id: "1",
-    applicationtId: "123",
-    // role: "developer",
-    roleSpecificQuestions: ["i like monke"],
-    choice: 1,
-    status: "Applied",
-    skillCategory: "junior",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+// const SEEDED_DATA = [
+//   {
+//     id: "1",
+//     applicationtId: "123",
+//     // role: "developer",
+//     roleSpecificQuestions: ["i like monke"],
+//     choice: 1,
+//     status: "Applied",
+//     skillCategory: "junior",
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//   },
+// ];
 
 export const up: Migration = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().createTable(TABLE_NAME, {
@@ -32,15 +33,14 @@ export const up: Migration = async ({ context: sequelize }) => {
         key: "id",
       },
     },
-    // ADD IN ONCE CAROLYNS THING IS ADDED
-    // role: {
-    //   type: DataType.STRING,
-    //   allowNull: true,
-    //   references: {
-    //     model: "roles",
-    //     key: "id",
-    //   },
-    // },
+    position: {
+      type: DataType.ENUM(...PositionTitles),
+      allowNull: true,
+      references: {
+        model: "positions",
+        key: "title",
+      },
+    },
     roleSpecificQuestions: {
       type: DataType.ARRAY(DataType.STRING),
       allowNull: true,
@@ -57,16 +57,11 @@ export const up: Migration = async ({ context: sequelize }) => {
       type: DataType.STRING,
       allowNull: true,
     },
-    createdAt: {
-      type: DataType.DATE,
-      allowNull: false,
-    },
-    updatedAt: {
-      type: DataType.DATE,
-      allowNull: false,
+    extraInfo: {
+      type: DataType.JSONB,
+      allowNull: true,
     },
   });
-  await sequelize.getQueryInterface().bulkInsert(TABLE_NAME, SEEDED_DATA);
 };
 
 export const down: Migration = async ({ context: sequelize }) => {

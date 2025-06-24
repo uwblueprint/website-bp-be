@@ -7,10 +7,13 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { DataTypes } from "sequelize";
-import ApplicationDashboardTable from "./applicationDashboard.model";
-import { ApplicationStatus, SkillCategory } from "../types";
+import {
+  ApplicantRecordExtraInfo,
+  ApplicationStatus,
+  SkillCategory,
+} from "../types";
 import Applicant from "./applicant.model";
+import Position from "./position.model";
 
 @Table({ tableName: "applicantresponse" })
 export default class ApplicantRecord extends Model {
@@ -21,9 +24,9 @@ export default class ApplicantRecord extends Model {
   @Column({ type: DataType.STRING })
   applicantId!: string;
 
-  // @ForeignKey(() => Role)
-  // @Column({ type: DataType.STRING })
-  // role!: string;
+  @ForeignKey(() => Position)
+  @Column({ type: DataType.STRING })
+  role!: string;
 
   @Column({ type: DataType.ARRAY(DataType.STRING) })
   roleSpecificQuestions!: string[];
@@ -36,4 +39,7 @@ export default class ApplicantRecord extends Model {
 
   @Column({ type: DataType.STRING, allowNull: true })
   skillCategory!: SkillCategory;
+
+  @Column({ type: DataType.JSONB, allowNull: true })
+  extraInfo!: ApplicantRecordExtraInfo;
 }

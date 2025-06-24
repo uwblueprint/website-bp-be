@@ -116,6 +116,10 @@ export type ApplicationStatus =
 
 export type SkillCategory = "Junior" | "Intermediate" | "Senior";
 
+export type ApplicantRecordExtraInfo = {
+  adminReview?: string;
+};
+
 export type ApplicationDashboardRowDTO = {
   application: ApplicationDTO;
   reviewDashboards: ApplicationDashboardDTO[];

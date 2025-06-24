@@ -1,9 +1,6 @@
 /* eslint import/no-cycle: 0 */
 
-import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
-import { DataTypes } from "sequelize";
-import ApplicationDashboardTable from "./applicationDashboard.model";
-import { StatusType, SecondChoiceStatusType } from "../types";
+import { Column, DataType, Model, Table } from "sequelize-typescript";
 
 @Table({ tableName: "applicantresponse" })
 export default class Applicant extends Model {
