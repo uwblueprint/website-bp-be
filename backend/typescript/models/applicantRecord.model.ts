@@ -15,7 +15,7 @@ import {
 import Applicant from "./applicant.model";
 import Position from "./position.model";
 
-@Table({ tableName: "applicantresponse" })
+@Table({ tableName: "applicant_records" })
 export default class ApplicantRecord extends Model {
   @Column({ type: DataType.STRING, primaryKey: true })
   id!: string;

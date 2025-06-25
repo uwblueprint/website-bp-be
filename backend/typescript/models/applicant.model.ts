@@ -2,7 +2,7 @@
 
 import { Column, DataType, Model, Table } from "sequelize-typescript";
 
-@Table({ tableName: "applicantresponse" })
+@Table({ tableName: "applicants" })
 export default class Applicant extends Model {
   @Column({ type: DataType.STRING, primaryKey: true })
   id!: string;
