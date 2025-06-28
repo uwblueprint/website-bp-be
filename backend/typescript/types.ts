@@ -77,7 +77,7 @@ export type ApplicationDTO = {
 };
 
 export type ApplicantDTO = {
-  id: string;
+  id: number;
   academicOrCoop: string;
   academicYear: string; // MAYBE CHANGE WITH ENUM
   email: string;
