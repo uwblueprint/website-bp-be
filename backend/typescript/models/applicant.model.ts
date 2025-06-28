@@ -51,6 +51,6 @@ export default class Applicant extends Model {
   @Column({ type: DataType.STRING })
   term!: string;
 
-  @Column({ type: DataType.STRING })
-  submittedAt!: string;
+  @Column({ type: DataType.DATE })
+  submittedAt!: Date;
 }

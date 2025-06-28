@@ -87,7 +87,7 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: false,
     },
     submittedAt: {
-      type: DataType.STRING,
+      type: DataType.DATE,
       allowNull: false,
     },
     createdAt: {

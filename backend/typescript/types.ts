@@ -92,7 +92,7 @@ export type ApplicantDTO = {
   timesApplied: string;
   shortAnswerQuestions: string[];
   term: string;
-  submittedAt: string;
+  submittedAt: Date;
 };
 
 export type ApplicantRecordDTO = {
