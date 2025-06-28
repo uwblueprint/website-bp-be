@@ -57,6 +57,11 @@ export const up: Migration = async ({ context: sequelize }) => {
       type: DataType.STRING,
       allowNull: true,
     },
+    selectedForInterview: {
+      type: DataType.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     extraInfo: {
       type: DataType.JSONB,
       allowNull: true,

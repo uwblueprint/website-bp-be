@@ -102,6 +102,7 @@ export type ApplicantRecordDTO = {
   roleSpecificQuestions: string[];
   choice: number;
   status: ApplicationStatus;
+  selectedForInterview: boolean;
   skillCategory?: SkillCategory;
 };
 

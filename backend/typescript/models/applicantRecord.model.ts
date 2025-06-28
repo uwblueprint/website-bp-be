@@ -17,7 +17,12 @@ import Position from "./position.model";
 
 @Table({ tableName: "applicantresponse" })
 export default class ApplicantRecord extends Model {
-  @Column({ type: DataType.STRING, primaryKey: true })
+  @Column({
+    type: DataType.INTEGER,
+    primaryKey: true,
+    unique: true,
+    autoIncrement: true,
+  })
   id!: string;
 
   @ForeignKey(() => Applicant)
@@ -39,6 +44,9 @@ export default class ApplicantRecord extends Model {
 
   @Column({ type: DataType.STRING, allowNull: true })
   skillCategory!: SkillCategory;
+
+  @Column({ type: DataType.BOOLEAN })
+  selectedForInterview!: boolean;
 
   @Column({ type: DataType.JSONB, allowNull: true })
   extraInfo!: ApplicantRecordExtraInfo;

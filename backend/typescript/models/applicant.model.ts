@@ -4,7 +4,12 @@ import { Column, DataType, Model, Table } from "sequelize-typescript";
 
 @Table({ tableName: "applicantresponse" })
 export default class Applicant extends Model {
-  @Column({ type: DataType.STRING, primaryKey: true })
+  @Column({
+    type: DataType.INTEGER,
+    primaryKey: true,
+    unique: true,
+    autoIncrement: true,
+  })
   id!: string;
 
   @Column({ type: DataType.STRING })
