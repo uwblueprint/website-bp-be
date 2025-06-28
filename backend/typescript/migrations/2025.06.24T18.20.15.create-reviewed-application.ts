@@ -6,7 +6,7 @@ const TABLE_NAME = "reviewed_applicant_records";
 
 export const up: Migration = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().createTable(TABLE_NAME, {
-    applicantId: {
+    applicantRecordId: {
       type: DataType.STRING,
       allowNull: false,
       references: {
