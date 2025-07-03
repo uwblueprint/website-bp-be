@@ -11,6 +11,7 @@ const userType = gql`
     firstName: String!
     lastName: String!
     email: String!
+    position: String
     role: Role!
   }
 
@@ -19,6 +20,7 @@ const userType = gql`
     lastName: String!
     email: String!
     role: Role!
+    position: String
     password: String!
   }
 
@@ -26,6 +28,7 @@ const userType = gql`
     firstName: String!
     lastName: String!
     email: String!
+    position: String
     role: Role!
   }
 
