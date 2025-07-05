@@ -29,6 +29,7 @@ export type UserDTO = {
   firstName: string;
   lastName: string;
   email: string;
+  position?: PositionTitle;
   role: Role;
 };
 
@@ -98,7 +99,7 @@ export type ApplicantDTO = {
 export type ApplicantRecordDTO = {
   id: number;
   applicantId: string;
-  position: string; // EDIT LATER
+  position: PositionTitle; // EDIT LATER
   roleSpecificQuestions: string[];
   choice: number;
   status: ApplicationStatus;

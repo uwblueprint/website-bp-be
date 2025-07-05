@@ -12,6 +12,7 @@ const userType = gql`
     lastName: String!
     email: String!
     role: Role!
+    position: String
   }
 
   input CreateUserDTO {
@@ -20,6 +21,7 @@ const userType = gql`
     email: String!
     role: Role!
     password: String!
+    position: String
   }
 
   input UpdateUserDTO {
@@ -27,6 +29,7 @@ const userType = gql`
     lastName: String!
     email: String!
     role: Role!
+    position: String
   }
 
   extend type Query {
