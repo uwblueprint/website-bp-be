@@ -15,7 +15,9 @@ class UserService implements IUserService {
     // let firebaseUser: firebaseAdmin.auth.UserRecord;
 
     try {
-      user = await User.findByPk(Number(userId));
+      user = await User.findOne({
+        where: { id: userId },
+      });
 
       if (!user) {
         throw new Error(`userId ${userId} not found.`);
