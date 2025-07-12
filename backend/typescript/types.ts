@@ -103,7 +103,6 @@ export type ApplicantRecordDTO = {
   roleSpecificQuestions: string[];
   choice: number;
   status: ApplicationStatus;
-  selectedForInterview: boolean;
   skillCategory?: SkillCategory;
 };
 
@@ -229,7 +228,6 @@ export type Review = {
   desireToLearn?: number;
   skill?: number;
   skillCategory?: SkillCategory;
-  comments?: string;
 };
 
 export type ReviewedApplicantRecordDTO = {
