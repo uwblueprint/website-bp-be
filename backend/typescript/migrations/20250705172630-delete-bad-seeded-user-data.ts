@@ -5,7 +5,7 @@ const USER_SEED_DATA = [
     first_name: "Carolyn",
     last_name: "Zhang",
     email: "carolynzhang@uwblueprint.org",
-    auth_id: "ATd5GMzp8IPJzQzuQYkaavcelb32",
+    auth_id: "ATd5GMzp8IPJzQzuQYkaavcelb32", // NOTE: this id is wrong, it is corrected in the next migration
     role: "Admin",
     position: "VP Engineering",
   },
