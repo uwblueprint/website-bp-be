@@ -115,7 +115,12 @@ export type ApplicationStatus =
   | "Offer"
   | "Not Considered";
 
-export type SkillCategory = "Junior" | "Intermediate" | "Senior";
+export enum SkillCategoryEnum {
+  Junior = "Junior",
+  Intermediate = "Intermediate",
+  Senior = "Senior",
+}
+export type SkillCategory = `${SkillCategoryEnum}`;
 
 export type ApplicantRecordExtraInfo = {
   adminReview?: string;
@@ -231,8 +236,13 @@ export type Review = {
 };
 
 export type ReviewedApplicantRecordDTO = {
-  applicantRecordId: string;
+  applicantRecordId: number;
   reviewerId: number;
   review: Review;
   status: ReviewStatus;
+};
+
+export type ReviewedApplicantRecordPK = {
+  reviewerId: number;
+  applicantRecordId: number;
 };

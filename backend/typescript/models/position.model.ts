@@ -8,4 +8,18 @@ export default class Position extends Model {
 
   @Column({ type: DataType.ENUM(...Object.values(Department)) })
   department!: Department;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+    defaultValue: DataType.NOW,
+  })
+  createdAt!: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+    defaultValue: DataType.NOW,
+  })
+  updatedAt!: Date;
 }
