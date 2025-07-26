@@ -31,7 +31,7 @@ export default class ApplicantRecord extends Model {
 
   @ForeignKey(() => Position)
   @Column({ type: DataType.STRING })
-  role!: string;
+  position!: string;
 
   @Column({ type: DataType.ARRAY(DataType.STRING) })
   roleSpecificQuestions!: string[];

@@ -53,4 +53,7 @@ export default class Applicant extends Model {
 
   @Column({ type: DataType.DATE })
   submittedAt!: Date;
+
+  @Column({ type: DataType.BOOLEAN, defaultValue: false })
+  test!: boolean;
 }
