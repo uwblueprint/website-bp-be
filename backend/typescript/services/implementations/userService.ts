@@ -15,7 +15,9 @@ class UserService implements IUserService {
     // let firebaseUser: firebaseAdmin.auth.UserRecord;
 
     try {
-      user = await User.findByPk(Number(userId));
+      user = await User.findOne({
+        where: { id: userId },
+      });
 
       if (!user) {
         throw new Error(`userId ${userId} not found.`);
@@ -31,6 +33,7 @@ class UserService implements IUserService {
       firstName: user.first_name,
       lastName: user.last_name,
       email: "firebaseUser.email ?? ",
+      position: user.position ?? undefined,
       role: user.role,
     };
   }
@@ -58,6 +61,7 @@ class UserService implements IUserService {
       firstName: user.first_name,
       lastName: user.last_name,
       email: email ?? "",
+      position: user.position ?? undefined,
       role: user.role,
     };
   }
@@ -130,6 +134,7 @@ class UserService implements IUserService {
             firstName: user.first_name,
             lastName: user.last_name,
             email: firebaseUser.email ?? "",
+            position: user.position ?? undefined,
             role: user.role,
           };
         }),
@@ -160,6 +165,7 @@ class UserService implements IUserService {
           auth_id: firebaseUser.uid,
           email: firebaseUser.email,
           role: user.role,
+          position: user.position ?? undefined,
         });
       } catch (postgresError) {
         try {
@@ -186,6 +192,7 @@ class UserService implements IUserService {
       firstName: newUser.first_name,
       lastName: newUser.last_name,
       email: firebaseUser.email ?? "",
+      position: user.position ?? undefined,
       role: newUser.role,
     };
   }
@@ -198,6 +205,7 @@ class UserService implements IUserService {
         {
           first_name: user.firstName,
           last_name: user.lastName,
+          position: user.position ?? undefined,
           role: user.role,
         },
         {
@@ -227,6 +235,7 @@ class UserService implements IUserService {
             {
               first_name: oldUser.first_name,
               last_name: oldUser.last_name,
+              position: user.position ?? undefined,
               role: oldUser.role,
             },
             {
@@ -255,6 +264,7 @@ class UserService implements IUserService {
       firstName: user.firstName,
       lastName: user.lastName,
       email: updatedFirebaseUser.email ?? "",
+      position: user.position ?? undefined,
       role: user.role,
     };
   }
@@ -285,6 +295,7 @@ class UserService implements IUserService {
             first_name: deletedUser.first_name,
             last_name: deletedUser.last_name,
             auth_id: deletedUser.auth_id,
+            position: deletedUser.position ?? undefined,
             role: deletedUser.role,
           });
         } catch (postgresError: unknown) {
@@ -337,6 +348,7 @@ class UserService implements IUserService {
             first_name: deletedUser.first_name,
             last_name: deletedUser.last_name,
             auth_id: deletedUser.auth_id,
+            position: deletedUser.position ?? undefined,
             role: deletedUser.role,
           });
         } catch (postgresError: unknown) {
