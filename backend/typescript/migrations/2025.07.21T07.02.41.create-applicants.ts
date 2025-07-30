@@ -1,20 +1,9 @@
 import { DataType } from "sequelize-typescript";
 import { v4 as uuidv4 } from "uuid";
 import { Migration } from "../umzug";
-import allApplications from "./applicationlist.json";
 import applicants from "./separateJSONs";
 
 const TABLE_NAME = "applicants";
-
-// Converts timesApplied string to integer
-const convertTimesApplied: { [key: string]: number } = {
-  "This is my first time!": 0,
-  Once: 1,
-  Twice: 2,
-  "3 or more": 3,
-};
-
-const MAX_SHORT_ANSWER_LENGTH = 255;
 
 export const up: Migration = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().createTable(TABLE_NAME, {
@@ -86,10 +75,6 @@ export const up: Migration = async ({ context: sequelize }) => {
     updatedAt: {
       type: DataType.DATE,
       allowNull: false,
-    },
-    test: {
-      type: DataType.BOOLEAN,
-      defaultValue: false,
     },
   });
   await sequelize.getQueryInterface().bulkInsert(TABLE_NAME, applicants);

@@ -29,7 +29,7 @@ function generateDeterministicId(app: any, index: number): string {
 }
 
 export default allApplications.map((app, index) => ({
-  id: generateDeterministicId(app, index),
+  id: index.toString(),
   academicOrCoop: app.academicOrCoop || "",
   academicYear: app.academicYear || "",
   email: app.email || "",
