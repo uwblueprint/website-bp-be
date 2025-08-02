@@ -1,7 +1,7 @@
 import { DataType } from "sequelize-typescript";
 import { v4 as uuidv4 } from "uuid";
 import { Migration } from "../umzug";
-import applicants from "./separateJSONs";
+import applicants from "./processedApplicants.json";
 
 const TABLE_NAME = "applicants";
 
