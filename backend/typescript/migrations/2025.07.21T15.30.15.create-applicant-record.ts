@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Migration } from "../umzug";
 
 import allApplications from "./applicationlist.json";
-import applicants from "./separateJSONs";
+import applicants from "./processedApplicants.json";
 import {
   ApplicationStatus,
   SkillCategory,
@@ -113,7 +113,7 @@ export const up: Migration = async ({ context: sequelize }) => {
       },
     },
     position: {
-      type: DataType.STRING,
+      type: DataType.ENUM(...ALL_POSITION_TITLES),
       allowNull: true,
       references: {
         model: "positions",

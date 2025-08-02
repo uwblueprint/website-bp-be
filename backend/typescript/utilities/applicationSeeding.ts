@@ -1,6 +1,8 @@
-// sharedApplicants.ts
-import { v4 as uuidv4 } from "uuid";
-import allApplications from "./applicationlist.json";
+// run `npx ts-node backend/typescript/utilities/applicationSeeding.ts` for thingy to work
+
+import { writeFileSync } from "fs";
+import { join } from "path";
+import allApplications from "../migrations/applicationlist.json";
 
 const convertTimesApplied: { [key: string]: number } = {
   "This is my first time!": 0,
@@ -11,24 +13,7 @@ const convertTimesApplied: { [key: string]: number } = {
 
 const MAX_SHORT_ANSWER_LENGTH = 255;
 
-// Generate deterministic UUIDs based on application data
-function generateDeterministicId(app: any, index: number): string {
-  const seed = `${app.email}-${app.firstName}-${app.lastName}-${app.timestamp}-${index}`;
-  // Use a simple hash function to generate a consistent UUID-like string
-  let hash = 0;
-  for (let i = 0; i < seed.length; i++) {
-    const char = seed.charCodeAt(i);
-    hash = (hash * 31 + char) % 2147483647; // Use modulo to keep it in 32-bit range
-  }
-
-  // Convert hash to a UUID-like format
-  const hashStr = Math.abs(hash).toString(16).padStart(8, "0");
-  return `${hashStr}-${index.toString().padStart(4, "0")}-4000-8000-${index
-    .toString()
-    .padStart(12, "0")}`;
-}
-
-export default allApplications.map((app, index) => ({
+const processedApplicants = allApplications.map((app, index) => ({
   id: index.toString(),
   academicOrCoop: app.academicOrCoop || "",
   academicYear: app.academicYear || "",
@@ -53,3 +38,11 @@ export default allApplications.map((app, index) => ({
   createdAt: new Date(),
   updatedAt: new Date(),
 }));
+
+const outputFilePath = join(
+  __dirname,
+  "../migrations/processedApplicants.json",
+);
+writeFileSync(outputFilePath, JSON.stringify(processedApplicants, null, 2));
+
+export default processedApplicants;
