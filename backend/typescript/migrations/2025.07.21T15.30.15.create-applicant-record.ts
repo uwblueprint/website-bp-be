@@ -7,7 +7,6 @@ import applicants from "./processedApplicants.json";
 import {
   ApplicationStatus,
   SkillCategory,
-  ApplicantRole,
   EngineeringPositionTitles,
   DesignPositionTitles,
   ProductPositionTitles,

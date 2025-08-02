@@ -1,5 +1,4 @@
 import { DataType } from "sequelize-typescript";
-import { v4 as uuidv4 } from "uuid";
 import { Migration } from "../umzug";
 import applicants from "./processedApplicants.json";
 
