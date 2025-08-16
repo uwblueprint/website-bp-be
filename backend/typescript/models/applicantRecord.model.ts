@@ -18,12 +18,11 @@ import Position from "./position.model";
 @Table({ tableName: "applicant_records" })
 export default class ApplicantRecord extends Model {
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
     primaryKey: true,
     unique: true,
-    autoIncrement: true,
   })
-  id!: string;
+  id!: number;
 
   @ForeignKey(() => Applicant)
   @Column({ type: DataType.STRING })
@@ -47,4 +46,18 @@ export default class ApplicantRecord extends Model {
 
   @Column({ type: DataType.JSONB, allowNull: true })
   extraInfo!: ApplicantRecordExtraInfo;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+    defaultValue: DataType.NOW,
+  })
+  createdAt!: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+    defaultValue: DataType.NOW,
+  })
+  updatedAt!: Date;
 }

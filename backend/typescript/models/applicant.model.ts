@@ -5,10 +5,9 @@ import { Column, DataType, Model, Table } from "sequelize-typescript";
 @Table({ tableName: "applicants" })
 export default class Applicant extends Model {
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
     primaryKey: true,
     unique: true,
-    autoIncrement: true,
   })
   id!: string;
 

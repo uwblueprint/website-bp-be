@@ -29,4 +29,18 @@ export default class ReviewedApplicantRecord extends Model {
     defaultValue: ReviewStatusEnum.TODO,
   })
   status!: ReviewStatus;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+    defaultValue: DataType.NOW,
+  })
+  createdAt!: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+    defaultValue: DataType.NOW,
+  })
+  updatedAt!: Date;
 }

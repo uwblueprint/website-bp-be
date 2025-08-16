@@ -1,6 +1,6 @@
 import { makeExecutableSchema, gql } from "apollo-server-express";
 import { applyMiddleware } from "graphql-middleware";
-import { merge } from "lodash";
+import { create, merge } from "lodash";
 
 import {
   isAuthorizedByEmail,
@@ -18,6 +18,8 @@ import userType from "./types/userType";
 import dashboardType from "./types/dashboardType";
 import dashboardResolvers from "./resolvers/dashboardResolvers";
 import reviewType from "./types/reviewType";
+import reviewedApplicantRecordType from "./types/reviewedApplicantRecordType";
+import reviewedApplicantRecordResolvers from "./resolvers/reviewedApplicantRecordResolver";
 
 const query = gql`
   type Query {
@@ -41,6 +43,7 @@ const executableSchema = makeExecutableSchema({
     simpleEntityType,
     userType,
     dashboardType,
+    reviewedApplicantRecordType,
   ],
   resolvers: merge(
     authResolvers,
@@ -48,6 +51,7 @@ const executableSchema = makeExecutableSchema({
     simpleEntityResolvers,
     userResolvers,
     dashboardResolvers,
+    reviewedApplicantRecordResolvers,
   ),
 });
 
@@ -90,6 +94,12 @@ const graphQLMiddlewares = {
     logout: isAuthorizedByUserId("userId"),
     resetPassword: isAuthorizedByEmail("email"),
     sendSignInLink: authorizedByAllRoles(),
+
+    // this should be guarded by isAuthorizedReviewerForApplication once it is implemented
+    createReviewedApplicantRecord: authorizedByAllRoles(),
+    bulkCreateReviewedApplicantRecords: authorizedByAllRoles(),
+    updateReviewedApplicantRecordReview: authorizedByAllRoles(),
+    updateReviewedApplicantRecordStatus: authorizedByAllRoles(),
   },
 };
 
