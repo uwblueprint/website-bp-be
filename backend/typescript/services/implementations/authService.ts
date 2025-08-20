@@ -1,7 +1,11 @@
 import * as firebaseAdmin from "firebase-admin";
 
+import ApplicantRecord from "../../models/applicantRecord.model";
+import ReviewedApplicantRecord from "../../models/reviewedApplicantRecord.model";
+
 import IAuthService from "../interfaces/authService";
 import IEmailService from "../interfaces/emailService";
+
 import IUserService from "../interfaces/userService";
 import { AuthDTO, Role, Token } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
@@ -199,6 +203,40 @@ class AuthService implements IAuthService {
       return (
         firebaseUser.emailVerified && String(tokenUserId) === requestedUserId
       );
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async isAuthorizedReviewerForApplication(
+    accessToken: string,
+    applicantRecordId: string,
+  ): Promise<boolean> {
+    try {
+      const decodedIdToken: firebaseAdmin.auth.DecodedIdToken =
+        await firebaseAdmin.auth().verifyIdToken(accessToken, true);
+      const userId = await this.userService.getUserIdByAuthId(
+        decodedIdToken.uid,
+      );
+
+      const applicantRecord: ApplicantRecord | null =
+              await ApplicantRecord.findOne({
+                where: {
+                  reviewerId: userId,
+                  id: applicantRecordId,
+                },
+              });
+
+      let reviewedApplicantRecord: ReviewedApplicantRecord | null = null;
+      if (applicantRecord) {
+        reviewedApplicantRecord = await ReviewedApplicantRecord.findOne({
+          where: {
+            applicantRecordId: applicantRecord.id,
+            reviewerId: userId,
+          },
+        });
+      }
+      return !!(reviewedApplicantRecord);
     } catch (error) {
       return false;
     }

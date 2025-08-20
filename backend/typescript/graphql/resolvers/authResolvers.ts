@@ -153,6 +153,18 @@ const authResolvers = {
       });
       return true;
     },
+    isAuthorizedReviewerForApplication: async (
+      _parent: undefined,
+      {
+        accessToken,
+        applicantRecordId,
+      }: { accessToken: string; applicantRecordId: string },
+    ): Promise<boolean> => {
+      return authService.isAuthorizedReviewerForApplication(
+        accessToken,
+        applicantRecordId,
+      );
+    },
   },
 };
 
