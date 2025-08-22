@@ -1,9 +1,11 @@
 /* eslint import/no-cycle: 0 */
 
 import {
+  BelongsTo,
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from "sequelize-typescript";
@@ -14,14 +16,14 @@ import {
 } from "../types";
 import Applicant from "./applicant.model";
 import Position from "./position.model";
+import ReviewedApplicantRecord from "./reviewedApplicantRecord.model";
 
 @Table({ tableName: "applicant_records" })
 export default class ApplicantRecord extends Model {
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
     primaryKey: true,
     unique: true,
-    autoIncrement: true,
   })
   id!: string;
 
@@ -47,4 +49,10 @@ export default class ApplicantRecord extends Model {
 
   @Column({ type: DataType.JSONB, allowNull: true })
   extraInfo!: ApplicantRecordExtraInfo;
+
+  @HasMany(() => ReviewedApplicantRecord, "applicantRecordId")
+  reviews!: ReviewedApplicantRecord[];
+
+  @BelongsTo(() => Applicant, "applicantId")
+  applicant!: Applicant;
 }
