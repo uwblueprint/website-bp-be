@@ -97,9 +97,9 @@ export type ApplicantDTO = {
 };
 
 export type ApplicantRecordDTO = {
-  id: number;
+  id: string;
   applicantId: string;
-  position: PositionTitle; // EDIT LATER
+  position: PositionTitle;
   roleSpecificQuestions: string[];
   choice: number;
   status: ApplicationStatus;

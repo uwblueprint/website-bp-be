@@ -1,6 +1,7 @@
 /* eslint import/no-cycle: 0 */
 
 import {
+  BelongsTo,
   Column,
   DataType,
   ForeignKey,
@@ -29,4 +30,10 @@ export default class ReviewedApplicantRecord extends Model {
     defaultValue: ReviewStatusEnum.TODO,
   })
   status!: ReviewStatus;
+
+  @BelongsTo(() => ApplicantRecord, "applicantRecordId")
+  applicantRecord!: ApplicantRecord;
+
+  @BelongsTo(() => User, "reviewerId")
+  reviewer!: User;
 }
