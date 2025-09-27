@@ -23,7 +23,7 @@ class TeamMemberService implements ITeamMemberService {
       );
       throw error;
     }
-  }
+  };
 
   createTeamMember = async (
     teamMember: CreateTeamMemberDTO,
@@ -47,7 +47,7 @@ class TeamMemberService implements ITeamMemberService {
       lastName: newTeamMember.lastName,
       teamRole: newTeamMember.teamRole as TeamRole,
     };
-  }
+  };
 }
 
 export default TeamMemberService;
