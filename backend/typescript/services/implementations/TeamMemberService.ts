@@ -8,7 +8,7 @@ import teamMemberType from "../../graphql/types/teamMemberType";
 const Logger = logger(__filename);
 
 class TeamMemberService implements ITeamMemberService {
-  async getTeamMembers(): Promise<TeamMemberDTO[]> {
+  getTeamMembers = async (): Promise<TeamMemberDTO[]> => {
     try {
       const teamMembers: Array<PgTeamMember> = await PgTeamMember.findAll();
       return teamMembers.map((teamMember) => ({
@@ -25,9 +25,9 @@ class TeamMemberService implements ITeamMemberService {
     }
   }
 
-  async createTeamMember(
+  createTeamMember = async (
     teamMember: CreateTeamMemberDTO,
-  ): Promise<TeamMemberDTO> {
+  ): Promise<TeamMemberDTO> => {
     let newTeamMember: PgTeamMember | null;
     try {
       newTeamMember = await PgTeamMember.create({
