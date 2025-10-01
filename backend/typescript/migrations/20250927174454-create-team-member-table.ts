@@ -20,7 +20,7 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: false,
     },
     teamRole: {
-      type: DataTypes.ENUM("PM", "DESIGNER", "PL", "DEVELOPER"), 
+      type: DataTypes.ENUM("PM", "DESIGNER", "PL", "DEVELOPER"),
       allowNull: false,
     },
     createdAt: {
@@ -38,7 +38,7 @@ export const up: Migration = async ({ context: sequelize }) => {
 
 export const down: Migration = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().dropTable(TABLE_NAME);
-  await sequelize.getQueryInterface().sequelize.query(
-    'DROP TYPE IF EXISTS "enum_team_members_teamRole";'
-  );
+  await sequelize
+    .getQueryInterface()
+    .sequelize.query('DROP TYPE IF EXISTS "enum_team_members_teamRole";');
 };

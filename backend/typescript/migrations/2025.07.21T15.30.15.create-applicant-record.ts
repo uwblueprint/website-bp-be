@@ -11,6 +11,7 @@ import {
   DesignPositionTitles,
   ProductPositionTitles,
   CommunityPositionTitles,
+  PositionTitle,
 } from "../types";
 
 const ALL_POSITION_TITLES = [
@@ -28,7 +29,8 @@ function normalizeApplicantRole(role: string): string {
   if (trimmed.toLowerCase() === "project developer") return "Developer";
   // Capitalize each word for comparison
   const formatted = trimmed.replace(/\b\w/g, (c) => c.toUpperCase());
-  if (ALL_POSITION_TITLES.includes(formatted as any)) return formatted;
+  if (ALL_POSITION_TITLES.includes(formatted as PositionTitle))
+    return formatted;
   return "President";
 }
 

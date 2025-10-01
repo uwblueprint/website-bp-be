@@ -54,7 +54,7 @@ export const isAuthorizedByRole = (roles: Set<Role>) => {
 /* Determine if request for a user-specific resource is authorized based on accessToken
  * validity and if the userId that the token was issued to matches the requested userId
  * Note: userIdField is the name of the request parameter containing the requested userId */
-export const isAuthorizedByUserId = (userIdField: string) => {
+export const isAuthorizedByUserId = () => {
   return async (
     resolve: (
       parent: any,
@@ -67,8 +67,8 @@ export const isAuthorizedByUserId = (userIdField: string) => {
     context: ExpressContext,
     info: GraphQLResolveInfo,
   ) => {
-    const accessToken = getAccessToken(context.req);
-    const authorized = accessToken && (await true);
+    // const accessToken = getAccessToken(context.req);
+    // const authorized = accessToken && (await true);
 
     // if (!authorized) {
     //   throw new AuthenticationError(
@@ -83,7 +83,7 @@ export const isAuthorizedByUserId = (userIdField: string) => {
 /* Determine if request for a user-specific resource is authorized based on accessToken
  * validity and if the email that the token was issued to matches the requested email
  * Note: emailField is the name of the request parameter containing the requested email */
-export const isAuthorizedByEmail = (emailField: string) => {
+export const isAuthorizedByEmail = () => {
   return async (
     resolve: (
       parent: any,

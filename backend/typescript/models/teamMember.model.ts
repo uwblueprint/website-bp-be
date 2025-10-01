@@ -5,10 +5,10 @@ import { TeamRole, teamRoleValues } from "../types";
 
 @Table({ tableName: "team_members" })
 export default class TeamMember extends Model {
-  @Column({ 
+  @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
-    primaryKey: true
+    primaryKey: true,
   })
   id!: string;
 
@@ -18,9 +18,9 @@ export default class TeamMember extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
   lastName!: string;
 
-  @Column({ 
+  @Column({
     type: DataType.ENUM(...teamRoleValues),
-    allowNull: false
+    allowNull: false,
   })
   teamRole!: TeamRole;
 }

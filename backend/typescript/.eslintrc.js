@@ -8,6 +8,7 @@ module.exports = {
     createDefaultProgram: true,
     tsconfigRootDir: __dirname,
   },
+  plugins: ["@typescript-eslint", "import"], // Add this line
   extends: [
     "airbnb-typescript/base",
     "prettier",
@@ -19,5 +20,5 @@ module.exports = {
     "prettier/prettier": ["error", { endOfLine: "auto" }],
     "no-plusplus": 0,
   },
-  ignorePatterns: ["build/*"],
+  ignorePatterns: ["build/*", ".eslintrc.js"],
 };

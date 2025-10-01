@@ -9,7 +9,7 @@ const teamMemberResolvers = {
   Query: {
     teamMembers: async (): Promise<TeamMemberDTO[]> => {
       try {
-        return teamMemberService.getTeamMembers();
+        return await teamMemberService.getTeamMembers();
       } catch (error) {
         throw new Error(getErrorMessage(error));
       }
