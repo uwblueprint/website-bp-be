@@ -1,5 +1,8 @@
 export type Role = "User" | "Admin";
 
+export const teamRoleValues = ["PM", "Designer", "PL", "Developer"] as const;
+export type TeamRole = typeof teamRoleValues[number];
+
 export enum StatusType {
   ACCEPTED = "accepted",
   APPLIED = "applied",
