@@ -1,4 +1,4 @@
-import { makeExecutableSchema, gql } from "apollo-server-express";
+import { gql, makeExecutableSchema } from "apollo-server-express";
 import { applyMiddleware } from "graphql-middleware";
 import { merge } from "lodash";
 
@@ -8,16 +8,18 @@ import {
   isAuthorizedByUserId,
 } from "../middlewares/auth";
 import authResolvers from "./resolvers/authResolvers";
-import authType from "./types/authType";
-import entityResolvers from "./resolvers/entityResolvers";
-import entityType from "./types/entityType";
-import simpleEntityResolvers from "./resolvers/simpleEntityResolvers";
-import simpleEntityType from "./types/simpleEntityType";
-import userResolvers from "./resolvers/userResolvers";
-import userType from "./types/userType";
-import dashboardType from "./types/dashboardType";
 import dashboardResolvers from "./resolvers/dashboardResolvers";
+import entityResolvers from "./resolvers/entityResolvers";
+import simpleEntityResolvers from "./resolvers/simpleEntityResolvers";
+import teamMemberResolvers from "./resolvers/teamMemberResolvers";
+import userResolvers from "./resolvers/userResolvers";
+import authType from "./types/authType";
+import dashboardType from "./types/dashboardType";
+import entityType from "./types/entityType";
 import reviewType from "./types/reviewType";
+import simpleEntityType from "./types/simpleEntityType";
+import teamMemberType from "./types/teamMemberType";
+import userType from "./types/userType";
 
 const query = gql`
   type Query {
@@ -41,6 +43,7 @@ const executableSchema = makeExecutableSchema({
     simpleEntityType,
     userType,
     dashboardType,
+    teamMemberType,
   ],
   resolvers: merge(
     authResolvers,
@@ -48,6 +51,7 @@ const executableSchema = makeExecutableSchema({
     simpleEntityResolvers,
     userResolvers,
     dashboardResolvers,
+    teamMemberResolvers,
   ),
 });
 
