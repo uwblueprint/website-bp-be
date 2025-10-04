@@ -1,4 +1,4 @@
-import TeamMemberService from "../../services/implementations/teamMemberService";
+import TeamMemberService from "../../services/implementations/TeamMemberService";
 import { CreateTeamMemberDTO, TeamMemberDTO } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 

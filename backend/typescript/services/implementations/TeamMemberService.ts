@@ -2,7 +2,7 @@ import TeamMember from "../../models/teamMember.model"; // <- Sequelize model
 import { CreateTeamMemberDTO, TeamMemberDTO } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
-import ITeamMemberService from "../interfaces/teamMemberService";
+import ITeamMemberService from "../interfaces/ITeamMemberService";
 
 const Logger = logger(__filename);
 
