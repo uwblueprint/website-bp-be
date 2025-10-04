@@ -47,4 +47,7 @@ export default class ApplicantRecord extends Model {
 
   @Column({ type: DataType.JSONB, allowNull: true })
   extraInfo!: ApplicantRecordExtraInfo;
+
+  @Column({ type: DataType.BOOLEAN, defaultValue: false })
+  isApplicantFlagged!: boolean;
 }
