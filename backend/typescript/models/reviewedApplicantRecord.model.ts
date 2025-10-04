@@ -29,4 +29,11 @@ export default class ReviewedApplicantRecord extends Model {
     defaultValue: ReviewStatusEnum.TODO,
   })
   status!: ReviewStatus;
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+    defaultValue: null,
+  })
+  combined_score!: number;
 }
