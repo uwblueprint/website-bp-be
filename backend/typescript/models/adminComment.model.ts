@@ -18,11 +18,11 @@ export default class AdminComment extends Model {
   id!: string;
 
   @ForeignKey(() => User)
-  @Column({ type: DataType.INTEGER })
+  @Column({ type: DataType.INTEGER, allowNull: false })
   userId!: number;
 
   @ForeignKey(() => ApplicantRecord)
-  @Column({ type: DataType.UUID })
+  @Column({ type: DataType.UUID, allowNull: false })
   applicantRecordId!: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
