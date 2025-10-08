@@ -40,8 +40,10 @@ export type ApplicationDashboardDTO = {
   teamPlayer: number;
   desireToLearn: number;
   skill: number;
+  totalScore: number;
   skillCategory: string;
   reviewerComments: string;
+  adminComments: string;
   recommendedSecondChoice: string;
   reviewerId: number;
   applicationId: number;
