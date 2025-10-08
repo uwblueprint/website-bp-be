@@ -47,4 +47,11 @@ export default class ApplicantRecord extends Model {
 
   @Column({ type: DataType.JSONB, allowNull: true })
   extraInfo!: ApplicantRecordExtraInfo;
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+    defaultValue: null,
+  })
+  score!: number;
 }
