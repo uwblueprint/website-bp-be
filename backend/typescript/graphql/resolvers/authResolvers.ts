@@ -56,15 +56,6 @@ const authResolvers = {
       );
       return isAuthorized;
     },
-    isAuthorizedToReview: async (
-      _parent: undefined,
-      {
-        applicationId,
-        reviewerUserId,
-      }: { applicationId: number; reviewerUserId: string },
-    ): Promise<boolean> => {
-      return reviewService.isAuthorizedToReview(applicationId, reviewerUserId);
-    },
   },
   Mutation: {
     login: async (
