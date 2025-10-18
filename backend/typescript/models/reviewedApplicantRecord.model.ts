@@ -7,9 +7,9 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import User from "./user.model";
 import { Review, ReviewStatus, ReviewStatusEnum } from "../types";
 import ApplicantRecord from "./applicantRecord.model";
+import User from "./user.model";
 
 @Table({ tableName: "reviewed_applicant_records" })
 export default class ReviewedApplicantRecord extends Model {
@@ -36,4 +36,10 @@ export default class ReviewedApplicantRecord extends Model {
     defaultValue: null,
   })
   score!: number;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  })
+  reviewerHasConflict!: boolean;
 }
