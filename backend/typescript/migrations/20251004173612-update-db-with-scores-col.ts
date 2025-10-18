@@ -5,20 +5,16 @@ const REV_APP_TABLE = "reviewed_applicant_records";
 const APP_TABLE = "applicant_records";
 
 export const up: Migration = async ({ context: sequelize }) => {
-  await sequelize
-    .getQueryInterface()
-    .addColumn(REV_APP_TABLE, "score", {
-      type: DataType.INTEGER,
-      allowNull: true,
-      defaultValue: null,
-    });
+  await sequelize.getQueryInterface().addColumn(REV_APP_TABLE, "score", {
+    type: DataType.INTEGER,
+    allowNull: true,
+    defaultValue: null,
+  });
 
-  await sequelize
-    .getQueryInterface()
-    .addColumn(APP_TABLE, "combined_score", {
-      type: DataType.INTEGER,
-      allowNull: true,
-      defaultValue: null,
+  await sequelize.getQueryInterface().addColumn(APP_TABLE, "combined_score", {
+    type: DataType.INTEGER,
+    allowNull: true,
+    defaultValue: null,
   });
 };
 
