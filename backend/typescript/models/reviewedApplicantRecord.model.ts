@@ -35,5 +35,5 @@ export default class ReviewedApplicantRecord extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  combined_score!: number;
+  score!: number;
 }

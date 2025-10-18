@@ -53,5 +53,5 @@ export default class ApplicantRecord extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  score!: number;
+  combined_score!: number;
 }
