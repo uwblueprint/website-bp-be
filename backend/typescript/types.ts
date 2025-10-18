@@ -237,4 +237,5 @@ export type ReviewedApplicantRecordDTO = {
   review: Review;
   status: ReviewStatus;
   score?: number | null;
+  reviewerHasConflict: boolean;
 };
