@@ -90,8 +90,10 @@ const dashboardType = gql`
       teamPlayer: Int!
       desireToLearn: Int!
       skill: Int!
+      totalScore: Int!
       skillCategory: String!
       reviwerComments: String!
+      adminComments: String!
       recommendedSecondChoice: String!
     ): ApplicationDashboardDTO!
   }
