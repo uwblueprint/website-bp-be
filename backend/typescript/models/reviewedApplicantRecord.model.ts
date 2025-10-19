@@ -31,6 +31,13 @@ export default class ReviewedApplicantRecord extends Model {
   status!: ReviewStatus;
 
   @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+    defaultValue: null,
+  })
+  score!: number;
+
+  @Column({
     type: DataType.BOOLEAN,
     defaultValue: false,
   })

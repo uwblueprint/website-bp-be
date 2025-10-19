@@ -48,6 +48,13 @@ export default class ApplicantRecord extends Model {
   @Column({ type: DataType.JSONB, allowNull: true })
   extraInfo!: ApplicantRecordExtraInfo;
 
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+    defaultValue: null,
+  })
+  combined_score!: number;
+
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
   isApplicantFlagged!: boolean;
 }

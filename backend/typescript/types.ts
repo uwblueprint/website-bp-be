@@ -104,6 +104,7 @@ export type ApplicantRecordDTO = {
   choice: number;
   status: ApplicationStatus;
   skillCategory?: SkillCategory;
+  combined_score?: number | null;
 };
 
 export type ApplicationStatus =
@@ -235,5 +236,6 @@ export type ReviewedApplicantRecordDTO = {
   reviewerId: number;
   review: Review;
   status: ReviewStatus;
+  score?: number | null;
   reviewerHasConflict: boolean;
 };
