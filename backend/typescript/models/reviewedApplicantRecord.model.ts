@@ -11,6 +11,7 @@ import {
 import { NonAttribute } from "sequelize";
 import { Review, ReviewStatus, ReviewStatusEnum } from "../types";
 import ApplicantRecord from "./applicantRecord.model";
+import User from "./user.model";
 
 @Table({ tableName: "reviewed_applicant_records" })
 export default class ReviewedApplicantRecord extends Model {
