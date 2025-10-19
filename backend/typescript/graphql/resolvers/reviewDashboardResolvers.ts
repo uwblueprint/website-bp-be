@@ -8,13 +8,12 @@ const reviewDashboardResolvers = {
   Query: {
     reviewDashboard: async (
       _parent: undefined,
-      { pageNumber }: { pageNumber: number },
-      { resultsPerPage }: { resultsPerPage: number },
+      args: { pageNumber: number; resultsPerPage: number },
     ): Promise<ReviewDashoardRowDTO[]> => {
       try {
         return await reviewDashboardService.getReviewDashboard(
-          pageNumber,
-          resultsPerPage,
+          args.pageNumber,
+          args.resultsPerPage,
         );
       } catch (error) {
         throw new Error(getErrorMessage(error));

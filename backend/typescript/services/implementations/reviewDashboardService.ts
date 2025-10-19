@@ -25,10 +25,18 @@ function toDTO(model: ApplicantRecord): ReviewDashoardRowDTO {
 class ReviewDashboardService implements IReviewDashboardService {
   /* eslint-disable class-methods-use-this */
   async getReviewDashboard(
-    page: number,
+    pageNumber: number,
     resultsPerPage: number,
   ): Promise<ReviewDashoardRowDTO[]> {
     try {
+      const perPage = Number.isFinite(Number(resultsPerPage))
+        ? Number(resultsPerPage)
+        : 1;
+      const currentPage = Number.isFinite(Number(pageNumber))
+        ? Number(pageNumber)
+        : 1;
+      const offsetRow = (currentPage - 1) * perPage;
+
       // get applicant_record
       // JOIN applicant ON applicant_id
       // JOIN reviewed_applicant_record ON applicant_record_id
@@ -52,6 +60,9 @@ class ReviewDashboardService implements IReviewDashboardService {
               association: "applicant",
             },
           ],
+          order: [["id", "ASC"]],
+          limit: perPage,
+          offset: offsetRow,
         });
       return applicants.map(toDTO);
     } catch (error: unknown) {

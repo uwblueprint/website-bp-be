@@ -20,8 +20,8 @@ const reviewDashboardType = gql`
 
   extend type Query {
     reviewDashboard(
-      pageNumber: Int
-      resultsPerPage: Int
+      pageNumber: Int!
+      resultsPerPage: Int!
     ): [ReviewDashboardRowDTO!]!
   }
 `;
