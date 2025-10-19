@@ -128,6 +128,22 @@ export type ApplicationDashboardRowDTO = {
   reviewers: UserDTO[];
 };
 
+export type ReviewerDTO = {
+  firstName: string;
+  lastName: string;
+};
+
+export type ReviewDashoardRowDTO = {
+  firstName: string;
+  lastName: string;
+  position: PositionTitle;
+  timesApplied: string;
+  applicationStatus: ApplicationStatus;
+  choice: number;
+  reviewers: ReviewerDTO[];
+  totalScore: number | null;
+};
+
 export type CreateUserDTO = Omit<UserDTO, "id" | "firstName" | "lastName">;
 
 export type UpdateUserDTO = Omit<UserDTO, "id">;
