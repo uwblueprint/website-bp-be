@@ -53,4 +53,7 @@ export default class ReviewedApplicantRecord extends Model {
     defaultValue: false,
   })
   reviewerHasConflict!: boolean;
+
+  @BelongsTo(() => User, { foreignKey: "reviewerId", targetKey: "id" })
+  user?: NonAttribute<User>;
 }
