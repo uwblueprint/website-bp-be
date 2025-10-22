@@ -18,7 +18,7 @@ function toDTO(model: ApplicantRecord): ReviewDashoardRowDTO {
       firstName: r.user!.first_name,
       lastName: r.user!.last_name,
     })),
-    totalScore: null,
+    totalScore: model.combined_score,
   };
 }
 
