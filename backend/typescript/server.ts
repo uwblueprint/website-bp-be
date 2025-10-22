@@ -5,7 +5,6 @@ import * as admin from "firebase-admin";
 import { ApolloServer } from "apollo-server-express";
 import { sequelize } from "./models";
 import schema from "./graphql";
-import Application from "./models/application.model";
 import memeberData from "./graphql/sampleData/members.json";
 import firebaseAuthUsers from "./graphql/sampleData/users.json";
 
@@ -109,52 +108,6 @@ app.get("/authUsers", async (req, res) => {
     res
       .status(500)
       .send("An error occurred while retrieving the applications.");
-  }
-});
-
-app.get("/termApplications", async (req, res) => {
-  ref
-    .orderByChild("term")
-    .equalTo("Fall 2023") // Fetch all applications for <term> (e.g. Fall 2023)
-    // eslint-disable-next-line func-names
-    .once("value", function (snapshot) {
-      const applications: Application[] = [];
-      snapshot.forEach((childSnapshot) => {
-        applications.push(childSnapshot.val());
-      });
-      res.status(200).json(applications);
-    });
-});
-
-app.get("/applications", async (req, res) => {
-  try {
-    const snapshot = await ref.once("value");
-    const applications: Application[] = [];
-    snapshot.forEach((childSnapshot) => {
-      applications.push(childSnapshot.val());
-    });
-    res.status(200).json(applications);
-  } catch (error) {
-    res
-      .status(500)
-      .send("An error occurred while retrieving the applications.");
-  }
-});
-
-app.get("/applications/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const snapshot = await ref.child(id).once("value");
-    const application = snapshot.val();
-    if (application) {
-      res.status(200).json(application);
-    } else {
-      res.status(404).send("Student application not found.");
-    }
-  } catch (error) {
-    res
-      .status(500)
-      .send("An error occurred while retrieving the student application.");
   }
 });
 
