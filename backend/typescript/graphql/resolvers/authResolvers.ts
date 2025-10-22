@@ -10,8 +10,6 @@ import FirebaseRestClient from "../../utilities/firebaseRestClient";
 import IUserService from "../../services/interfaces/userService";
 import User from "../../models/user.model";
 import { AuthDTO, RegisterUserDTO, Role } from "../../types";
-import IReviewService from "../../services/interfaces/reviewService";
-import ReviewService from "../../services/implementations/reviewService";
 
 const userService: IUserService = new UserService();
 const emailService: IEmailService = new EmailService(
@@ -19,7 +17,6 @@ const emailService: IEmailService = new EmailService(
   "UW Blueprint Internal Tools Team",
 );
 const authService: IAuthService = new AuthService(userService, emailService);
-const reviewService: IReviewService = new ReviewService();
 
 // const cookieOptions: CookieOptions = {
 //   httpOnly: true,
