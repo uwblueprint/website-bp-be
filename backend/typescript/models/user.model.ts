@@ -34,5 +34,4 @@ export default class User extends Model {
   @ForeignKey(() => Position)
   @Column({ type: DataType.ENUM(...Object.values(PositionTitles)) })
   position?: PositionTitle;
-
 }
