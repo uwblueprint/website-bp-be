@@ -8,8 +8,8 @@ const reviewPageResolvers = {
   Query: {
     reviewApplicantPage: async (
       _parent: undefined,
-      args: { reviewedApplicantRecordId: number },
-    ): Promise<ApplicationDTO[]> => {
+      args: { reviewedApplicantRecordId: string },
+    ): Promise<ApplicationDTO> => {
       try {
         return await reviewPageService.getReviewPage(
           args.reviewedApplicantRecordId,

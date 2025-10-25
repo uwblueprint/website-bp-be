@@ -74,7 +74,7 @@ export type ApplicationDTO = {
   secondChoiceStatus: string;
   term: string;
   timesApplied: string;
-  timestamp: bigint;
+  timestamp?: bigint;
 };
 
 export type ApplicantDTO = {
