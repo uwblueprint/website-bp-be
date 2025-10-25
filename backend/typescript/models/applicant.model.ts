@@ -57,8 +57,9 @@ export default class Applicant extends Model {
   submittedAt!: Date;
 
   @HasMany(() => ApplicantRecord, {
-    foreignKey: "id",
-    as: "applicant",
+    foreignKey: "applicantId",
+    sourceKey: "id",
+    as: "applicantRecords",
   })
   applicantRecords?: NonAttribute<ApplicantRecord[]>;
 }

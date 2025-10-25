@@ -25,7 +25,7 @@ function toDTO(model: Applicant): ApplicationDTO {
     program: model.program,
     timesApplied: model.timesApplied.toString(),
     pronouns: model.pronouns,
-    pronounsSpecified: "",
+    pronounsSpecified: model.pronouns,
     resumeUrl: model.resumeUrl,
     roleSpecificQuestions: firstChoice!.roleSpecificQuestions,
     secondChoiceRole: secondChoice ? secondChoice.position : "",
@@ -33,40 +33,26 @@ function toDTO(model: Applicant): ApplicationDTO {
     status: firstChoice!.status,
     term: model.term,
     secondChoiceStatus: secondChoice ? secondChoice.status : "",
-    timestamp: BigInt(1728673405),
+    /* timestamp: model.submittedAt.getSeconds(), */
   };
 }
 
 class ReviewPageService implements IReviewPageService {
   /* eslint-disable class-methods-use-this */
   async getReviewPage(
-    reviewedApplicantRecordId: number,
-  ): Promise<ApplicationDTO[]> {
+    reviewedApplicantRecordId: string,
+  ): Promise<ApplicationDTO> {
     try {
-      // get applicant ids first
-      const rARs: Array<ReviewedApplicantRecord> =
-        await ReviewedApplicantRecord.findAll({
-          where: { applicantRecordId: reviewedApplicantRecordId },
+      const applicantRecord: ApplicantRecord | null =
+        await ApplicantRecord.findOne({
+          where: { id: reviewedApplicantRecordId },
           attributes: { exclude: ["createdAt", "updatedAt"] },
         });
-      if (rARs.length === 0)
-        throw new Error(
-          `ReviewedApplicantRecords with ID ${reviewedApplicantRecordId} not found.`,
-        );
-
-      const aRIds: Array<number> = [
-        ...new Set(rARs.map((r) => r.applicantRecordId)),
-      ];
-      const aRs: Array<ApplicantRecord> = await ApplicantRecord.findAll({
-        where: { id: aRIds },
-        attributes: { exclude: ["createdAt", "updatedAt"] },
-      });
-      if (aRs.length === 0)
+      if (!applicantRecord)
         throw new Error(`Database integrity has been violated`);
 
-      const aIds: Array<number> = [...new Set(aRs.map((a) => a.applicantId))];
-      const as: Array<Applicant> = await Applicant.findAll({
-        where: { id: aIds },
+      const applicant: Applicant | null = await Applicant.findOne({
+        where: { id: applicantRecord.applicantId },
         attributes: { exclude: ["createdAt", "updatedAt"] },
         include: [
           {
@@ -75,10 +61,9 @@ class ReviewPageService implements IReviewPageService {
           },
         ],
       });
-      if (as.length === 0)
-        throw new Error(`Database integrity has been violated`);
+      if (!applicant) throw new Error(`Database integrity has been violated`);
 
-      return as.map(toDTO);
+      return toDTO(applicant);
     } catch (error: unknown) {
       Logger.error(`Failed to fetch. Reason = ${getErrorMessage(error)}`);
       throw error;

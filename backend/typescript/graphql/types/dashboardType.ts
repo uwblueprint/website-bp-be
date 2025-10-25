@@ -47,7 +47,7 @@ const dashboardType = gql`
     secondChoiceStatus: String!
     term: String!
     timesApplied: String!
-    timestamp: Int!
+    timestamp: Int
   }
 
   type ApplicationDashboardRowDTO {
