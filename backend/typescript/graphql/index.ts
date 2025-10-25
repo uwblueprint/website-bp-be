@@ -18,6 +18,8 @@ import userType from "./types/userType";
 import dashboardType from "./types/dashboardType";
 import dashboardResolvers from "./resolvers/dashboardResolvers";
 import reviewType from "./types/reviewType";
+import adminCommentResolvers from "./resolvers/adminCommentsResolvers";
+import adminCommentsType from "./types/adminCommentsType";
 
 const query = gql`
   type Query {
@@ -41,6 +43,7 @@ const executableSchema = makeExecutableSchema({
     simpleEntityType,
     userType,
     dashboardType,
+    adminCommentsType,
   ],
   resolvers: merge(
     authResolvers,
@@ -48,6 +51,7 @@ const executableSchema = makeExecutableSchema({
     simpleEntityResolvers,
     userResolvers,
     dashboardResolvers,
+    adminCommentResolvers,
   ),
 });
 
@@ -90,6 +94,9 @@ const graphQLMiddlewares = {
     logout: isAuthorizedByUserId("userId"),
     resetPassword: isAuthorizedByEmail("email"),
     sendSignInLink: authorizedByAllRoles(),
+    createAdminComment: authorizedByAdmin(),
+    updateAdminComment: authorizedByAdmin(),
+    deleteAdminCommentById: authorizedByAdmin(),
   },
 };
 
