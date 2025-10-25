@@ -17,7 +17,7 @@ import User from "./user.model";
 export default class ReviewedApplicantRecord extends Model {
   @ForeignKey(() => ApplicantRecord)
   @Column({ type: DataType.STRING, primaryKey: true })
-  applicantRecordId!: number;
+  applicantRecordId!: string;
 
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER, primaryKey: true })

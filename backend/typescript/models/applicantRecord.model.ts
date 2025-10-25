@@ -22,7 +22,7 @@ import ReviewedApplicantRecord from "./reviewedApplicantRecord.model";
 @Table({ tableName: "applicant_records" })
 export default class ApplicantRecord extends Model {
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
     primaryKey: true,
     unique: true,
     autoIncrement: true,
@@ -30,8 +30,8 @@ export default class ApplicantRecord extends Model {
   id!: number;
 
   @ForeignKey(() => Applicant)
-  @Column({ type: DataType.STRING })
-  applicantId!: string;
+  @Column({ type: DataType.INTEGER })
+  applicantId!: number;
 
   @ForeignKey(() => Position)
   @Column({ type: DataType.STRING })
