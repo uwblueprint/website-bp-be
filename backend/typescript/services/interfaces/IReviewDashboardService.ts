@@ -1,4 +1,4 @@
-import { ReviewDashoardRowDTO } from "../../types";
+import { ReviewDashboardRowDTO } from "../../types";
 
 interface IReviewDashboardService {
   /**
@@ -9,7 +9,7 @@ interface IReviewDashboardService {
   getReviewDashboard(
     page: number,
     resultsPerPage: number,
-  ): Promise<ReviewDashoardRowDTO[]>;
+  ): Promise<ReviewDashboardRowDTO[]>;
 }
 
 export default IReviewDashboardService;
