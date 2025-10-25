@@ -52,7 +52,6 @@ export type ApplicationDashboardInput = Omit<
   "applicationId"
 >;
 
-// DEPRECATED - TO BE REMOVED AT THE END OF S25
 export type ApplicationDTO = {
   id: number;
   academicOrCoop: string;

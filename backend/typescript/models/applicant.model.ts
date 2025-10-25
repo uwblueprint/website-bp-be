@@ -1,6 +1,8 @@
 /* eslint import/no-cycle: 0 */
 
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
+import { NonAttribute } from "sequelize";
+import ApplicantRecord from "./applicantRecord.model";
 
 @Table({ tableName: "applicants" })
 export default class Applicant extends Model {
@@ -10,7 +12,7 @@ export default class Applicant extends Model {
     unique: true,
     autoIncrement: true,
   })
-  id!: string;
+  id!: number;
 
   @Column({ type: DataType.STRING })
   academicOrCoop!: string;
@@ -53,4 +55,10 @@ export default class Applicant extends Model {
 
   @Column({ type: DataType.DATE })
   submittedAt!: Date;
+
+  @HasMany(() => ApplicantRecord, {
+    foreignKey: "id",
+    as: "applicant",
+  })
+  applicantRecords?: NonAttribute<ApplicantRecord[]>;
 }

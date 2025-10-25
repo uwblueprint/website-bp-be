@@ -1,12 +1,15 @@
 /* eslint import/no-cycle: 0 */
 
 import {
+  BelongsTo,
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from "sequelize-typescript";
+import { NonAttribute } from "sequelize";
 import {
   ApplicantRecordExtraInfo,
   ApplicationStatus,
@@ -14,11 +17,12 @@ import {
 } from "../types";
 import Applicant from "./applicant.model";
 import Position from "./position.model";
+import ReviewedApplicantRecord from "./reviewedApplicantRecord.model";
 
 @Table({ tableName: "applicant_records" })
 export default class ApplicantRecord extends Model {
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
     primaryKey: true,
     unique: true,
     autoIncrement: true,
@@ -26,8 +30,8 @@ export default class ApplicantRecord extends Model {
   id!: string;
 
   @ForeignKey(() => Applicant)
-  @Column({ type: DataType.STRING })
-  applicantId!: string;
+  @Column({ type: DataType.INTEGER })
+  applicantId!: number;
 
   @ForeignKey(() => Position)
   @Column({ type: DataType.STRING })
@@ -57,4 +61,10 @@ export default class ApplicantRecord extends Model {
 
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
   isApplicantFlagged!: boolean;
+
+  @BelongsTo(() => Applicant, "applicantId")
+  applicant?: NonAttribute<Applicant>;
+
+  @HasMany(() => ReviewedApplicantRecord, "applicantRecordId")
+  reviewedApplicantRecords?: NonAttribute<ReviewedApplicantRecord[]>;
 }
