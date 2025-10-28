@@ -255,3 +255,20 @@ export type ReviewedApplicantRecordDTO = {
   score?: number | null;
   reviewerHasConflict: boolean;
 };
+
+export type ReviewDetails = {
+  reviewerFirstName: string;
+  reviewerLastName: string;
+  review: Review;
+};
+
+export type ReviewDashboardSidePanelDTO = {
+  firstName: string;
+  lastName: string;
+  positionTitle: PositionTitle;
+  program: string;
+  resumeUrl: string;
+  applicationStatus: ApplicationStatus;
+  skillCategory: SkillCategory;
+  reviewDetails: ReviewDetails[];
+};

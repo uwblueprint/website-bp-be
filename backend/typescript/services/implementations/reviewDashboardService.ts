@@ -1,4 +1,8 @@
-import { PositionTitle, ReviewDashboardRowDTO } from "../../types";
+import {
+  PositionTitle,
+  ReviewDashboardRowDTO,
+  ReviewDashboardSidePanelDTO,
+} from "../../types";
 import IReviewDashboardService from "../interfaces/IReviewDashboardService";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
@@ -68,6 +72,64 @@ class ReviewDashboardService implements IReviewDashboardService {
     } catch (error: unknown) {
       Logger.error(
         `Failed to get dashboard. Reason = ${getErrorMessage(error)}`,
+      );
+      throw error;
+    }
+  }
+
+  async getReviewDashboardSidePanel(
+    applicantId: string,
+  ): Promise<ReviewDashboardSidePanelDTO> {
+    try {
+      // Find the applicant record with all necessary joins
+      const applicantRecord = await ApplicantRecord.findOne({
+        where: { applicantId: applicantId },
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        include: [
+          {
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+            association: "applicant",
+          },
+          {
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+            association: "reviewedApplicantRecords",
+            include: [
+              {
+                attributes: { exclude: ["createdAt", "updatedAt"] },
+                association: "user",
+              },
+            ],
+          },
+        ],
+      });
+
+      if (!applicantRecord || !applicantRecord.applicant) {
+        throw new Error(`Applicant with ID ${applicantId} not found`);
+      }
+
+      // Transform the data to the required DTO format
+      const reviewDetails =
+        applicantRecord.reviewedApplicantRecords?.map((reviewRecord) => ({
+          reviewerFirstName: reviewRecord.user?.first_name || "",
+          reviewerLastName: reviewRecord.user?.last_name || "",
+          review: reviewRecord.review,
+        })) || [];
+
+      return {
+        firstName: applicantRecord.applicant.firstName,
+        lastName: applicantRecord.applicant.lastName,
+        positionTitle: applicantRecord.position as PositionTitle,
+        program: applicantRecord.applicant.program,
+        resumeUrl: applicantRecord.applicant.resumeUrl,
+        applicationStatus: applicantRecord.status,
+        skillCategory: applicantRecord.skillCategory || "Junior",
+        reviewDetails: reviewDetails,
+      };
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to get review dashboard side panel for applicant ${applicantId}. Reason = ${getErrorMessage(
+          error,
+        )}`,
       );
       throw error;
     }
