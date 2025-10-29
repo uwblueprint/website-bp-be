@@ -7,6 +7,7 @@ import {
   ForeignKey,
   Model,
   Table,
+  BeforeSave,
 } from "sequelize-typescript";
 import Application from "./application.model";
 import User from "./user.model";
@@ -58,4 +59,19 @@ export default class ApplicationDashboardTable extends Model {
 
   @BelongsTo(() => Application)
   application!: Application;
+
+  @Column({ type: DataType.STRING })
+  adminComments!: string;
+
+  @Column({ type: DataType.INTEGER })
+  totalScore!: number;
+
+  @BeforeSave
+  static calculateTotalScore(instance: ApplicationDashboardTable) {
+    instance.totalScore =
+      instance.passionFSG +
+      instance.desireToLearn +
+      instance.skill +
+      instance.teamPlayer;
+  }
 }

@@ -78,8 +78,10 @@ const dashboardResolvers = {
         teamPlayer,
         desireToLearn,
         skill,
+        totalScore,
         skillCategory,
         reviwerComments,
+        adminComments,
         recommendedSecondChoice,
       }: {
         reviewerEmail: string;
@@ -89,8 +91,10 @@ const dashboardResolvers = {
         teamPlayer: number;
         desireToLearn: number;
         skill: number;
+        totalScore: number;
         skillCategory: string;
         reviwerComments: string;
+        adminComments: string;
         recommendedSecondChoice: string;
       },
     ): Promise<ApplicationDashboardDTO> => {
@@ -102,8 +106,10 @@ const dashboardResolvers = {
         teamPlayer,
         desireToLearn,
         skill,
+        totalScore,
         skillCategory,
         reviwerComments,
+        adminComments,
         recommendedSecondChoice,
       );
     },
