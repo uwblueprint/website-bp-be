@@ -1,4 +1,4 @@
-import { PositionTitle, Review, ReviewDashoardRowDTO } from "../../types";
+import { PositionTitle, ReviewDashboardRowDTO } from "../../types";
 import IReviewDashboardService from "../interfaces/IReviewDashboardService";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
@@ -6,7 +6,7 @@ import ApplicantRecord from "../../models/applicantRecord.model";
 
 const Logger = logger(__filename);
 
-function toDTO(model: ApplicantRecord): ReviewDashoardRowDTO {
+function toDTO(model: ApplicantRecord): ReviewDashboardRowDTO {
   return {
     firstName: model.applicant!.firstName,
     lastName: model.applicant!.lastName,
@@ -27,7 +27,7 @@ class ReviewDashboardService implements IReviewDashboardService {
   async getReviewDashboard(
     pageNumber: number,
     resultsPerPage: number,
-  ): Promise<ReviewDashoardRowDTO[]> {
+  ): Promise<ReviewDashboardRowDTO[]> {
     try {
       const perPage = Number.isFinite(Number(resultsPerPage))
         ? Number(resultsPerPage)

@@ -133,7 +133,7 @@ export type ReviewerDTO = {
   lastName: string;
 };
 
-export type ReviewDashoardRowDTO = {
+export type ReviewDashboardRowDTO = {
   firstName: string;
   lastName: string;
   position: PositionTitle;
