@@ -16,6 +16,11 @@ const adminCommentsType = gql`
     comment: String!
   }
 
+  extend type Query {
+    adminCommentsByApplicantRecordId(applicantRecordId: String!): [AdminCommentDTO!]!
+    adminCommentById(id: String!): AdminCommentDTO!
+  }
+
   extend type Mutation {
     createAdminComment(adminComment: CreateAdminCommentDTO!): AdminCommentDTO!
     updateAdminComment(

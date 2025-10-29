@@ -75,6 +75,8 @@ const graphQLMiddlewares = {
     userByEmail: authorizedByAdmin(),
     login: authorizedByAdmin(),
     users: authorizedByAdmin(),
+    adminCommentsByApplicantRecordId: authorizedByAdmin(),
+    adminCommentById: authorizedByAdmin(),
   },
   Mutation: {
     createEntity: authorizedByAllRoles(),

@@ -5,6 +5,22 @@ import { CreateAdminCommentDTO, AdminCommentDTO } from "../../types";
 const adminCommentService: IAdminCommentService = new AdminCommentService();
 
 const adminCommentResolvers = {
+  Query: {
+    adminCommentsByApplicantRecordId: async (
+      _parent: undefined,
+      { applicantRecordId }: { applicantRecordId: string },
+    ): Promise<AdminCommentDTO[]> => {
+      const adminComments = await adminCommentService.getAdminCommentsByApplicantRecordId(applicantRecordId);
+      return adminComments;
+    },
+    adminCommentById: async (
+      _parent: undefined,
+      { id }: { id: string },
+    ): Promise<AdminCommentDTO> => {
+      const adminComment = await adminCommentService.getAdminCommentById(id);
+      return adminComment;
+    },
+  },
   Mutation: {
     createAdminComment: async (
       _parent: undefined,
