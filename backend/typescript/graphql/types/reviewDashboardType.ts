@@ -10,7 +10,7 @@ const reviewDashboardType = gql`
   type ReviewDashboardRowDTO {
     firstName: String!
     lastName: String!
-    position: Int!
+    position: String!
     timesApplied: String!
     applicationStatus: String!
     choice: Int!
