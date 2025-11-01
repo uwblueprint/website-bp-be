@@ -103,7 +103,6 @@ export type ApplicantRecordExtraInfo = {
   adminReview?: string;
 };
 
-
 export type ReviewerDTO = {
   firstName: string;
   lastName: string;
