@@ -85,6 +85,7 @@ export type ApplicantRecordDTO = {
   choice: number;
   status: ApplicationStatus;
   skillCategory?: SkillCategory;
+  combined_score?: number | null;
 };
 
 export type ApplicationStatus =
@@ -102,6 +103,22 @@ export type ApplicantRecordExtraInfo = {
   adminReview?: string;
 };
 
+
+export type ReviewerDTO = {
+  firstName: string;
+  lastName: string;
+};
+
+export type ReviewDashboardRowDTO = {
+  firstName: string;
+  lastName: string;
+  position: PositionTitle;
+  timesApplied: string;
+  applicationStatus: ApplicationStatus;
+  choice: number;
+  reviewers: ReviewerDTO[];
+  totalScore: number | null;
+};
 
 export type CreateUserDTO = Omit<UserDTO, "id" | "firstName" | "lastName">;
 
@@ -189,4 +206,6 @@ export type ReviewedApplicantRecordDTO = {
   reviewerId: number;
   review: Review;
   status: ReviewStatus;
+  score?: number | null;
+  reviewerHasConflict: boolean;
 };
