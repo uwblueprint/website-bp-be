@@ -17,13 +17,60 @@ const reviewDashboardType = gql`
     totalScore: Int
   }
 
-  type Review {
-    passionFSG: Int
-    teamPlayer: Int
-    desireToLearn: Int
-    skill: Int
-    skillCategory: String
-    comments: String
+  enum ApplicantRoleEnum {
+    pres
+    int_dir
+    ext_dir
+    vpe
+    vpd
+    vpp
+    vpt
+    vp_ext
+    vp_int
+    vp_comms
+    vp_scoping
+    vp_finance
+    pm
+    pl
+    design_mentor
+    graphic_design
+    product_design
+    uxr
+    dev
+  }
+
+  enum DepartmentEnum {
+    Engineering
+    Design
+    Product
+    Community
+  }
+
+  enum AdditionalFiltersEnum {
+    IN_REVIEW
+    REVIEWED
+    SELECTED
+    NOT_SELECTED
+    SENIOR
+    INTERMEDIATE
+    JUNIOR
+    GREATER_THAN_25
+    BETWEEN_20_AND_25
+    BETWEEN_15_AND_20
+    BETWEEN_10_AND_15
+    LESS_THAN_10
+    FIRST_YEAR
+    SECOND_YEAR
+    THIRD_YEAR
+    FOURTH_YEAR
+    FIFTH_YEAR
+    SIXTH_YEAR
+  }
+
+  input ReviewDashboardFilter {
+    department: DepartmentEnum
+    role: ApplicantRoleEnum
+    additionalFilters: [AdditionalFiltersEnum!]
   }
 
   type ReviewDetails {
@@ -47,6 +94,7 @@ const reviewDashboardType = gql`
     reviewDashboard(
       pageNumber: Int!
       resultsPerPage: Int!
+      filter: ReviewDashboardFilter
     ): [ReviewDashboardRowDTO!]!
 
     reviewDashboardSidePanel(applicantId: String!): ReviewDashboardSidePanelDTO!
