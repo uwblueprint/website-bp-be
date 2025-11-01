@@ -78,6 +78,9 @@ const graphQLMiddlewares = {
     logout: isAuthorizedByUserId("userId"),
     resetPassword: isAuthorizedByEmail("email"),
     sendSignInLink: authorizedByAllRoles(),
+    createAdminComment: authorizedByAdmin(),
+    updateAdminComment: authorizedByAdmin(),
+    deleteAdminCommentById: authorizedByAdmin(),
   },
 };
 

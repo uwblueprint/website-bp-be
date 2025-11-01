@@ -255,3 +255,17 @@ export type ReviewedApplicantRecordDTO = {
   score?: number | null;
   reviewerHasConflict: boolean;
 };
+
+export type AdminCommentDTO = {
+  id: string;
+  userId: number;
+  applicantRecordId: string;
+  comment: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CreateAdminCommentDTO = Pick<
+  AdminCommentDTO,
+  "userId" | "applicantRecordId" | "comment"
+>;
