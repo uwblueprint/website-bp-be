@@ -26,6 +26,26 @@ function toDTO(model: ApplicantRecord): ReviewDashboardRowDTO {
   };
 }
 
+function toSidePanelDTO(model: ApplicantRecord): ReviewDashboardSidePanelDTO {
+  const reviewDetails =
+    model.reviewedApplicantRecords?.map((reviewRecord) => ({
+      reviewerFirstName: reviewRecord.user?.first_name || "",
+      reviewerLastName: reviewRecord.user?.last_name || "",
+      review: reviewRecord.review,
+    })) || [];
+
+  return {
+    firstName: model.applicant!.firstName,
+    lastName: model.applicant!.lastName,
+    positionTitle: model.position as PositionTitle,
+    program: model.applicant!.program,
+    resumeUrl: model.applicant!.resumeUrl,
+    applicationStatus: model.status,
+    skillCategory: model.skillCategory || "Junior",   // seems skill category can be null in the applicant record db right now
+    reviewDetails: reviewDetails,
+  };
+}
+
 class ReviewDashboardService implements IReviewDashboardService {
   /* eslint-disable class-methods-use-this */
   async getReviewDashboard(
@@ -81,50 +101,33 @@ class ReviewDashboardService implements IReviewDashboardService {
     applicantId: string,
   ): Promise<ReviewDashboardSidePanelDTO> {
     try {
-      // Find the applicant record with all necessary joins
-      const applicantRecord = await ApplicantRecord.findOne({
-        where: { applicantId: applicantId },
-        attributes: { exclude: ["createdAt", "updatedAt"] },
-        include: [
-          {
-            attributes: { exclude: ["createdAt", "updatedAt"] },
-            association: "applicant",
-          },
-          {
-            attributes: { exclude: ["createdAt", "updatedAt"] },
-            association: "reviewedApplicantRecords",
-            include: [
-              {
-                attributes: { exclude: ["createdAt", "updatedAt"] },
-                association: "user",
-              },
-            ],
-          },
-        ],
-      });
+      const applicantRecord: ApplicantRecord | null =
+        await ApplicantRecord.findOne({
+          where: { applicantId: applicantId },
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+          include: [
+            {
+              attributes: { exclude: ["createdAt", "updatedAt"] },
+              association: "reviewedApplicantRecords",
+              include: [
+                {
+                  attributes: { exclude: ["createdAt", "updatedAt"] },
+                  association: "user",
+                },
+              ],
+            },
+            {
+              attributes: { exclude: ["createdAt", "updatedAt"] },
+              association: "applicant",
+            },
+          ],
+        });
 
       if (!applicantRecord || !applicantRecord.applicant) {
         throw new Error(`Applicant with ID ${applicantId} not found`);
       }
 
-      // Transform the data to the required DTO format
-      const reviewDetails =
-        applicantRecord.reviewedApplicantRecords?.map((reviewRecord) => ({
-          reviewerFirstName: reviewRecord.user?.first_name || "",
-          reviewerLastName: reviewRecord.user?.last_name || "",
-          review: reviewRecord.review,
-        })) || [];
-
-      return {
-        firstName: applicantRecord.applicant.firstName,
-        lastName: applicantRecord.applicant.lastName,
-        positionTitle: applicantRecord.position as PositionTitle,
-        program: applicantRecord.applicant.program,
-        resumeUrl: applicantRecord.applicant.resumeUrl,
-        applicationStatus: applicantRecord.status,
-        skillCategory: applicantRecord.skillCategory || "Junior",
-        reviewDetails: reviewDetails,
-      };
+      return toSidePanelDTO(applicantRecord);
     } catch (error: unknown) {
       Logger.error(
         `Failed to get review dashboard side panel for applicant ${applicantId}. Reason = ${getErrorMessage(
