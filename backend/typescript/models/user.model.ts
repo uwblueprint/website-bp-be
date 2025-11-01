@@ -37,9 +37,6 @@ export default class User extends Model {
   @Column({ type: DataType.ENUM(...Object.values(PositionTitles)) })
   position?: PositionTitle;
 
-  @HasMany(() => ApplicationDashboardTable)
-  applicationDashboards?: ApplicationDashboardTable[];
-
   @HasMany(() => ReviewedApplicantRecord, {
     foreignKey: "reviewerId",
     as: "user",
