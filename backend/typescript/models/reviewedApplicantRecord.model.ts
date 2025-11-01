@@ -6,7 +6,9 @@ import {
   ForeignKey,
   Model,
   Table,
+  BelongsTo,
 } from "sequelize-typescript";
+import { NonAttribute } from "sequelize";
 import { Review, ReviewStatus, ReviewStatusEnum } from "../types";
 import ApplicantRecord from "./applicantRecord.model";
 import User from "./user.model";
@@ -42,4 +44,7 @@ export default class ReviewedApplicantRecord extends Model {
     defaultValue: false,
   })
   reviewerHasConflict!: boolean;
+
+  @BelongsTo(() => User, { foreignKey: "reviewerId", targetKey: "id" })
+  user?: NonAttribute<User>;
 }
