@@ -65,7 +65,9 @@ class AdminCommentService implements IAdminCommentService {
       };
     } catch (error: unknown) {
       Logger.error(
-        `Failed to get admin comment by id = ${id}. Reason = ${getErrorMessage(error)}`,
+        `Failed to get admin comment by id = ${id}. Reason = ${getErrorMessage(
+          error,
+        )}`,
       );
       throw error;
     }

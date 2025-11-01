@@ -10,7 +10,10 @@ const adminCommentResolvers = {
       _parent: undefined,
       { applicantRecordId }: { applicantRecordId: string },
     ): Promise<AdminCommentDTO[]> => {
-      const adminComments = await adminCommentService.getAdminCommentsByApplicantRecordId(applicantRecordId);
+      const adminComments =
+        await adminCommentService.getAdminCommentsByApplicantRecordId(
+          applicantRecordId,
+        );
       return adminComments;
     },
     adminCommentById: async (

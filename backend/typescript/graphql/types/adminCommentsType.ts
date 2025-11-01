@@ -17,7 +17,9 @@ const adminCommentsType = gql`
   }
 
   extend type Query {
-    adminCommentsByApplicantRecordId(applicantRecordId: String!): [AdminCommentDTO!]!
+    adminCommentsByApplicantRecordId(
+      applicantRecordId: String!
+    ): [AdminCommentDTO!]!
     adminCommentById(id: String!): AdminCommentDTO!
   }
 
