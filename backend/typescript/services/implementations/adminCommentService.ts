@@ -31,18 +31,16 @@ class AdminCommentService implements IAdminCommentService {
     let adminCommentDTOs: Array<AdminCommentDTO> = [];
     try {
       adminComments = await AdminComment.findAll({
-        where: { reviewedApplicantRecordId },
+        where: { applicantRecordId: reviewedApplicantRecordId },
       });
-      adminCommentDTOs = await adminComments.map((adminComment) => {
-        return {
-          id: adminComment.id;
-          userId: adminComment.userId;
-          applicantRecordId: adminComment.applicantRecordId;
-          comment: adminComment.comment;
-          createdAt: adminComment.createdAt;
-          updatedAt: adminComment.updatedAt;
-        };
-      });
+      adminCommentDTOs = adminComments.map((adminComment) => ({
+        id: adminComment.id,
+        userId: adminComment.userId,
+        applicantRecordId: adminComment.applicantRecordId,
+        comment: adminComment.comment,
+        createdAt: adminComment.createdAt.toISOString(),
+        updatedAt: adminComment.updatedAt.toISOString(),
+      }));
     } catch (error: unknown) {
       Logger.error(
         `Failed to get admin comments by reviewedApplicantRecordId = ${reviewedApplicantRecordId}. Reason = ${getErrorMessage(
