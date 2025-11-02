@@ -15,9 +15,6 @@ import simpleEntityResolvers from "./resolvers/simpleEntityResolvers";
 import simpleEntityType from "./types/simpleEntityType";
 import userResolvers from "./resolvers/userResolvers";
 import userType from "./types/userType";
-import dashboardType from "./types/dashboardType";
-import dashboardResolvers from "./resolvers/dashboardResolvers";
-import reviewType from "./types/reviewType";
 import reviewDashboardResolvers from "./resolvers/reviewDashboardResolvers";
 import reviewDashboardType from "./types/reviewDashboardType";
 
@@ -38,11 +35,9 @@ const executableSchema = makeExecutableSchema({
     query,
     mutation,
     authType,
-    reviewType,
     entityType,
     simpleEntityType,
     userType,
-    dashboardType,
     reviewDashboardType,
   ],
   resolvers: merge(
@@ -50,7 +45,6 @@ const executableSchema = makeExecutableSchema({
     entityResolvers,
     simpleEntityResolvers,
     userResolvers,
-    dashboardResolvers,
     reviewDashboardResolvers,
   ),
 });
@@ -65,12 +59,6 @@ const graphQLMiddlewares = {
     entities: authorizedByAllRoles(),
     simpleEntity: authorizedByAllRoles(),
     simpleEntities: authorizedByAllRoles(),
-    dashboardById: authorizedByAllRoles(),
-    applicationsByRole: authorizedByAllRoles(),
-    applicationsBySecondChoiceRole: authorizedByAllRoles(),
-    applicationsById: authorizedByAllRoles(),
-    applicationTable: authorizedByAllRoles(),
-    secondChoiceRoleApplicationTable: authorizedByAllRoles(),
     userById: authorizedByAdmin(),
     userByEmail: authorizedByAdmin(),
     login: authorizedByAdmin(),
@@ -83,10 +71,6 @@ const graphQLMiddlewares = {
     createSimpleEntity: authorizedByAllRoles(),
     updateSimpleEntity: authorizedByAllRoles(),
     deleteSimpleEntity: authorizedByAllRoles(),
-    changeRating: authorizedByAllRoles(),
-    changeSkillCategory: authorizedByAllRoles(),
-    updateApplications: authorizedByAllRoles(),
-    modifyFinalComments: authorizedByAllRoles(),
     createUser: authorizedByAdmin(),
     updateUser: authorizedByAdmin(),
     deleteUserById: authorizedByAdmin(),
@@ -94,6 +78,9 @@ const graphQLMiddlewares = {
     logout: isAuthorizedByUserId("userId"),
     resetPassword: isAuthorizedByEmail("email"),
     sendSignInLink: authorizedByAllRoles(),
+    createAdminComment: authorizedByAdmin(),
+    updateAdminComment: authorizedByAdmin(),
+    deleteAdminCommentById: authorizedByAdmin(),
   },
 };
 
