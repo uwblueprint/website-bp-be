@@ -255,3 +255,10 @@ export type ReviewedApplicantRecordDTO = {
   score?: number | null;
   reviewerHasConflict: boolean;
 };
+
+export type CreateReviewedApplicantRecordDTO = {
+  applicantRecordId: string;
+  reviewerId: number;
+  review?: Review;
+  reviewerHasConflict?: boolean;
+}
