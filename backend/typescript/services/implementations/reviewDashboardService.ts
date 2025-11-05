@@ -1,4 +1,4 @@
-import { literal, Op } from "sequelize";
+import { literal, Op, Sequelize } from "sequelize";
 import {
   AdditionalFilters,
   Department,
@@ -39,100 +39,144 @@ function buildWhereStatement(filter?: ReviewDashboardFilter) {
   const status: any = [];
   if (filter) {
     if (filter.department) {
-      if (filter.department === Department.Community)
+      if (filter.department === Department.Community) {
         exp.push({ "$appliedTo.department$": { [Op.eq]: "Community" } });
-      else if (filter.department === Department.Design)
+      } else if (filter.department === Department.Design) {
         exp.push({ "$appliedTo.department$": { [Op.eq]: "Design" } });
-      else if (filter.department === Department.Engineering)
+      } else if (filter.department === Department.Engineering) {
         exp.push({ "$appliedTo.department$": { [Op.eq]: "Engineering" } });
-      else if (filter.department === Department.Product)
+      } else if (filter.department === Department.Product) {
         exp.push({ "$appliedTo.department$": { [Op.eq]: "Product" } });
+      }
     }
 
     if (filter.role) {
-      if (filter.role === ApplicantRole.int_dir)
-        exp.push({ position: { [Op.eq]: "Internal Director" } });
-      else if (filter.role === ApplicantRole.ext_dir)
-        exp.push({ position: { [Op.eq]: "External Director" } });
-      else if (filter.role === ApplicantRole.pres)
-        exp.push({ position: { [Op.eq]: "President" } });
-      else if (filter.role === ApplicantRole.vpe)
-        exp.push({ position: { [Op.eq]: "VP Engineering" } });
-      else if (filter.role === ApplicantRole.vpd)
-        exp.push({ position: { [Op.eq]: "VP Design" } });
-      else if (filter.role === ApplicantRole.vpp)
-        exp.push({ position: { [Op.eq]: "VP Product" } });
-      else if (filter.role === ApplicantRole.vpt)
-        exp.push({ position: { [Op.eq]: "VP Talent" } });
-      else if (filter.role === ApplicantRole.vp_ext)
-        exp.push({ position: { [Op.eq]: "VP External" } });
-      else if (filter.role === ApplicantRole.vp_int)
-        exp.push({ position: { [Op.eq]: "VP Internal" } });
-      else if (filter.role === ApplicantRole.vp_comms)
-        exp.push({ position: { [Op.eq]: "VP Community" } });
-      else if (filter.role === ApplicantRole.vp_scoping)
-        exp.push({ position: { [Op.eq]: "VP Scoping" } });
-      else if (filter.role === ApplicantRole.vp_finance)
-        exp.push({ position: { [Op.eq]: "VP Finance" } });
-      else if (filter.role === ApplicantRole.pm)
-        exp.push({ position: { [Op.eq]: "Project Manager" } });
-      else if (filter.role === ApplicantRole.pl)
-        exp.push({ position: { [Op.eq]: "Project Lead" } });
-      else if (filter.role === ApplicantRole.design_mentor)
-        exp.push({ position: { [Op.eq]: "Design Mentor" } });
-      else if (filter.role === ApplicantRole.graphic_design)
-        exp.push({ position: { [Op.eq]: "Graphic Design" } });
-      else if (filter.role === ApplicantRole.product_design)
-        exp.push({ position: { [Op.eq]: "Product Design" } });
-      else if (filter.role === ApplicantRole.uxr)
-        exp.push({ position: { [Op.eq]: "User Researcher" } });
-      else if (filter.role === ApplicantRole.dev)
-        exp.push({ position: { [Op.eq]: "Project Developer" } });
+      if (filter.role.toString() === "int_dir") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Internal Director'`),
+        );
+      } else if (filter.role.toString() === "ext_dir") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'External Director'`),
+        );
+      } else if (filter.role.toString() === "pres") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'President'`));
+      } else if (filter.role.toString() === "vpe") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'VP Engineering'`),
+        );
+      } else if (filter.role.toString() === "vpd") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Design'`));
+      } else if (filter.role.toString() === "vpp") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Product'`));
+      } else if (filter.role.toString() === "vpt") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Talent'`));
+      } else if (filter.role.toString() === "vp_ext") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP External'`));
+      } else if (filter.role.toString() === "vp_int") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Internal'`));
+      } else if (filter.role.toString() === "vp_comms") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'VP Community'`),
+        );
+      } else if (filter.role.toString() === "vp_scoping") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Scoping'`));
+      } else if (filter.role.toString() === "vp_finance") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Finance'`));
+      } else if (filter.role.toString() === "pm") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Project Manager'`),
+        );
+      } else if (filter.role.toString() === "pl") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Project Lead'`),
+        );
+      } else if (filter.role.toString() === "design_mentor") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Design Mentor'`),
+        );
+      } else if (filter.role.toString() === "graphic_design") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Graphic Design'`),
+        );
+      } else if (filter.role.toString() === "product_design") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Product Design'`),
+        );
+      } else if (filter.role.toString() === "uxr") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'User Researcher'`),
+        );
+      } else if (filter.role.toString() === "dev") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Project Developer'`),
+        );
+      }
     }
 
     if (filter.additionalFilters) {
-      if (filter.additionalFilters.includes(AdditionalFilters.GREATER_THAN_25))
+      if (
+        filter.additionalFilters.includes(AdditionalFilters.GREATER_THAN_25)
+      ) {
         ranges.push({ combined_score: { [Op.gt]: 25 } });
+      }
       if (
         filter.additionalFilters.includes(AdditionalFilters.BETWEEN_20_AND_25)
-      )
-        ranges.push({ [Op.between]: [20, 25] });
+      ) {
+        ranges.push({ combined_score: { [Op.between]: [20, 25] } });
+      }
       if (
         filter.additionalFilters.includes(AdditionalFilters.BETWEEN_15_AND_20)
-      )
-        ranges.push({ [Op.between]: [15, 20] });
+      ) {
+        ranges.push({ combined_score: { [Op.between]: [15, 20] } });
+      }
       if (
         filter.additionalFilters.includes(AdditionalFilters.BETWEEN_10_AND_15)
-      )
-        ranges.push({ [Op.between]: [10, 15] });
-      if (filter.additionalFilters.includes(AdditionalFilters.LESS_THAN_10))
+      ) {
+        ranges.push({ combined_score: { [Op.between]: [10, 15] } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.LESS_THAN_10)) {
         ranges.push({ combined_score: { [Op.lt]: 10 } });
-      if (filter.additionalFilters.includes(AdditionalFilters.SENIOR))
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.SENIOR)) {
         skill.push({ skillCategory: { [Op.eq]: "Senior" } });
-      if (filter.additionalFilters.includes(AdditionalFilters.JUNIOR))
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.JUNIOR)) {
         skill.push({ skillCategory: { [Op.eq]: "Junior" } });
-      if (filter.additionalFilters.includes(AdditionalFilters.INTERMEDIATE))
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.INTERMEDIATE)) {
         skill.push({ skillCategory: { [Op.eq]: "Intermediate" } });
-      if (filter.additionalFilters.includes(AdditionalFilters.FIRST_YEAR))
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.FIRST_YEAR)) {
         year.push({ "$applicant.academicYear$": { [Op.regexp]: "1(A|B)" } });
-      if (filter.additionalFilters.includes(AdditionalFilters.SECOND_YEAR))
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.SECOND_YEAR)) {
         year.push({ "$applicant.academicYear$": { [Op.regexp]: "2(A|B)" } });
-      if (filter.additionalFilters.includes(AdditionalFilters.THIRD_YEAR))
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.THIRD_YEAR)) {
         year.push({ "$applicant.academicYear$": { [Op.regexp]: "3(A|B)" } });
-      if (filter.additionalFilters.includes(AdditionalFilters.FOURTH_YEAR))
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.FOURTH_YEAR)) {
         year.push({ "$applicant.academicYear$": { [Op.regexp]: "4(A|B)" } });
-      if (filter.additionalFilters.includes(AdditionalFilters.FIFTH_YEAR))
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.FIFTH_YEAR)) {
         year.push({ "$applicant.academicYear$": { [Op.regexp]: "5(A|B)" } });
-      if (filter.additionalFilters.includes(AdditionalFilters.SIXTH_YEAR))
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.SIXTH_YEAR)) {
         year.push({ "$applicant.academicYear$": { [Op.regexp]: "6(A|B)" } });
-      if (filter.additionalFilters.includes(AdditionalFilters.IN_REVIEW))
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.IN_REVIEW)) {
         status.push({ status: { [Op.eq]: "In Review" } });
-      if (filter.additionalFilters.includes(AdditionalFilters.REVIEWED))
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.REVIEWED)) {
         status.push({ status: { [Op.eq]: "Reviewed" } });
-      if (filter.additionalFilters.includes(AdditionalFilters.SELECTED))
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.SELECTED)) {
         status.push({ status: { [Op.eq]: "Selected for Interview" } });
-      if (filter.additionalFilters.includes(AdditionalFilters.NOT_SELECTED))
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.NOT_SELECTED)) {
         status.push({ status: { [Op.eq]: "Not Considered" } });
+      }
     }
   }
 
@@ -180,7 +224,6 @@ class ReviewDashboardService implements IReviewDashboardService {
       const offsetRow = (currentPage - 1) * perPage;
 
       const whereStatement = buildWhereStatement(filters);
-      console.log({ [Op.and]: whereStatement });
 
       // get applicant_record
       // JOIN applicant ON applicant_id
