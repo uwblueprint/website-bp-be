@@ -222,3 +222,10 @@ export type CreateAdminCommentDTO = Pick<
   AdminCommentDTO,
   "userId" | "applicantRecordId" | "comment"
 >;
+
+export type CreateReviewedApplicantRecordDTO = {
+  applicantRecordId: string;
+  reviewerId: number;
+  review?: Review;
+  reviewerHasConflict?: boolean;
+}
