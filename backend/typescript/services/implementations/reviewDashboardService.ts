@@ -162,7 +162,7 @@ function buildWhereStatement(filter?: ReviewDashboardFilter) {
         year.push({ "$applicant.academicYear$": { [Op.regexp]: "5(A|B)" } });
       }
       if (filter.additionalFilters.includes(AdditionalFilters.SIXTH_YEAR)) {
-        year.push({ "$applicant.academicYear$": { [Op.regexp]: "6(A|B)" } });
+        year.push({ "$applicant.academicYear$": { [Op.regexp]: "(G|g)raduate" } });
       }
       if (filter.additionalFilters.includes(AdditionalFilters.IN_REVIEW)) {
         status.push({ status: { [Op.eq]: "In Review" } });
