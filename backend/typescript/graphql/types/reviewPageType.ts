@@ -24,7 +24,7 @@ const reviewPageType = gql`
     timesApplied: String!
     timestamp: Int
   }
-  
+
   extend type Query {
     reviewApplicantPage(reviewedApplicantRecordId: String!): ApplicationDTO!
   }
