@@ -33,26 +33,6 @@ export type UserDTO = {
   role: Role;
 };
 
-// DEPRECATED - TO BE REMOVED AT THE END OF S25
-export type ApplicationDashboardDTO = {
-  id: number;
-  reviewerEmail: string;
-  passionFSG: number;
-  teamPlayer: number;
-  desireToLearn: number;
-  skill: number;
-  skillCategory: string;
-  reviewerComments: string;
-  recommendedSecondChoice: string;
-  reviewerId: number;
-  applicationId: number;
-};
-
-export type ApplicationDashboardInput = Omit<
-  ApplicationDashboardDTO,
-  "applicationId"
->;
-
 export type ApplicationDTO = {
   id: number;
   academicOrCoop: string;
