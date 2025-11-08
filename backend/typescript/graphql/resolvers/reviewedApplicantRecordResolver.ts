@@ -1,5 +1,9 @@
 import ReviewedApplicantRecordService from "../../services/implementations/reviewedApplicantRecordService";
-import { ReviewedApplicantRecordDTO, CreateReviewedApplicantRecordDTO } from "../../types";
+import { 
+  ReviewedApplicantRecordDTO, 
+  CreateReviewedApplicantRecordDTO,
+  DeleteReviewedApplicantRecord 
+} from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 
 const reviewedApplicantRecordService = new ReviewedApplicantRecordService();
@@ -30,12 +34,11 @@ const reviewedApplicantRecordResolvers = {
 
     deleteReviewedApplicantRecord: async (
       _parent: undefined,
-      args: { applicantRecordId: string; reviewerId: number },
+      args: { input: DeleteReviewedApplicantRecord },
     ): Promise<ReviewedApplicantRecordDTO> => {
       try {
         return await reviewedApplicantRecordService.deleteReviewedApplicantRecord(
-          args.applicantRecordId,
-          args.reviewerId,
+          args.input
         );
       } catch (error) {
         throw new Error(getErrorMessage(error));
@@ -44,12 +47,11 @@ const reviewedApplicantRecordResolvers = {
 
     bulkDeleteReviewedApplicantRecord: async (
       _parent: undefined,
-      args: { applicantRecordIds: string[]; reviewerId: number },
+      args: { inputs: DeleteReviewedApplicantRecord[] },
     ): Promise<ReviewedApplicantRecordDTO[]> => {
       try {
         return await reviewedApplicantRecordService.bulkDeleteReviewedApplicantRecord(
-          args.applicantRecordIds,
-          args.reviewerId,
+          args.inputs
         );
       } catch (error) {
         throw new Error(getErrorMessage(error));

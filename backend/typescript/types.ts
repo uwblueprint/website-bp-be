@@ -229,3 +229,8 @@ export type CreateReviewedApplicantRecordDTO = {
   review?: Review;
   reviewerHasConflict?: boolean;
 }
+
+export type DeleteReviewedApplicantRecord = {
+  applicantRecordId: string;
+  reviewerId: number;
+}
