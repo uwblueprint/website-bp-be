@@ -1,6 +1,7 @@
 import {
   ReviewDashboardRowDTO,
   ReviewDashboardSidePanelDTO,
+  ReviewedApplicantRecordDTO,
 } from "../../types";
 
 interface IReviewDashboardService {
@@ -13,6 +14,12 @@ interface IReviewDashboardService {
     page: number,
     resultsPerPage: number,
   ): Promise<ReviewDashboardRowDTO[]>;
+
+  /**
+   * Assigns each user to an applicant record to review, and
+   * returns the newly created ReviewedApplicantRecords
+   */
+  delegateReviewers(): Promise<ReviewedApplicantRecordDTO[]>;
 
   /**
    * Fetch data that can fill out the review dashboard side panel for an applicant

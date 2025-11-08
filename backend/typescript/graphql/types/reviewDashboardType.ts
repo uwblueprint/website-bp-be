@@ -1,4 +1,12 @@
 import { gql } from "apollo-server-express";
+import {
+  ApplicationStatus,
+  PositionTitle,
+  Review,
+  ReviewerDTO,
+  ReviewStatus,
+  SkillCategory,
+} from "../../types";
 
 const reviewDashboardType = gql`
   type ReviewerDTO {
@@ -15,6 +23,15 @@ const reviewDashboardType = gql`
     choice: Int!
     reviewers: [ReviewerDTO!]!
     totalScore: Int
+  }
+  
+  type ReviewedApplicantRecordDTO {
+    applicantRecordId: String!
+    reviewerId: Int!
+    review: Review
+    status: String!
+    score: Int
+    reviewerHasConflict: Boolean!
   }
 
   type Review {
@@ -50,6 +67,10 @@ const reviewDashboardType = gql`
     ): [ReviewDashboardRowDTO!]!
 
     reviewDashboardSidePanel(applicantId: String!): ReviewDashboardSidePanelDTO!
+  }
+
+  extend type Mutation {
+    delegateReviewers: [ReviewedApplicantRecordDTO!]!
   }
 `;
 

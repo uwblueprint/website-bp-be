@@ -2,6 +2,7 @@ import ReviewDashboardService from "../../services/implementations/reviewDashboa
 import {
   ReviewDashboardRowDTO,
   ReviewDashboardSidePanelDTO,
+  ReviewedApplicantRecordDTO,
 } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 
@@ -30,6 +31,15 @@ const reviewDashboardResolvers = {
         return await reviewDashboardService.getReviewDashboardSidePanel(
           args.applicantId,
         );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
+  },
+  Mutation: {
+    delegateReviewers: async (): Promise<ReviewedApplicantRecordDTO[]> => {
+      try {
+        return await reviewDashboardService.delegateReviewers();
       } catch (error) {
         throw new Error(getErrorMessage(error));
       }

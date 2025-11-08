@@ -1,6 +1,7 @@
 import {
   PositionTitle,
   ReviewDashboardRowDTO,
+  ReviewedApplicantRecordDTO,
   ReviewDashboardSidePanelDTO,
 } from "../../types";
 import IReviewDashboardService from "../interfaces/IReviewDashboardService";
@@ -136,6 +137,47 @@ class ReviewDashboardService implements IReviewDashboardService {
       );
       throw error;
     }
+  }
+
+  async delegateReviewers(): Promise<ReviewedApplicantRecordDTO[]> {
+    // NOTE: We do not have to concern ourselves with locality. That is, each user can be
+    //       assigned to the same parter every time.
+
+    const FSM = new Map<string, [number, string[]]>();
+    // maps (position title) => (current index of list, list of users with position_title)
+    const delegations = new Map<string, [string, string]>();
+    // maps (applicant_record_id) => pair of user_ids assigned to it
+
+    // STEP 1:
+    //   Populate the FSM
+    //   NOTE: need to add a sentinel value at the end of the list if the number of user is odd.
+    //         The last 'real' user will bear the burden of solo reviewing.
+
+    // STEP 2:
+    //   Round robin with the FSM
+    /*
+    for (auto& a : applicant_records) {
+      pair<int,vector<string>>& position_entry = FSM[a.position];
+
+      // get first user
+      string id1 = position_entry.second[position_entry.first];
+      position_entry.first++;
+      position_entry.first %= position_entry.second.size();
+
+      // get second user
+      string id2 = position_entry.second[position_entry.first];
+      position_entry.first++;
+      position_entry.first %= position_entry.second.size();
+
+      delegations[a.id] = make_pair(id1, id2);
+    }
+     */
+
+    // STEP 3:
+    //   Batch the delegations into ReviewedApplicantRecords
+    //   NOTE: do not add the sentinel value we inserted earlier.
+
+    return [];
   }
 }
 
