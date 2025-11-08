@@ -18,7 +18,10 @@ import {
 import ApplicantRecord from "./applicantRecord.model";
 import User from "./user.model";
 
-@Table({ tableName: "reviewed_applicant_records" })
+@Table({ 
+  tableName: "reviewed_applicant_records",
+  timestamps: false
+})
 export default class ReviewedApplicantRecord extends Model {
   @ForeignKey(() => ApplicantRecord)
   @Column({ type: DataType.STRING, primaryKey: true })

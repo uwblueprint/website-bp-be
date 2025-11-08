@@ -17,7 +17,7 @@ const reviewedApplicantRecordTypes = gql`
     status: String
   }
 
-  type Mutation {
+  extend type Mutation {
     createReviewedApplicantRecord(
       input: CreateReviewedApplicantRecordInput!
     ): ReviewedApplicantRecord!
@@ -37,5 +37,5 @@ const reviewedApplicantRecordTypes = gql`
     ): [ReviewedApplicantRecord!]!
   }
 `;
-
+ 
 export default reviewedApplicantRecordTypes;
