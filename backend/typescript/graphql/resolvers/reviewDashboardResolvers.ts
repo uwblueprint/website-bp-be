@@ -1,5 +1,5 @@
 import ReviewDashboardService from "../../services/implementations/reviewDashboardService";
-import { ReviewDashboardRowDTO } from "../../types";
+import { ReviewDashboardRowDTO, ReviewedApplicantRecordDTO } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 
 const reviewDashboardService = new ReviewDashboardService();
@@ -15,6 +15,15 @@ const reviewDashboardResolvers = {
           args.pageNumber,
           args.resultsPerPage,
         );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
+  },
+  Mutation: {
+    delegateReviewers: async (): Promise<ReviewedApplicantRecordDTO[]> => {
+      try {
+        return await reviewDashboardService.delegateReviewers();
       } catch (error) {
         throw new Error(getErrorMessage(error));
       }
