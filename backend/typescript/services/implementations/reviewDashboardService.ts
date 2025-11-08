@@ -1,13 +1,19 @@
+import { Op } from "sequelize";
 import {
   PositionTitle,
   ReviewDashboardRowDTO,
   ReviewedApplicantRecordDTO,
+  EngineeringPositionTitles,
+  DesignPositionTitles,
+  ProductPositionTitles,
+  CommunityPositionTitles,
   ReviewDashboardSidePanelDTO,
 } from "../../types";
 import IReviewDashboardService from "../interfaces/IReviewDashboardService";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
 import ApplicantRecord from "../../models/applicantRecord.model";
+import User from "../../models/user.model";
 
 const Logger = logger(__filename);
 
@@ -141,10 +147,8 @@ class ReviewDashboardService implements IReviewDashboardService {
 
   async delegateReviewers(): Promise<ReviewedApplicantRecordDTO[]> {
     // NOTE: We do not have to concern ourselves with locality. That is, each user can be
-    //       assigned to the same parter every time.
+    //       assigned to the same partner every time.
 
-    const FSM = new Map<string, [number, string[]]>();
-    // maps (position title) => (current index of list, list of users with position_title)
     const delegations = new Map<string, [string, string]>();
     // maps (applicant_record_id) => pair of user_ids assigned to it
 
@@ -152,6 +156,33 @@ class ReviewDashboardService implements IReviewDashboardService {
     //   Populate the FSM
     //   NOTE: need to add a sentinel value at the end of the list if the number of user is odd.
     //         The last 'real' user will bear the burden of solo reviewing.
+
+    // Get users and group by position
+    const groups = (
+      await User.findAll({
+        where: { position: { [Op.ne]: null } },
+      })
+    ).reduce((map, user) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const pos = user.position!;
+      const arr = map.get(pos) ?? [];
+      arr.push(user.id.toString());
+      map.set(pos, arr);
+      return map;
+    }, new Map<string, string[]>());
+
+    // Build FSM
+    // maps (position title) => (current index of list, list of users with position_title)
+    const FSM = new Map<string, [number, string[]]>(
+      [
+        ...EngineeringPositionTitles,
+        ...DesignPositionTitles,
+        ...ProductPositionTitles,
+        ...CommunityPositionTitles,
+      ].map((title) => [title, [0, groups.get(title) ?? []]]),
+    );
+
+    // Modify FSM for correctness
 
     // STEP 2:
     //   Round robin with the FSM
