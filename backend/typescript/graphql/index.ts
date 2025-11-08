@@ -1,6 +1,7 @@
 import { makeExecutableSchema, gql } from "apollo-server-express";
 import { applyMiddleware } from "graphql-middleware";
 import { merge } from "lodash";
+import { GraphQLScalarType, Kind } from "graphql";
 
 import {
   isAuthorizedByEmail,
@@ -20,6 +21,8 @@ import dashboardResolvers from "./resolvers/dashboardResolvers";
 import reviewType from "./types/reviewType";
 import reviewDashboardResolvers from "./resolvers/reviewDashboardResolvers";
 import reviewDashboardType from "./types/reviewDashboardType";
+import reviewedApplicantRecordTypes from "./types/reviewedApplicantRecordTypes";
+import reviewedApplicantRecordResolvers from "./resolvers/reviewedApplicantRecordResolver";
 
 const query = gql`
   type Query {
@@ -33,10 +36,41 @@ const mutation = gql`
   }
 `;
 
+const scalarTypes = gql`
+  scalar JSON
+`;
+
+const JSONScalar = new GraphQLScalarType({
+  name: "JSON",
+  description: "JSON scalar type",
+  serialize: (value) => value,
+  parseValue: (value) => value,
+  parseLiteral: (ast) => {
+    switch (ast.kind) {
+      case Kind.STRING:
+      case Kind.BOOLEAN:
+        return ast.value;
+      case Kind.INT:
+      case Kind.FLOAT:
+        return parseFloat(ast.value);
+      case Kind.OBJECT:
+        return ast.fields.reduce((obj: any, field: any) => {
+          obj[field.name.value] = JSONScalar.parseLiteral(field.value, {});
+          return obj;
+        }, {});
+      case Kind.LIST:
+        return ast.values.map((value: any) => JSONScalar.parseLiteral(value, {}));
+      default:
+        return null;
+    }
+  },
+});
+
 const executableSchema = makeExecutableSchema({
   typeDefs: [
     query,
     mutation,
+    scalarTypes,
     authType,
     reviewType,
     entityType,
@@ -44,14 +78,19 @@ const executableSchema = makeExecutableSchema({
     userType,
     dashboardType,
     reviewDashboardType,
+    reviewedApplicantRecordTypes
   ],
   resolvers: merge(
+    {
+      JSON: JSONScalar,
+    },
     authResolvers,
     entityResolvers,
     simpleEntityResolvers,
     userResolvers,
     dashboardResolvers,
     reviewDashboardResolvers,
+    reviewedApplicantRecordResolvers,
   ),
 });
 
@@ -87,6 +126,10 @@ const graphQLMiddlewares = {
     changeSkillCategory: authorizedByAllRoles(),
     updateApplications: authorizedByAllRoles(),
     modifyFinalComments: authorizedByAllRoles(),
+    createReviewedApplicantRecord: authorizedByAllRoles(),
+    bulkCreateReviewedApplicantRecord: authorizedByAllRoles(),
+    deleteReviewedApplicantRecord: authorizedByAllRoles(),
+    bulkDeleteReviewedApplicantRecord: authorizedByAllRoles(),
     createUser: authorizedByAdmin(),
     updateUser: authorizedByAdmin(),
     deleteUserById: authorizedByAdmin(),
