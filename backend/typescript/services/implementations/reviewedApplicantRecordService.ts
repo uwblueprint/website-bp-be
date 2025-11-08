@@ -2,10 +2,11 @@ import { sequelize } from "../../models";
 import ReviewedApplicantRecord from "../../models/reviewedApplicantRecord.model";
 import { 
     ReviewedApplicantRecordDTO, 
-    CreateReviewedApplicantRecordDTO 
+    CreateReviewedApplicantRecordDTO,
+    DeleteReviewedApplicantRecord
 } from "../../types";
 
-import IReviewApplicantRecordService from "../interfaces/reviewedApplicantRecordService";
+import IReviewApplicantRecordService from "../interfaces/IReviewedApplicantRecordService";
 
 class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
 
@@ -33,7 +34,9 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
     }
 
     // Methods deleteReviewedApplicantRecord and bulkDeleteReviewedApplicantRecord would be implemented here
-    async deleteReviewedApplicantRecord(applicantRecordId: string, reviewerId: number): Promise<ReviewedApplicantRecordDTO> {
+    async deleteReviewedApplicantRecord(deleteReviewedApplicantRecord: DeleteReviewedApplicantRecord): Promise<ReviewedApplicantRecordDTO> {
+        const applicantRecordId = deleteReviewedApplicantRecord.applicantRecordId;
+        const reviewerId = deleteReviewedApplicantRecord.reviewerId;
         const record = await ReviewedApplicantRecord.findOne({ where: { applicantRecordId, reviewerId } });
 
         if (!record) {
@@ -44,17 +47,25 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
         return record.toJSON() as ReviewedApplicantRecordDTO;   
     }
 
-    async bulkDeleteReviewedApplicantRecord(applicantRecordIds: string[], reviewerId: number): Promise<ReviewedApplicantRecordDTO[]> {
+    async bulkDeleteReviewedApplicantRecord(deleteReviewedApplicantRecords: DeleteReviewedApplicantRecord[]): Promise<ReviewedApplicantRecordDTO[]> {
         const deletedRecords = await sequelize.transaction(async (t) => {
-            const records = await ReviewedApplicantRecord.findAll({
-                where: { applicantRecordId: applicantRecordIds, reviewerId },
-                transaction: t,
-            });
+            const records = await Promise.all(
+                deleteReviewedApplicantRecords.map(({ applicantRecordId, reviewerId }) =>
+                    ReviewedApplicantRecord.findOne({
+                        where: { applicantRecordId, reviewerId },
+                        transaction: t,
+                    })
+                )
+            );
 
-            if (records.length === 0) return [];
+            if (records.some((r) => !r)) {
+                throw new Error("Not all records were found, bulk delete aborted.");
+            }
 
-            await Promise.all(records.map((r) => r.destroy({ transaction: t })));
-            return records;
+            const existingRecords = records as ReviewedApplicantRecord[];
+            await Promise.all(existingRecords.map((r) => r.destroy({ transaction: t })));
+
+            return existingRecords;
         });
 
         return deletedRecords.map((r) => r.toJSON() as ReviewedApplicantRecordDTO);
