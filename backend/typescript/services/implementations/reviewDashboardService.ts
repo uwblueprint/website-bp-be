@@ -42,7 +42,7 @@ function toSidePanelDTO(model: ApplicantRecord): ReviewDashboardSidePanelDTO {
     resumeUrl: model.applicant!.resumeUrl,
     applicationStatus: model.status,
     skillCategory: model.skillCategory,
-    reviewDetails: reviewDetails,
+    reviewDetails,
   };
 }
 
@@ -103,7 +103,7 @@ class ReviewDashboardService implements IReviewDashboardService {
     try {
       const applicantRecord: ApplicantRecord | null =
         await ApplicantRecord.findOne({
-          where: { applicantId: applicantId },
+          where: { applicantId },
           attributes: { exclude: ["createdAt", "updatedAt"] },
           include: [
             {
