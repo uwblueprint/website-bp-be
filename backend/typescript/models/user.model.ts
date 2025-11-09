@@ -10,7 +10,6 @@ import {
 } from "sequelize-typescript";
 import { NonAttribute } from "sequelize";
 import { PositionTitle, PositionTitles, Role } from "../types";
-import ApplicationDashboardTable from "./applicationDashboard.model";
 import Position from "./position.model";
 import ReviewedApplicantRecord from "./reviewedApplicantRecord.model";
 
@@ -37,9 +36,6 @@ export default class User extends Model {
   @ForeignKey(() => Position)
   @Column({ type: DataType.ENUM(...Object.values(PositionTitles)) })
   position?: PositionTitle;
-
-  @HasMany(() => ApplicationDashboardTable)
-  applicationDashboards?: ApplicationDashboardTable[];
 
   @HasMany(() => ReviewedApplicantRecord, {
     foreignKey: "reviewerId",
