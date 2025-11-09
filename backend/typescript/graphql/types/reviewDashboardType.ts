@@ -24,6 +24,7 @@ const reviewDashboardType = gql`
     desireToLearn: Int
     skill: Int
     skillCategory: String
+    comments: String
   }
 
   type ReviewDetails {
@@ -39,7 +40,7 @@ const reviewDashboardType = gql`
     program: String!
     resumeUrl: String!
     applicationStatus: String!
-    skillCategory: String!
+    skillCategory: String
     reviewDetails: [ReviewDetails!]!
   }
 

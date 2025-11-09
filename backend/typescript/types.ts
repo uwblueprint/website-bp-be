@@ -198,6 +198,7 @@ export type Review = {
   desireToLearn?: number;
   skill?: number;
   skillCategory?: SkillCategory;
+  comments?: string;
 };
 
 export type ReviewedApplicantRecordDTO = {
@@ -222,7 +223,7 @@ export type ReviewDashboardSidePanelDTO = {
   program: string;
   resumeUrl: string;
   applicationStatus: ApplicationStatus;
-  skillCategory: SkillCategory;
+  skillCategory: SkillCategory | null;
   reviewDetails: ReviewDetails[];
 };
 

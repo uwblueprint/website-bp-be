@@ -41,7 +41,7 @@ function toSidePanelDTO(model: ApplicantRecord): ReviewDashboardSidePanelDTO {
     program: model.applicant!.program,
     resumeUrl: model.applicant!.resumeUrl,
     applicationStatus: model.status,
-    skillCategory: model.skillCategory || "Junior",   // seems skill category can be null in the applicant record db right now
+    skillCategory: model.skillCategory,
     reviewDetails: reviewDetails,
   };
 }
