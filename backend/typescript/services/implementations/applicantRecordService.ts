@@ -22,7 +22,7 @@ class ApplicantRecordService implements IApplicantRecordService {
       return {
         id: String(applicantRecord.id),
         applicantId: String(applicantRecord.applicantId),
-        position: applicantRecord.position as PositionTitle,W
+        position: applicantRecord.position as PositionTitle,
         roleSpecificQuestions: applicantRecord.roleSpecificQuestions,
         choice: applicantRecord.choice,
         status: applicantRecord.status,
