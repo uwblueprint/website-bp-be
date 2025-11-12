@@ -16,13 +16,14 @@ import simpleEntityResolvers from "./resolvers/simpleEntityResolvers";
 import simpleEntityType from "./types/simpleEntityType";
 import userResolvers from "./resolvers/userResolvers";
 import userType from "./types/userType";
-import dashboardType from "./types/dashboardType";
-import dashboardResolvers from "./resolvers/dashboardResolvers";
-import reviewType from "./types/reviewType";
 import reviewDashboardResolvers from "./resolvers/reviewDashboardResolvers";
 import reviewDashboardType from "./types/reviewDashboardType";
 import reviewedApplicantRecordTypes from "./types/reviewedApplicantRecordTypes";
 import reviewedApplicantRecordResolvers from "./resolvers/reviewedApplicantRecordResolver";
+import adminCommentResolvers from "./resolvers/adminCommentsResolvers";
+import adminCommentType from "./types/adminCommentsType";
+import reviewPageType from "./types/reviewPageType";
+import reviewPageResolvers from "./resolvers/reviewPageResolvers";
 
 const query = gql`
   type Query {
@@ -72,13 +73,13 @@ const executableSchema = makeExecutableSchema({
     mutation,
     scalarTypes,
     authType,
-    reviewType,
     entityType,
     simpleEntityType,
     userType,
-    dashboardType,
     reviewDashboardType,
     reviewedApplicantRecordTypes
+    adminCommentType,
+    reviewPageType,
   ],
   resolvers: merge(
     {
@@ -88,9 +89,10 @@ const executableSchema = makeExecutableSchema({
     entityResolvers,
     simpleEntityResolvers,
     userResolvers,
-    dashboardResolvers,
     reviewDashboardResolvers,
     reviewedApplicantRecordResolvers,
+    adminCommentResolvers,
+    reviewPageResolvers,
   ),
 });
 
@@ -104,12 +106,6 @@ const graphQLMiddlewares = {
     entities: authorizedByAllRoles(),
     simpleEntity: authorizedByAllRoles(),
     simpleEntities: authorizedByAllRoles(),
-    dashboardById: authorizedByAllRoles(),
-    applicationsByRole: authorizedByAllRoles(),
-    applicationsBySecondChoiceRole: authorizedByAllRoles(),
-    applicationsById: authorizedByAllRoles(),
-    applicationTable: authorizedByAllRoles(),
-    secondChoiceRoleApplicationTable: authorizedByAllRoles(),
     userById: authorizedByAdmin(),
     userByEmail: authorizedByAdmin(),
     login: authorizedByAdmin(),
@@ -137,6 +133,9 @@ const graphQLMiddlewares = {
     logout: isAuthorizedByUserId("userId"),
     resetPassword: isAuthorizedByEmail("email"),
     sendSignInLink: authorizedByAllRoles(),
+    createAdminComment: authorizedByAdmin(),
+    updateAdminComment: authorizedByAdmin(),
+    deleteAdminCommentById: authorizedByAdmin(),
   },
 };
 
