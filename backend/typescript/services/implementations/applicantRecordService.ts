@@ -15,7 +15,9 @@ class ApplicantRecordService implements IApplicantRecordService {
     try {
       const applicantRecord = await ApplicantRecord.findByPk(applicantRecordId);
       if (!applicantRecord) {
-        throw new Error(`ApplicantRecord with id ${applicantRecordId} not found.`);
+        throw new Error(
+          `ApplicantRecord with id ${applicantRecordId} not found.`,
+        );
       }
       applicantRecord.isApplicantFlagged = flagValue;
       await applicantRecord.save();
@@ -32,7 +34,9 @@ class ApplicantRecordService implements IApplicantRecordService {
       };
     } catch (error: unknown) {
       Logger.error(
-        `Failed to set applicant record flag. Reason = ${getErrorMessage(error)}`,
+        `Failed to set applicant record flag. Reason = ${getErrorMessage(
+          error,
+        )}`,
       );
       throw error;
     }

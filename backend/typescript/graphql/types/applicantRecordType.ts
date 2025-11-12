@@ -14,7 +14,10 @@ const applicantRecordType = gql`
   }
 
   extend type Mutation {
-    setApplicantRecordFlag(applicantRecordId: String!, flagValue: Boolean!): ApplicantRecordDTO!
+    setApplicantRecordFlag(
+      applicantRecordId: String!
+      flagValue: Boolean!
+    ): ApplicantRecordDTO!
   }
 `;
 
