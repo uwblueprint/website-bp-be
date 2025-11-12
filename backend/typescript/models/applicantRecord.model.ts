@@ -27,7 +27,7 @@ export default class ApplicantRecord extends Model {
     unique: true,
     autoIncrement: true,
   })
-  id!: number;
+  id!: string;
 
   @ForeignKey(() => Applicant)
   @Column({ type: DataType.INTEGER })
