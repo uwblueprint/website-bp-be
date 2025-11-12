@@ -149,7 +149,7 @@ class ReviewDashboardService implements IReviewDashboardService {
     // NOTE: We do not have to concern ourselves with locality. That is, each user can be
     //       assigned to the same partner every time.
 
-    const delegations = new Map<string, [string, string]>();
+    const delegations = new Map<string, [string, string | undefined]>();
     // maps (applicant_record_id) => pair of user_ids assigned to it
 
     // STEP 1:
@@ -160,6 +160,7 @@ class ReviewDashboardService implements IReviewDashboardService {
     // Get users and group by position
     const groups = (
       await User.findAll({
+        attributes: { exclude: ["createdAt", "updatedAt"] },
         where: { position: { [Op.ne]: null } },
       })
     ).reduce((map, user) => {
@@ -173,7 +174,7 @@ class ReviewDashboardService implements IReviewDashboardService {
 
     // Build FSM
     // maps (position title) => (current index of list, list of users with position_title)
-    const FSM = new Map<string, [number, string[]]>(
+    const FSM = new Map<string, [number, (string | undefined)[]]>(
       [
         ...EngineeringPositionTitles,
         ...DesignPositionTitles,
@@ -182,7 +183,17 @@ class ReviewDashboardService implements IReviewDashboardService {
       ].map((title) => [title, [0, groups.get(title) ?? []]]),
     );
 
-    // Modify FSM for correctness
+    // Validate FSM for correctness
+    Array.from(FSM.entries()).forEach(([title, [, userIds]]) => {
+      if (userIds.length === 0) {
+        // no users with this position
+        throw new Error(`Invalid amount of users with position ${title}.`);
+      }
+      if (userIds.length % 2 !== 0) {
+        // sentinel value of undefined at the end
+        userIds.push(undefined);
+      }
+    });
 
     // STEP 2:
     //   Round robin with the FSM
@@ -203,6 +214,31 @@ class ReviewDashboardService implements IReviewDashboardService {
       delegations[a.id] = make_pair(id1, id2);
     }
      */
+    const applicantRecords = await ApplicantRecord.findAll({
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+    });
+    applicantRecords.forEach((record) => {
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      const [count, userIds] = FSM.get(record.position)!;
+      let newCount = count;
+      const assignedReviewer1 = FSM.get(record.position)![1][newCount];
+      newCount++;
+      newCount %= FSM.get(record.position)![1].length;
+      const assignedReviewer2 = FSM.get(record.position)![1][newCount];
+      newCount++;
+      newCount %= FSM.get(record.position)![1].length;
+      FSM.set(record.position, [newCount, userIds]);
+      delegations.set(record.id, [assignedReviewer1!, assignedReviewer2]);
+      /* eslint-enable @typescript-eslint/no-non-null-assertion */
+      if (record.position === "Developer") {
+        console.log(
+          `Assigned reviewers for applicant ${record.id} (${record.position}):`,
+          assignedReviewer1,
+          "and",
+          assignedReviewer2,
+        );
+      }
+    });
 
     // STEP 3:
     //   Batch the delegations into ReviewedApplicantRecords
