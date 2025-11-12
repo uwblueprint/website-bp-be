@@ -8,12 +8,10 @@ const reviewPageResolvers = {
   Query: {
     reviewApplicantPage: async (
       _parent: undefined,
-      args: { reviewedApplicantRecordId: string },
+      args: { applicantRecordId: string },
     ): Promise<ApplicationDTO> => {
       try {
-        return await reviewPageService.getReviewPage(
-          args.reviewedApplicantRecordId,
-        );
+        return await reviewPageService.getReviewPage(args.applicantRecordId);
       } catch (error) {
         throw new Error(getErrorMessage(error));
       }

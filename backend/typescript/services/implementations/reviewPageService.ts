@@ -39,13 +39,11 @@ function toDTO(model: Applicant): ApplicationDTO {
 
 class ReviewPageService implements IReviewPageService {
   /* eslint-disable class-methods-use-this */
-  async getReviewPage(
-    reviewedApplicantRecordId: string,
-  ): Promise<ApplicationDTO> {
+  async getReviewPage(applicantRecordId: string): Promise<ApplicationDTO> {
     try {
       const applicantRecord: ApplicantRecord | null =
         await ApplicantRecord.findOne({
-          where: { id: reviewedApplicantRecordId },
+          where: { id: applicantRecordId },
           attributes: { exclude: ["createdAt", "updatedAt"] },
         });
       if (!applicantRecord)

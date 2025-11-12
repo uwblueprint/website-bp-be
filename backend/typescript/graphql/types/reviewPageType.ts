@@ -26,7 +26,7 @@ const reviewPageType = gql`
   }
 
   extend type Query {
-    reviewApplicantPage(reviewedApplicantRecordId: String!): ApplicationDTO!
+    reviewApplicantPage(applicantRecordId: String!): ApplicationDTO!
   }
 `;
 
