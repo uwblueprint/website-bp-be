@@ -33,14 +33,13 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
         );
     }
 
-    // Methods deleteReviewedApplicantRecord and bulkDeleteReviewedApplicantRecord would be implemented here
     async deleteReviewedApplicantRecord(deleteReviewedApplicantRecord: DeleteReviewedApplicantRecord): Promise<ReviewedApplicantRecordDTO> {
         const applicantRecordId = deleteReviewedApplicantRecord.applicantRecordId;
         const reviewerId = deleteReviewedApplicantRecord.reviewerId;
         const record = await ReviewedApplicantRecord.findOne({ where: { applicantRecordId, reviewerId } });
 
         if (!record) {
-            throw new Error("ReviewedApplicantRecord not found");
+            throw new Error("ReviewedApplicantRecord not found, delete failed");
         }
 
         await record.destroy();
@@ -59,7 +58,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
             );
 
             if (records.some((r) => !r)) {
-                throw new Error("Not all records were found, bulk delete aborted.");
+                throw new Error("Not all records were found, bulk delete failed");
             }
 
             const existingRecords = records as ReviewedApplicantRecord[];
