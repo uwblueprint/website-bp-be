@@ -93,10 +93,10 @@ export type ApplicationStatus =
   | "Applied"
   | "In Review"
   | "Reviewed"
-  | "Interview"
-  | "Interview Complete"
+  | "Selected"
+  | "Interviewed"
   | "Offer"
-  | "Not Considered";
+  | "Rejected";
 
 export type SkillCategory = "Junior" | "Intermediate" | "Senior";
 
