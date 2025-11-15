@@ -1,7 +1,7 @@
 import { 
     ReviewedApplicantRecordDTO, 
     CreateReviewedApplicantRecordDTO,
-    DeleteReviewedApplicantRecord
+    DeleteReviewedApplicantRecordDTO
 } from "../../types";
 
 interface IReviewApplicantRecordService {
@@ -27,7 +27,7 @@ interface IReviewApplicantRecordService {
    * @Param reviewerId the ID of the reviewer
    */
   deleteReviewedApplicantRecord(
-    deleteReviewedApplicantRecord: DeleteReviewedApplicantRecord
+    deleteReviewedApplicantRecord: DeleteReviewedApplicantRecordDTO
   ): Promise<ReviewedApplicantRecordDTO>;
 
   /**
@@ -35,7 +35,7 @@ interface IReviewApplicantRecordService {
    * @Param deleteReviewedApplicantRecord array of data to delete reviewed applicant records
    */
   bulkDeleteReviewedApplicantRecord(
-    deleteReviewedApplicantRecords: DeleteReviewedApplicantRecord[]
+    deleteReviewedApplicantRecords: DeleteReviewedApplicantRecordDTO[]
   ): Promise<ReviewedApplicantRecordDTO[]>;
 }
 
