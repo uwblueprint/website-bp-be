@@ -33,7 +33,6 @@ export type UserDTO = {
   role: Role;
 };
 
-// DEPRECATED - TO BE REMOVED AT THE END OF S25
 export type ApplicationDTO = {
   id: number;
   academicOrCoop: string;
@@ -55,7 +54,7 @@ export type ApplicationDTO = {
   secondChoiceStatus: string;
   term: string;
   timesApplied: string;
-  timestamp: bigint;
+  timestamp?: bigint;
 };
 
 export type ApplicantDTO = {
