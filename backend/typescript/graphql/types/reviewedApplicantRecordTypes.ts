@@ -1,10 +1,32 @@
 import { gql } from "apollo-server-express";
 
 const reviewedApplicantRecordTypes = gql`
+  enum SkillCategory {
+    JUNIOR
+    INTERMEDIATE
+    SENIOR
+  }
+
+  type Review {
+    passionFSG: Int
+    teamPlayer: Int
+    desireToLearn: Int
+    skill: Int
+    skillCategory: SkillCategory
+  }
+
+  input ReviewInput {
+    passionFSG: Int
+    teamPlayer: Int
+    desireToLearn: Int
+    skill: Int
+    skillCategory: SkillCategory
+  }
+
   type ReviewedApplicantRecord {
     applicantRecordId: ID!
     reviewerId: Int!
-    review: JSON
+    review: Review
     status: String
     score: Int
     reviewerHasConflict: Boolean
@@ -13,7 +35,7 @@ const reviewedApplicantRecordTypes = gql`
   input CreateReviewedApplicantRecordInput {
     applicantRecordId: ID!
     reviewerId: Int!
-    review: JSON
+    review: ReviewInput
     status: String
   }
 
