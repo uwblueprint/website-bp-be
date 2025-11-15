@@ -1,8 +1,8 @@
 import ReviewedApplicantRecordService from "../../services/implementations/reviewedApplicantRecordService";
-import { 
-  ReviewedApplicantRecordDTO, 
+import {
+  ReviewedApplicantRecordDTO,
   CreateReviewedApplicantRecordDTO,
-  DeleteReviewedApplicantRecordDTO 
+  DeleteReviewedApplicantRecordDTO,
 } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 
@@ -15,7 +15,9 @@ const reviewedApplicantRecordResolvers = {
       args: { input: CreateReviewedApplicantRecordDTO },
     ): Promise<ReviewedApplicantRecordDTO> => {
       try {
-        return await reviewedApplicantRecordService.createReviewedApplicantRecord(args.input);
+        return await reviewedApplicantRecordService.createReviewedApplicantRecord(
+          args.input,
+        );
       } catch (error) {
         throw new Error(getErrorMessage(error));
       }
@@ -26,7 +28,9 @@ const reviewedApplicantRecordResolvers = {
       args: { inputs: CreateReviewedApplicantRecordDTO[] },
     ): Promise<ReviewedApplicantRecordDTO[]> => {
       try {
-        return await reviewedApplicantRecordService.bulkCreateReviewedApplicantRecord(args.inputs);
+        return await reviewedApplicantRecordService.bulkCreateReviewedApplicantRecord(
+          args.inputs,
+        );
       } catch (error) {
         throw new Error(getErrorMessage(error));
       }
@@ -38,7 +42,7 @@ const reviewedApplicantRecordResolvers = {
     ): Promise<ReviewedApplicantRecordDTO> => {
       try {
         return await reviewedApplicantRecordService.deleteReviewedApplicantRecord(
-          args.input
+          args.input,
         );
       } catch (error) {
         throw new Error(getErrorMessage(error));
@@ -51,7 +55,7 @@ const reviewedApplicantRecordResolvers = {
     ): Promise<ReviewedApplicantRecordDTO[]> => {
       try {
         return await reviewedApplicantRecordService.bulkDeleteReviewedApplicantRecord(
-          args.inputs
+          args.inputs,
         );
       } catch (error) {
         throw new Error(getErrorMessage(error));

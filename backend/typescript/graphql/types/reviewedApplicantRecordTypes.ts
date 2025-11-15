@@ -62,5 +62,5 @@ const reviewedApplicantRecordTypes = gql`
     ): [ReviewedApplicantRecord!]!
   }
 `;
- 
+
 export default reviewedApplicantRecordTypes;
