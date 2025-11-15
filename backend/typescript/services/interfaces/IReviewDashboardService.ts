@@ -1,4 +1,7 @@
-import { ReviewDashboardRowDTO } from "../../types";
+import {
+  ReviewDashboardRowDTO,
+  ReviewDashboardSidePanelDTO,
+} from "../../types";
 
 interface IReviewDashboardService {
   /**
@@ -10,6 +13,14 @@ interface IReviewDashboardService {
     page: number,
     resultsPerPage: number,
   ): Promise<ReviewDashboardRowDTO[]>;
+
+  /**
+   * Fetch data that can fill out the review dashboard side panel for an applicant
+   * @Param applicantId the ID of the applicant
+   */
+  getReviewDashboardSidePanel(
+    applicantId: string,
+  ): Promise<ReviewDashboardSidePanelDTO>;
 }
 
 export default IReviewDashboardService;
