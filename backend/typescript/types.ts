@@ -91,7 +91,7 @@ export type ApplicantRecordDTO = {
 
 export type ApplicationStatus =
   | "Applied"
-  | "In Review"
+  | "InReview"
   | "Reviewed"
   | "Selected"
   | "Interviewed"
