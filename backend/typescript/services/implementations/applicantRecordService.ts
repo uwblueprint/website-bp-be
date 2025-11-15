@@ -1,9 +1,14 @@
-import { ApplicantRecordDTO, PositionTitle, ApplicationStatus } from "../../types";
+import {
+  ApplicantRecordDTO,
+  PositionTitle,
+  ApplicationStatus,
+} from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
 import ApplicantRecord from "../../models/applicantRecord.model";
 import IApplicantRecordService from "../interfaces/applicantRecordService";
 import { sequelize } from "../../models";
+
 const Logger = logger(__filename);
 
 function toDTO(applicantRecord: ApplicantRecord): ApplicantRecordDTO {
@@ -20,7 +25,9 @@ function toDTO(applicantRecord: ApplicantRecord): ApplicantRecordDTO {
   };
 }
 
-export const getApplicantRecord = async (applicantRecordId: string): Promise<ApplicantRecord> => {
+export const getApplicantRecord = async (
+  applicantRecordId: string,
+): Promise<ApplicantRecord> => {
   const applicantRecord = await ApplicantRecord.findByPk(applicantRecordId);
   if (!applicantRecord) {
     throw new Error(`ApplicantRecord with id ${applicantRecordId} not found.`);
@@ -42,7 +49,9 @@ class ApplicantRecordService implements IApplicantRecordService {
       return toDTO(applicantRecord);
     } catch (error: unknown) {
       Logger.error(
-        `Failed to update applicant record status. Reason = ${getErrorMessage(error)}`,
+        `Failed to update applicant record status. Reason = ${getErrorMessage(
+          error,
+        )}`,
       );
       throw error;
     }
@@ -54,19 +63,22 @@ class ApplicantRecordService implements IApplicantRecordService {
   ): Promise<ApplicantRecordDTO[]> {
     const transaction = await sequelize.transaction();
     try {
-      const updatedRecords: ApplicantRecordDTO[] = [];
-      for (const id of applicantRecordIds) {
-        const applicantRecord = await getApplicantRecord(id);
-        applicantRecord.status = status;
-        await applicantRecord.save({ transaction });
-        updatedRecords.push(toDTO(applicantRecord));
-      }
+      const updatedRecords = await Promise.all(
+        applicantRecordIds.map(async (id) => {
+          const applicantRecord = await getApplicantRecord(id);
+          applicantRecord.status = status;
+          await applicantRecord.save({ transaction });
+          return toDTO(applicantRecord);
+        }),
+      );
       await transaction.commit();
       return updatedRecords;
     } catch (error: unknown) {
       await transaction.rollback();
       Logger.error(
-        `Failed to update applicant record statuses. Reason = ${getErrorMessage(error)}`,
+        `Failed to update applicant record statuses. Reason = ${getErrorMessage(
+          error,
+        )}`,
       );
       throw error;
     }

@@ -4,7 +4,7 @@ interface IApplicantRecordService {
   updateApplicantStatus(
     applicantRecordId: string,
     status: ApplicationStatus,
-   ): Promise<ApplicantRecordDTO>;
+  ): Promise<ApplicantRecordDTO>;
   bulkUpdateApplicantStatus(
     applicantRecordIds: string[],
     status: ApplicationStatus,
