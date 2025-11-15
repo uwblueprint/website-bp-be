@@ -1,4 +1,4 @@
-import { PositionTitle, ReviewDashboardRowDTO } from "../../types";
+import { ReviewDashboardRowDTO } from "../../types";
 import IReviewDashboardService from "../interfaces/IReviewDashboardService";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
@@ -10,7 +10,7 @@ function toDTO(model: ApplicantRecord): ReviewDashboardRowDTO {
   return {
     firstName: model.applicant!.firstName,
     lastName: model.applicant!.lastName,
-    position: model.position as PositionTitle,
+    position: model.position,
     timesApplied: model.applicant!.timesApplied.toString(),
     applicationStatus: model.status,
     choice: model.choice,
