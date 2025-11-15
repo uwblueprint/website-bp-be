@@ -215,10 +215,11 @@ export type CreateReviewedApplicantRecordDTO = {
   reviewerHasConflict?: boolean;
 }
 
-export type DeleteReviewedApplicantRecord = {
+export type DeleteReviewedApplicantRecordDTO = {
   applicantRecordId: string;
   reviewerId: number;
 }
+
 export type AdminCommentDTO = {
   id: string;
   userId: number;
