@@ -1,7 +1,4 @@
-import {
-  ApplicationDTO,
-  ReviewedApplicantsDTO,
-} from "../../types";
+import { ApplicationDTO, ReviewedApplicantsDTO } from "../../types";
 import IReviewPageService from "../interfaces/IReviewPageService";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
