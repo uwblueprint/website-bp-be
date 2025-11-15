@@ -35,8 +35,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
   async deleteReviewedApplicantRecord(
     deleteReviewedApplicantRecord: DeleteReviewedApplicantRecordDTO,
   ): Promise<ReviewedApplicantRecordDTO> {
-    const applicantRecordId = deleteReviewedApplicantRecord.applicantRecordId;
-    const reviewerId = deleteReviewedApplicantRecord.reviewerId;
+    const { applicantRecordId, reviewerId } = deleteReviewedApplicantRecord;
     const record = await ReviewedApplicantRecord.findOne({
       where: { applicantRecordId, reviewerId },
     });
