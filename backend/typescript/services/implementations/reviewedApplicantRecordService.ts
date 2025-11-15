@@ -3,7 +3,7 @@ import ReviewedApplicantRecord from "../../models/reviewedApplicantRecord.model"
 import { 
     ReviewedApplicantRecordDTO, 
     CreateReviewedApplicantRecordDTO,
-    DeleteReviewedApplicantRecord
+    DeleteReviewedApplicantRecordDTO
 } from "../../types";
 
 import IReviewApplicantRecordService from "../interfaces/IReviewedApplicantRecordService";
@@ -33,7 +33,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
         );
     }
 
-    async deleteReviewedApplicantRecord(deleteReviewedApplicantRecord: DeleteReviewedApplicantRecord): Promise<ReviewedApplicantRecordDTO> {
+    async deleteReviewedApplicantRecord(deleteReviewedApplicantRecord: DeleteReviewedApplicantRecordDTO): Promise<ReviewedApplicantRecordDTO> {
         const applicantRecordId = deleteReviewedApplicantRecord.applicantRecordId;
         const reviewerId = deleteReviewedApplicantRecord.reviewerId;
         const record = await ReviewedApplicantRecord.findOne({ where: { applicantRecordId, reviewerId } });
@@ -46,7 +46,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
         return record.toJSON() as ReviewedApplicantRecordDTO;   
     }
 
-    async bulkDeleteReviewedApplicantRecord(deleteReviewedApplicantRecords: DeleteReviewedApplicantRecord[]): Promise<ReviewedApplicantRecordDTO[]> {
+    async bulkDeleteReviewedApplicantRecord(deleteReviewedApplicantRecords: DeleteReviewedApplicantRecordDTO[]): Promise<ReviewedApplicantRecordDTO[]> {
         const deletedRecords = await sequelize.transaction(async (t) => {
             const records = await Promise.all(
                 deleteReviewedApplicantRecords.map(({ applicantRecordId, reviewerId }) =>

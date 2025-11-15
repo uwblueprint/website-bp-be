@@ -2,7 +2,7 @@ import ReviewedApplicantRecordService from "../../services/implementations/revie
 import { 
   ReviewedApplicantRecordDTO, 
   CreateReviewedApplicantRecordDTO,
-  DeleteReviewedApplicantRecord 
+  DeleteReviewedApplicantRecordDTO 
 } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 
@@ -34,7 +34,7 @@ const reviewedApplicantRecordResolvers = {
 
     deleteReviewedApplicantRecord: async (
       _parent: undefined,
-      args: { input: DeleteReviewedApplicantRecord },
+      args: { input: DeleteReviewedApplicantRecordDTO },
     ): Promise<ReviewedApplicantRecordDTO> => {
       try {
         return await reviewedApplicantRecordService.deleteReviewedApplicantRecord(
@@ -47,7 +47,7 @@ const reviewedApplicantRecordResolvers = {
 
     bulkDeleteReviewedApplicantRecord: async (
       _parent: undefined,
-      args: { inputs: DeleteReviewedApplicantRecord[] },
+      args: { inputs: DeleteReviewedApplicantRecordDTO[] },
     ): Promise<ReviewedApplicantRecordDTO[]> => {
       try {
         return await reviewedApplicantRecordService.bulkDeleteReviewedApplicantRecord(
