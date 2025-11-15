@@ -9,6 +9,7 @@ import {
 import IReviewApplicantRecordService from "../interfaces/IReviewedApplicantRecordService";
 
 class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
+  /* eslint-disable class-methods-use-this */
   async createReviewedApplicantRecord(
     dto: CreateReviewedApplicantRecordDTO,
   ): Promise<ReviewedApplicantRecordDTO> {
@@ -16,6 +17,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
     return record.toJSON() as ReviewedApplicantRecordDTO;
   }
 
+  /* eslint-disable class-methods-use-this */
   async bulkCreateReviewedApplicantRecord(
     createReviewedApplicantRecordDTOs: CreateReviewedApplicantRecordDTO[],
   ): Promise<ReviewedApplicantRecordDTO[]> {
@@ -32,6 +34,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
     );
   }
 
+  /* eslint-disable class-methods-use-this */
   async deleteReviewedApplicantRecord(
     deleteReviewedApplicantRecord: DeleteReviewedApplicantRecordDTO,
   ): Promise<ReviewedApplicantRecordDTO> {
@@ -48,6 +51,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
     return record.toJSON() as ReviewedApplicantRecordDTO;
   }
 
+  /* eslint-disable class-methods-use-this */
   async bulkDeleteReviewedApplicantRecord(
     deleteReviewedApplicantRecords: DeleteReviewedApplicantRecordDTO[],
   ): Promise<ReviewedApplicantRecordDTO[]> {
