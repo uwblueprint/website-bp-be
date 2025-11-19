@@ -182,14 +182,11 @@ export type ProductPositionTitle = (typeof ProductPositionTitles)[number];
 export type CommunityPositionTitle = (typeof CommunityPositionTitles)[number];
 export type PositionTitle = (typeof PositionTitles)[number];
 
-export enum ReviewStatusEnum {
-  TODO = "Todo",
-  IN_PROGRESS = "In Progress",
-  DONE = "Done",
-  CONFLICT = "Conflict",
-}
-
-export type ReviewStatus = `${ReviewStatusEnum}`;
+export type ReviewStatus =
+  | "NeedsReview"
+  | "InProgress"
+  | "Done"
+  | "ConflictReported";
 
 export type Review = {
   passionFSG?: number;
