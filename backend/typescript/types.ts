@@ -77,7 +77,7 @@ export type ApplicantDTO = {
 };
 
 export type ApplicantRecordDTO = {
-  id: number;
+  id: string;
   applicantId: string;
   position: string;
   roleSpecificQuestions: string[];
@@ -85,6 +85,7 @@ export type ApplicantRecordDTO = {
   status: ApplicationStatus;
   skillCategory?: SkillCategory;
   combined_score?: number | null;
+  isApplicantFlagged: boolean;
 };
 
 export type ApplicationStatus =

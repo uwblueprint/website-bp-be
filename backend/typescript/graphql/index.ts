@@ -19,6 +19,8 @@ import reviewDashboardResolvers from "./resolvers/reviewDashboardResolvers";
 import reviewDashboardType from "./types/reviewDashboardType";
 import adminCommentResolvers from "./resolvers/adminCommentsResolvers";
 import adminCommentType from "./types/adminCommentsType";
+import applicantRecordResolvers from "./resolvers/applicantRecordResolvers";
+import applicantRecordType from "./types/applicantRecordType";
 import reviewPageType from "./types/reviewPageType";
 import reviewPageResolvers from "./resolvers/reviewPageResolvers";
 
@@ -44,6 +46,7 @@ const executableSchema = makeExecutableSchema({
     userType,
     reviewDashboardType,
     adminCommentType,
+    applicantRecordType,
     reviewPageType,
   ],
   resolvers: merge(
@@ -53,6 +56,7 @@ const executableSchema = makeExecutableSchema({
     userResolvers,
     reviewDashboardResolvers,
     adminCommentResolvers,
+    applicantRecordResolvers,
     reviewPageResolvers,
   ),
 });
