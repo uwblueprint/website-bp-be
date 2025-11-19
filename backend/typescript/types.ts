@@ -213,12 +213,12 @@ export type CreateReviewedApplicantRecordDTO = {
   reviewerId: number;
   review?: Review;
   reviewerHasConflict?: boolean;
-}
+};
 
 export type DeleteReviewedApplicantRecordDTO = {
   applicantRecordId: string;
   reviewerId: number;
-}
+};
 
 export type AdminCommentDTO = {
   id: string;

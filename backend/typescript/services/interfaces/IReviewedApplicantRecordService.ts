@@ -1,7 +1,7 @@
-import { 
-    ReviewedApplicantRecordDTO, 
-    CreateReviewedApplicantRecordDTO,
-    DeleteReviewedApplicantRecordDTO
+import {
+  ReviewedApplicantRecordDTO,
+  CreateReviewedApplicantRecordDTO,
+  DeleteReviewedApplicantRecordDTO,
 } from "../../types";
 
 interface IReviewApplicantRecordService {
@@ -10,7 +10,7 @@ interface IReviewApplicantRecordService {
    * @Param createReviewedApplicantRecordDTO data to create reviewed applicant record
    */
   createReviewedApplicantRecord(
-    createReviewedApplicantRecordDTO: CreateReviewedApplicantRecordDTO
+    createReviewedApplicantRecordDTO: CreateReviewedApplicantRecordDTO,
   ): Promise<ReviewedApplicantRecordDTO>;
 
   /**
@@ -18,7 +18,7 @@ interface IReviewApplicantRecordService {
    * @Param createReviewedApplicantRecordDTOs array of data to create reviewed applicant records
    */
   bulkCreateReviewedApplicantRecord(
-    createReviewedApplicantRecordDTOs: CreateReviewedApplicantRecordDTO[]
+    createReviewedApplicantRecordDTOs: CreateReviewedApplicantRecordDTO[],
   ): Promise<ReviewedApplicantRecordDTO[]>;
 
   /**
@@ -27,7 +27,7 @@ interface IReviewApplicantRecordService {
    * @Param reviewerId the ID of the reviewer
    */
   deleteReviewedApplicantRecord(
-    deleteReviewedApplicantRecord: DeleteReviewedApplicantRecordDTO
+    deleteReviewedApplicantRecord: DeleteReviewedApplicantRecordDTO,
   ): Promise<ReviewedApplicantRecordDTO>;
 
   /**
@@ -35,7 +35,7 @@ interface IReviewApplicantRecordService {
    * @Param deleteReviewedApplicantRecord array of data to delete reviewed applicant records
    */
   bulkDeleteReviewedApplicantRecord(
-    deleteReviewedApplicantRecords: DeleteReviewedApplicantRecordDTO[]
+    deleteReviewedApplicantRecords: DeleteReviewedApplicantRecordDTO[],
   ): Promise<ReviewedApplicantRecordDTO[]>;
 }
 
