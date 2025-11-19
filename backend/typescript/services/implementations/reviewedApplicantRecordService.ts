@@ -1,9 +1,11 @@
 import { sequelize } from "../../models";
 import ReviewedApplicantRecord from "../../models/reviewedApplicantRecord.model";
+import ApplicantRecord from "../../models/applicantRecord.model";
 import {
   ReviewedApplicantRecordDTO,
   CreateReviewedApplicantRecordDTO,
   DeleteReviewedApplicantRecordDTO,
+  UpdateReviewedApplicantRecordDTO,
 } from "../../types";
 
 import IReviewApplicantRecordService from "../interfaces/IReviewedApplicantRecordService";
@@ -79,6 +81,85 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
     });
 
     return deletedRecords.map((r) => r.toJSON() as ReviewedApplicantRecordDTO);
+  }
+
+  /* eslint-disable class-methods-use-this */
+  async updateReviewedApplicantRecord({
+    applicantRecordId,
+    reviewerId,
+    review,
+    status,
+  }: UpdateReviewedApplicantRecordDTO): Promise<ReviewedApplicantRecordDTO> {
+    const updatedRecord = await sequelize.transaction(async (t) => {
+      const reviewedRecord = await ReviewedApplicantRecord.findOne({
+        where: { applicantRecordId, reviewerId },
+        transaction: t,
+      });
+
+      if (!reviewedRecord) {
+        throw new Error(
+          `ReviewedApplicantRecord not found for applicantRecordId: ${applicantRecordId} and reviewerId: ${reviewerId}`,
+        );
+      }
+
+      const oldReviewedScore = reviewedRecord.score || 0;
+
+      if (review !== undefined) {
+        reviewedRecord.review = {
+          ...reviewedRecord.review,
+          ...review,
+        };
+
+        const { passionFSG, teamPlayer, desireToLearn, skill } =
+          reviewedRecord.review;
+
+        if (
+          passionFSG === undefined ||
+          teamPlayer === undefined ||
+          desireToLearn === undefined ||
+          skill === undefined
+        ) {
+          throw new Error(
+            "Invalid review update: All four score fields (passionFSG, teamPlayer, desireToLearn, skill) must be present after the update",
+          );
+        }
+
+        reviewedRecord.score = passionFSG + teamPlayer + desireToLearn + skill;
+
+        if (review.skillCategory !== undefined) {
+          reviewedRecord.skillCategory = review.skillCategory;
+        }
+      }
+
+      if (status !== undefined) {
+        reviewedRecord.status = status;
+      }
+
+      await reviewedRecord.save({ transaction: t });
+
+      const newReviewedScore = reviewedRecord.score || 0;
+
+      const applicantRecord = await ApplicantRecord.findOne({
+        where: { id: applicantRecordId },
+        transaction: t,
+      });
+
+      if (!applicantRecord) {
+        throw new Error(
+          `ApplicantRecord not found for applicantRecordId: ${applicantRecordId}`,
+        );
+      }
+
+      const oldCombinedScore = applicantRecord.combined_score || 0;
+      applicantRecord.combined_score =
+        oldCombinedScore - oldReviewedScore + newReviewedScore;
+
+      await applicantRecord.save({ transaction: t });
+
+      return reviewedRecord;
+    });
+
+    return updatedRecord.toJSON() as ReviewedApplicantRecordDTO;
   }
 }
 
