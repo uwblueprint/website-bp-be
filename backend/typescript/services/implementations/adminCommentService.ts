@@ -25,13 +25,13 @@ class AdminCommentService implements IAdminCommentService {
   /* eslint-disable class-methods-use-this */
 
   async getAdminCommentsByApplicantRecordId(
-    reviewedApplicantRecordId: string,
+    applicantRecordId: string,
   ): Promise<AdminCommentDTO[]> {
     let adminComments: AdminComment[] = [];
     let adminCommentDTOs: Array<AdminCommentDTO> = [];
     try {
       adminComments = await AdminComment.findAll({
-        where: { applicantRecordId: reviewedApplicantRecordId },
+        where: { applicantRecordId },
       });
       adminCommentDTOs = adminComments.map((adminComment) => ({
         id: adminComment.id,
@@ -43,7 +43,7 @@ class AdminCommentService implements IAdminCommentService {
       }));
     } catch (error: unknown) {
       Logger.error(
-        `Failed to get admin comments by reviewedApplicantRecordId = ${reviewedApplicantRecordId}. Reason = ${getErrorMessage(
+        `Failed to get admin comments by reviewedApplicantRecordId = ${applicantRecordId}. Reason = ${getErrorMessage(
           error,
         )}`,
       );
