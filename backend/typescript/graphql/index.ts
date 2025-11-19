@@ -21,6 +21,8 @@ import adminCommentResolvers from "./resolvers/adminCommentsResolvers";
 import adminCommentType from "./types/adminCommentsType";
 import applicantRecordResolvers from "./resolvers/applicantRecordResolvers";
 import applicantRecordType from "./types/applicantRecordType";
+import reviewPageType from "./types/reviewPageType";
+import reviewPageResolvers from "./resolvers/reviewPageResolvers";
 
 const query = gql`
   type Query {
@@ -45,6 +47,7 @@ const executableSchema = makeExecutableSchema({
     reviewDashboardType,
     adminCommentType,
     applicantRecordType,
+    reviewPageType,
   ],
   resolvers: merge(
     authResolvers,
@@ -54,6 +57,7 @@ const executableSchema = makeExecutableSchema({
     reviewDashboardResolvers,
     adminCommentResolvers,
     applicantRecordResolvers,
+    reviewPageResolvers,
   ),
 });
 

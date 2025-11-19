@@ -1,6 +1,7 @@
 import ApplicantRecordService from "../../services/implementations/applicantRecordService";
 import IApplicantRecordService from "../../services/interfaces/applicantRecordService";
 import { ApplicantRecordDTO, ApplicationStatus } from "../../types";
+import { getErrorMessage } from "../../utilities/errorUtils";
 
 const applicantRecordService: IApplicantRecordService =
   new ApplicantRecordService();
@@ -42,12 +43,16 @@ const applicantRecordResolvers = {
         flagValue,
       }: { applicantRecordId: string; flagValue: boolean },
     ): Promise<ApplicantRecordDTO> => {
-      const applicantRecord =
-        await applicantRecordService.setApplicantRecordFlag(
-          applicantRecordId,
-          flagValue,
-        );
-      return applicantRecord;
+      try {
+        const applicantRecord =
+          await applicantRecordService.setApplicantRecordFlag(
+            applicantRecordId,
+            flagValue,
+          );
+        return applicantRecord;
+      } catch (error: unknown) {
+        throw new Error(getErrorMessage(error));
+      }
     },
   },
 };
