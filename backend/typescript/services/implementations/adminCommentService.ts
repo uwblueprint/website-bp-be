@@ -24,6 +24,55 @@ const grabAdminComment = async (commentId: string): Promise<AdminComment> => {
 class AdminCommentService implements IAdminCommentService {
   /* eslint-disable class-methods-use-this */
 
+  async getAdminCommentsByApplicantRecordId(
+    applicantRecordId: string,
+  ): Promise<AdminCommentDTO[]> {
+    let adminComments: AdminComment[] = [];
+    let adminCommentDTOs: Array<AdminCommentDTO> = [];
+    try {
+      adminComments = await AdminComment.findAll({
+        where: { applicantRecordId },
+      });
+      adminCommentDTOs = adminComments.map((adminComment) => ({
+        id: adminComment.id,
+        userId: adminComment.userId,
+        applicantRecordId: adminComment.applicantRecordId,
+        comment: adminComment.comment,
+        createdAt: adminComment.createdAt.toISOString(),
+        updatedAt: adminComment.updatedAt.toISOString(),
+      }));
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to get admin comments by reviewedApplicantRecordId = ${applicantRecordId}. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
+    return adminCommentDTOs;
+  }
+
+  async getAdminCommentById(id: string): Promise<AdminCommentDTO> {
+    try {
+      const adminComment = await grabAdminComment(id);
+      return {
+        id: String(adminComment.id),
+        userId: adminComment.userId,
+        applicantRecordId: String(adminComment.applicantRecordId),
+        comment: adminComment.comment,
+        createdAt: adminComment.createdAt.toISOString(),
+        updatedAt: adminComment.updatedAt.toISOString(),
+      };
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to get admin comment by id = ${id}. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
+  }
+
   async createAdminComment(
     content: CreateAdminCommentDTO,
   ): Promise<AdminCommentDTO> {
