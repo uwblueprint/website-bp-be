@@ -209,6 +209,13 @@ export type ReviewedApplicantRecordDTO = {
   reviewerHasConflict: boolean;
 };
 
+export type ReviewedApplicantsDTO = {
+  applicantRecordId: string;
+  reviewStatus: ReviewStatus;
+  applicantFirstName: string;
+  applicantLastName: string;
+};
+
 export type AdminCommentDTO = {
   id: string;
   userId: number;

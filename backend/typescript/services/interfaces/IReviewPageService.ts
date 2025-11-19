@@ -1,4 +1,4 @@
-import { ApplicationDTO } from "../../types";
+import { ApplicationDTO, ReviewedApplicantsDTO } from "../../types";
 
 interface IReviewPageService {
   /**
@@ -6,6 +6,14 @@ interface IReviewPageService {
    * @Param applicantRecordId the id of the applicant record that the viewer is interested in
    */
   getReviewPage(applicantRecordId: string): Promise<ApplicationDTO>;
+
+  /**
+   * Fetches information about all the applicants assigned to a user to review
+   * @param userId the id of the user that the viewer is interested in
+   */
+  getReviewedApplicantsByUserId(
+    userId: number,
+  ): Promise<ReviewedApplicantsDTO[]>;
 }
 
 export default IReviewPageService;

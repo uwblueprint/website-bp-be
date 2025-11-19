@@ -39,7 +39,7 @@ export default class User extends Model {
 
   @HasMany(() => ReviewedApplicantRecord, {
     foreignKey: "reviewerId",
-    as: "user",
+    sourceKey: "id",
   })
   reviewedApplicantRecords?: NonAttribute<ReviewedApplicantRecord[]>;
 }
