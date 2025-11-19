@@ -7,6 +7,7 @@ import { AuthDTO, Role, Token } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import FirebaseRestClient from "../../utilities/firebaseRestClient";
 import logger from "../../utilities/logger";
+import ReviewedApplicantRecord from "../../models/reviewedApplicantRecord.model";
 
 const Logger = logger(__filename);
 
@@ -41,9 +42,8 @@ class AuthService implements IAuthService {
   /* eslint-disable class-methods-use-this */
   async generateTokenOAuth(idToken: string): Promise<AuthDTO> {
     try {
-      const googleUser = await FirebaseRestClient.signInWithGoogleOAuth(
-        idToken,
-      );
+      const googleUser =
+        await FirebaseRestClient.signInWithGoogleOAuth(idToken);
       // googleUser.idToken refers to the Firebase Auth access token for the user
       const token = {
         accessToken: googleUser.idToken,
@@ -270,6 +270,24 @@ class AuthService implements IAuthService {
         `Failed to generate email sign in link for user with email ${email} ${error}`,
       );
       throw error;
+    }
+  }
+
+  async isAuthorizedReviewer(accessToken: string, applicantRecordId: string): Promise<boolean> {
+    try {
+      const decodedToken: firebaseAdmin.auth.DecodedIdToken =
+        await firebaseAdmin.auth().verifyIdToken(accessToken, true);
+      const userId = await this.userService.getUserIdByAuthId(
+        decodedToken.uid,
+      );
+
+      const record = await ReviewedApplicantRecord.findOne({
+        where: { applicantRecordId, userId },
+      });
+
+      return !!record;
+    } catch (error) {
+      return false;
     }
   }
 }
