@@ -17,6 +17,8 @@ import userResolvers from "./resolvers/userResolvers";
 import userType from "./types/userType";
 import reviewDashboardResolvers from "./resolvers/reviewDashboardResolvers";
 import reviewDashboardType from "./types/reviewDashboardType";
+import reviewedApplicantRecordTypes from "./types/reviewedApplicantRecordTypes";
+import reviewedApplicantRecordResolvers from "./resolvers/reviewedApplicantRecordResolver";
 import adminCommentResolvers from "./resolvers/adminCommentsResolvers";
 import adminCommentType from "./types/adminCommentsType";
 import applicantRecordResolvers from "./resolvers/applicantRecordResolvers";
@@ -59,6 +61,7 @@ const executableSchema = makeExecutableSchema({
     simpleEntityResolvers,
     userResolvers,
     reviewDashboardResolvers,
+    reviewedApplicantRecordResolvers,
     adminCommentResolvers,
     applicantRecordResolvers,
     reviewPageResolvers,
