@@ -1,4 +1,12 @@
-import { ReviewDashboardRowDTO } from "../../types";
+import { literal, Op, Sequelize } from "sequelize";
+import {
+  AdditionalFilters,
+  ApplicantRole,
+  Department,
+  PositionTitle,
+  ReviewDashboardFilter,
+  ReviewDashboardRowDTO,
+} from "../../types";
 import IReviewDashboardService from "../interfaces/IReviewDashboardService";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
@@ -22,11 +30,170 @@ function toDTO(model: ApplicantRecord): ReviewDashboardRowDTO {
   };
 }
 
+function buildWhereStatement(filter?: ReviewDashboardFilter) {
+  const exp: any = [];
+  const ranges: any = [];
+  const year: any = [];
+  const skill: any = [];
+  const status: any = [];
+  if (filter) {
+    if (filter.department) {
+      if (filter.department === Department.Community) {
+        exp.push({ "$appliedTo.department$": { [Op.eq]: "Community" } });
+      } else if (filter.department === Department.Design) {
+        exp.push({ "$appliedTo.department$": { [Op.eq]: "Design" } });
+      } else if (filter.department === Department.Engineering) {
+        exp.push({ "$appliedTo.department$": { [Op.eq]: "Engineering" } });
+      } else if (filter.department === Department.Product) {
+        exp.push({ "$appliedTo.department$": { [Op.eq]: "Product" } });
+      }
+    }
+
+    if (filter.role) {
+      if (filter.role.toString() === "int_dir") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Internal Director'`),
+        );
+      } else if (filter.role.toString() === "ext_dir") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'External Director'`),
+        );
+      } else if (filter.role.toString() === "pres") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'President'`));
+      } else if (filter.role.toString() === "vpe") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'VP Engineering'`),
+        );
+      } else if (filter.role.toString() === "vpd") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Design'`));
+      } else if (filter.role.toString() === "vpp") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Product'`));
+      } else if (filter.role.toString() === "vpt") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Talent'`));
+      } else if (filter.role.toString() === "vp_ext") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP External'`));
+      } else if (filter.role.toString() === "vp_int") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Internal'`));
+      } else if (filter.role.toString() === "vp_comms") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'VP Community'`),
+        );
+      } else if (filter.role.toString() === "vp_scoping") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Scoping'`));
+      } else if (filter.role.toString() === "vp_finance") {
+        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Finance'`));
+      } else if (filter.role.toString() === "pm") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Project Manager'`),
+        );
+      } else if (filter.role.toString() === "pl") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Project Lead'`),
+        );
+      } else if (filter.role.toString() === "design_mentor") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Design Mentor'`),
+        );
+      } else if (filter.role.toString() === "graphic_design") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Graphic Design'`),
+        );
+      } else if (filter.role.toString() === "product_design") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Product Design'`),
+        );
+      } else if (filter.role.toString() === "uxr") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'User Researcher'`),
+        );
+      } else if (filter.role.toString() === "dev") {
+        exp.push(
+          Sequelize.literal(`CAST("position" AS TEXT) = 'Project Developer'`),
+        );
+      }
+    }
+
+    if (filter.additionalFilters) {
+      if (
+        filter.additionalFilters.includes(AdditionalFilters.GREATER_THAN_25)
+      ) {
+        ranges.push({ combined_score: { [Op.gt]: 25 } });
+      }
+      if (
+        filter.additionalFilters.includes(AdditionalFilters.BETWEEN_20_AND_25)
+      ) {
+        ranges.push({ combined_score: { [Op.between]: [20, 25] } });
+      }
+      if (
+        filter.additionalFilters.includes(AdditionalFilters.BETWEEN_15_AND_20)
+      ) {
+        ranges.push({ combined_score: { [Op.between]: [15, 20] } });
+      }
+      if (
+        filter.additionalFilters.includes(AdditionalFilters.BETWEEN_10_AND_15)
+      ) {
+        ranges.push({ combined_score: { [Op.between]: [10, 15] } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.LESS_THAN_10)) {
+        ranges.push({ combined_score: { [Op.lt]: 10 } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.SENIOR)) {
+        skill.push({ skillCategory: { [Op.eq]: "Senior" } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.JUNIOR)) {
+        skill.push({ skillCategory: { [Op.eq]: "Junior" } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.INTERMEDIATE)) {
+        skill.push({ skillCategory: { [Op.eq]: "Intermediate" } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.FIRST_YEAR)) {
+        year.push({ "$applicant.academicYear$": { [Op.regexp]: "1(A|B)" } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.SECOND_YEAR)) {
+        year.push({ "$applicant.academicYear$": { [Op.regexp]: "2(A|B)" } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.THIRD_YEAR)) {
+        year.push({ "$applicant.academicYear$": { [Op.regexp]: "3(A|B)" } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.FOURTH_YEAR)) {
+        year.push({ "$applicant.academicYear$": { [Op.regexp]: "4(A|B)" } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.FIFTH_YEAR)) {
+        year.push({ "$applicant.academicYear$": { [Op.regexp]: "5(A|B)" } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.SIXTH_YEAR)) {
+        year.push({
+          "$applicant.academicYear$": { [Op.iRegexp]: "graduate" },
+        });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.IN_REVIEW)) {
+        status.push({ status: { [Op.eq]: "In Review" } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.REVIEWED)) {
+        status.push({ status: { [Op.eq]: "Reviewed" } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.SELECTED)) {
+        status.push({ status: { [Op.eq]: "Selected for Interview" } });
+      }
+      if (filter.additionalFilters.includes(AdditionalFilters.NOT_SELECTED)) {
+        status.push({ status: { [Op.eq]: "Not Considered" } });
+      }
+    }
+  }
+
+  if (ranges.length > 0) exp.push({ [Op.or]: ranges });
+  if (skill.length > 0) exp.push({ [Op.or]: skill });
+  if (year.length > 0) exp.push({ [Op.or]: year });
+  if (status.length > 0) exp.push({ [Op.or]: status });
+  return exp;
+}
+
 class ReviewDashboardService implements IReviewDashboardService {
   /* eslint-disable class-methods-use-this */
   async getReviewDashboard(
     pageNumber: number,
     resultsPerPage: number,
+    filters?: ReviewDashboardFilter,
   ): Promise<ReviewDashboardRowDTO[]> {
     try {
       const perPage = Number.isFinite(Number(resultsPerPage))
@@ -36,6 +203,8 @@ class ReviewDashboardService implements IReviewDashboardService {
         ? Number(pageNumber)
         : 1;
       const offsetRow = (currentPage - 1) * perPage;
+
+      const whereStatement = buildWhereStatement(filters);
 
       // get applicant_record
       // JOIN applicant ON applicant_id
@@ -58,8 +227,21 @@ class ReviewDashboardService implements IReviewDashboardService {
             {
               attributes: { exclude: ["createdAt", "updatedAt"] },
               association: "applicant",
+              required: true,
+            },
+            {
+              attributes: { exclude: ["createdAt", "updatedAt"] },
+              association: "appliedTo",
+              required: true,
+              on: literal(
+                `"ApplicantRecord"."position"::text = "appliedTo"."title"::text`,
+              ),
             },
           ],
+          where:
+            whereStatement.length > 0
+              ? { [Op.and]: whereStatement }
+              : undefined,
           order: [["id", "ASC"]],
           limit: perPage,
           offset: offsetRow,
