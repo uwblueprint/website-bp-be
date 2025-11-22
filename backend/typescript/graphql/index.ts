@@ -21,6 +21,8 @@ import reviewedApplicantRecordTypes from "./types/reviewedApplicantRecordTypes";
 import reviewedApplicantRecordResolvers from "./resolvers/reviewedApplicantRecordResolver";
 import adminCommentResolvers from "./resolvers/adminCommentsResolvers";
 import adminCommentType from "./types/adminCommentsType";
+import applicantRecordResolvers from "./resolvers/applicantRecordResolvers";
+import applicantRecordType from "./types/applicantRecordType";
 import reviewPageType from "./types/reviewPageType";
 import reviewPageResolvers from "./resolvers/reviewPageResolvers";
 
@@ -47,6 +49,7 @@ const executableSchema = makeExecutableSchema({
     reviewDashboardType,
     reviewedApplicantRecordTypes,
     adminCommentType,
+    applicantRecordType,
     reviewPageType,
   ],
   resolvers: merge(
@@ -57,6 +60,7 @@ const executableSchema = makeExecutableSchema({
     reviewDashboardResolvers,
     reviewedApplicantRecordResolvers,
     adminCommentResolvers,
+    applicantRecordResolvers,
     reviewPageResolvers,
   ),
 });
@@ -75,6 +79,8 @@ const graphQLMiddlewares = {
     userByEmail: authorizedByAdmin(),
     login: authorizedByAdmin(),
     users: authorizedByAdmin(),
+    adminCommentsByApplicantRecordId: authorizedByAdmin(),
+    adminCommentById: authorizedByAdmin(),
   },
   Mutation: {
     createEntity: authorizedByAllRoles(),
