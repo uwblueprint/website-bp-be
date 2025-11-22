@@ -9,7 +9,7 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { NonAttribute } from "sequelize";
+import { NonAttribute, DataTypes } from "sequelize";
 import {
   ApplicantRecordExtraInfo,
   ApplicationStatus,
@@ -22,7 +22,8 @@ import ReviewedApplicantRecord from "./reviewedApplicantRecord.model";
 @Table({ tableName: "applicant_records" })
 export default class ApplicantRecord extends Model {
   @Column({
-    type: DataType.STRING,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
     unique: true,
     autoIncrement: true,

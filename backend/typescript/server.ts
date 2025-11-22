@@ -50,17 +50,19 @@ sequelize.authenticate();
 //   databaseURL: "https://uw-blueprint.firebaseio.com",
 // });
 
-admin.initializeApp({
-  credential: admin.credential.cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    privateKey: process.env.FIREBASE_SVC_ACCOUNT_PRIVATE_KEY?.replace(
-      /\\n/g,
-      "\n",
-    ),
-    clientEmail: process.env.FIREBASE_SVC_ACCOUNT_CLIENT_EMAIL,
-  }),
-  databaseURL: "https://uw-blueprint.firebaseio.com",
-});
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      privateKey: process.env.FIREBASE_SVC_ACCOUNT_PRIVATE_KEY?.replace(
+        /\\n/g,
+        "\n",
+      ),
+      clientEmail: process.env.FIREBASE_SVC_ACCOUNT_CLIENT_EMAIL,
+    }),
+    databaseURL: "https://uw-blueprint.firebaseio.com",
+  });
+}
 const db = admin.database();
 const ref = db.ref("studentApplications");
 
