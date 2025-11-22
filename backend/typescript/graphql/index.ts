@@ -25,8 +25,6 @@ import applicantRecordResolvers from "./resolvers/applicantRecordResolvers";
 import applicantRecordType from "./types/applicantRecordType";
 import reviewPageType from "./types/reviewPageType";
 import reviewPageResolvers from "./resolvers/reviewPageResolvers";
-import reviewedApplicantRecordTypes from "./types/reviewedApplicantRecordTypes";
-import reviewedApplicantRecordResolvers from "./resolvers/reviewedApplicantRecordResolver";
 
 const query = gql`
   type Query {
