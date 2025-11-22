@@ -74,7 +74,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
       return record.toJSON() as ReviewedApplicantRecordDTO;
     } catch (error: unknown) {
       Logger.error(
-        `Failed to bulk create reviewed applicant records. Reason = ${getErrorMessage(
+        `Failed to delete reviewed applicant records. Reason = ${getErrorMessage(
           error,
         )}`,
       );
@@ -114,7 +114,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
       );
     } catch (error: unknown) {
       Logger.error(
-        `Failed to bulk create reviewed applicant records. Reason = ${getErrorMessage(
+        `Failed to bulk delete reviewed applicant records. Reason = ${getErrorMessage(
           error,
         )}`,
       );
