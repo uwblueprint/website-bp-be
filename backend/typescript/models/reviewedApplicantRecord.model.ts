@@ -12,7 +12,6 @@ import { NonAttribute } from "sequelize";
 import {
   Review,
   ReviewStatus,
-  ReviewStatusEnum,
   SkillCategory,
 } from "../types";
 import ApplicantRecord from "./applicantRecord.model";
@@ -33,7 +32,7 @@ export default class ReviewedApplicantRecord extends Model {
 
   @Column({
     type: DataType.STRING,
-    defaultValue: ReviewStatusEnum.TODO,
+    defaultValue: "NeedsReview",
   })
   status!: ReviewStatus;
 
