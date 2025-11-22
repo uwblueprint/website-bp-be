@@ -241,27 +241,3 @@ export type CreateAdminCommentDTO = Pick<
   AdminCommentDTO,
   "userId" | "applicantRecordId" | "comment"
 >;
-
-export type CreateReviewedApplicantRecordDTO = {
-  applicantRecordId: string;
-  reviewerId: number;
-  review?: Review;
-  reviewerHasConflict?: boolean;
-};
-
-export type DeleteReviewedApplicantRecord = {
-  applicantRecordId: string;
-  reviewerId: number;
-};
-
-export type DeleteReviewedApplicantRecordDTO = {
-  applicantRecordId: string;
-  reviewerId: number;
-};
-
-export type UpdateReviewedApplicantRecordDTO = {
-  applicantRecordId: string;
-  reviewerId: number;
-  review?: Review;
-  status?: ReviewStatus;
-};
