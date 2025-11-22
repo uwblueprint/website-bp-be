@@ -17,6 +17,8 @@ import userResolvers from "./resolvers/userResolvers";
 import userType from "./types/userType";
 import reviewDashboardResolvers from "./resolvers/reviewDashboardResolvers";
 import reviewDashboardType from "./types/reviewDashboardType";
+import reviewedApplicantRecordTypes from "./types/reviewedApplicantRecordTypes";
+import reviewedApplicantRecordResolvers from "./resolvers/reviewedApplicantRecordResolver";
 import adminCommentResolvers from "./resolvers/adminCommentsResolvers";
 import adminCommentType from "./types/adminCommentsType";
 import applicantRecordResolvers from "./resolvers/applicantRecordResolvers";
@@ -45,6 +47,7 @@ const executableSchema = makeExecutableSchema({
     simpleEntityType,
     userType,
     reviewDashboardType,
+    reviewedApplicantRecordTypes,
     adminCommentType,
     applicantRecordType,
     reviewPageType,
@@ -55,6 +58,7 @@ const executableSchema = makeExecutableSchema({
     simpleEntityResolvers,
     userResolvers,
     reviewDashboardResolvers,
+    reviewedApplicantRecordResolvers,
     adminCommentResolvers,
     applicantRecordResolvers,
     reviewPageResolvers,
@@ -85,6 +89,10 @@ const graphQLMiddlewares = {
     createSimpleEntity: authorizedByAllRoles(),
     updateSimpleEntity: authorizedByAllRoles(),
     deleteSimpleEntity: authorizedByAllRoles(),
+    createReviewedApplicantRecord: authorizedByAllRoles(),
+    bulkCreateReviewedApplicantRecord: authorizedByAllRoles(),
+    deleteReviewedApplicantRecord: authorizedByAllRoles(),
+    bulkDeleteReviewedApplicantRecord: authorizedByAllRoles(),
     createUser: authorizedByAdmin(),
     updateUser: authorizedByAdmin(),
     deleteUserById: authorizedByAdmin(),
