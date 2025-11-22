@@ -49,6 +49,9 @@ class AuthService implements IAuthService {
         accessToken: googleUser.idToken,
         refreshToken: googleUser.refreshToken,
       };
+
+      Logger.info(`${token.accessToken.toString()}`)
+
       // If user already has a login with this email, just return the token
       try {
         // Note: an error message will be logged from UserService if this lookup fails.
