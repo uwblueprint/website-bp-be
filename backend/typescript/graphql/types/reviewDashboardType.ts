@@ -17,11 +17,39 @@ const reviewDashboardType = gql`
     totalScore: Int
   }
 
+  type Review {
+    passionFSG: Int
+    teamPlayer: Int
+    desireToLearn: Int
+    skill: Int
+    skillCategory: String
+    comments: String
+  }
+
+  type ReviewDetails {
+    reviewerFirstName: String!
+    reviewerLastName: String!
+    review: Review!
+  }
+
+  type ReviewDashboardSidePanelDTO {
+    firstName: String!
+    lastName: String!
+    positionTitle: String!
+    program: String!
+    resumeUrl: String!
+    applicationStatus: String!
+    skillCategory: String
+    reviewDetails: [ReviewDetails!]!
+  }
+
   extend type Query {
     reviewDashboard(
       pageNumber: Int!
       resultsPerPage: Int!
     ): [ReviewDashboardRowDTO!]!
+
+    reviewDashboardSidePanel(applicantId: String!): ReviewDashboardSidePanelDTO!
   }
 `;
 

@@ -30,8 +30,8 @@ export default class ApplicantRecord extends Model {
   id!: string;
 
   @ForeignKey(() => Applicant)
-  @Column({ type: DataType.INTEGER })
-  applicantId!: number;
+  @Column({ type: DataType.UUIDV4 })
+  applicantId!: string;
 
   @ForeignKey(() => Position)
   @Column({ type: DataType.STRING })

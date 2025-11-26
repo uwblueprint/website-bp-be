@@ -34,7 +34,7 @@ export type UserDTO = {
 };
 
 export type ApplicationDTO = {
-  id: number;
+  id: string;
   academicOrCoop: string;
   academicYear: string;
   email: string;
@@ -58,7 +58,7 @@ export type ApplicationDTO = {
 };
 
 export type ApplicantDTO = {
-  id: number;
+  id: string;
   academicOrCoop: string;
   academicYear: string; // MAYBE CHANGE WITH ENUM
   email: string;
@@ -198,6 +198,7 @@ export type Review = {
   desireToLearn?: number;
   skill?: number;
   skillCategory?: SkillCategory;
+  comments?: string;
 };
 
 export type ReviewedApplicantRecordDTO = {
@@ -226,6 +227,23 @@ export type UpdateReviewedApplicantRecordDTO = {
   reviewerId: number;
   review?: Review;
   status?: ReviewStatus;
+};
+
+export type ReviewDetails = {
+  reviewerFirstName: string;
+  reviewerLastName: string;
+  review: Review;
+};
+
+export type ReviewDashboardSidePanelDTO = {
+  firstName: string;
+  lastName: string;
+  positionTitle: PositionTitle;
+  program: string;
+  resumeUrl: string;
+  applicationStatus: ApplicationStatus;
+  skillCategory: SkillCategory | null;
+  reviewDetails: ReviewDetails[];
 };
 
 export type AdminCommentDTO = {
