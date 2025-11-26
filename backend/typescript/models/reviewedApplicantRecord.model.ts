@@ -9,11 +9,7 @@ import {
   BelongsTo,
 } from "sequelize-typescript";
 import { NonAttribute } from "sequelize";
-import {
-  Review,
-  ReviewStatus,
-  SkillCategory,
-} from "../types";
+import { Review, ReviewStatus, SkillCategory } from "../types";
 import ApplicantRecord from "./applicantRecord.model";
 import User from "./user.model";
 

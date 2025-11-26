@@ -43,7 +43,7 @@ interface IReviewedApplicantRecordService {
   updateReviewStatus(
     applicantRecordId: string,
     reviewerId: number,
-    status: ReviewStatus
+    status: ReviewStatus,
   ): Promise<ReviewedApplicantRecordDTO>;
 }
 

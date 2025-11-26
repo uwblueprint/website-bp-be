@@ -12,7 +12,9 @@ import IReviewedApplicantRecordService from "../interfaces/reviewedApplicantReco
 
 const Logger = logger(__filename);
 
-class ReviewedApplicantRecordService implements IReviewedApplicantRecordService {
+class ReviewedApplicantRecordService
+  implements IReviewedApplicantRecordService
+{
   /* eslint-disable class-methods-use-this */
 
   async createReviewedApplicantRecord(
@@ -57,7 +59,7 @@ class ReviewedApplicantRecordService implements IReviewedApplicantRecordService 
       throw error;
     }
   }
-  
+
   async deleteReviewedApplicantRecord(
     deleteReviewedApplicantRecord: DeleteReviewedApplicantRecordDTO,
   ): Promise<ReviewedApplicantRecordDTO> {
@@ -122,18 +124,18 @@ class ReviewedApplicantRecordService implements IReviewedApplicantRecordService 
       throw error;
     }
   }
-  
+
   async updateReviewStatus(
     applicantRecordId: string,
     reviewerId: number,
-    status: ReviewStatus
+    status: ReviewStatus,
   ): Promise<ReviewedApplicantRecordDTO> {
     const applicantRecord = await ReviewedApplicantRecord.findOne({
       where: { applicantRecordId, reviewerId },
     });
     if (!applicantRecord) {
       throw new Error(
-        `ReviewedApplicantRecord with applicantRecordId ${applicantRecordId} and reviewerId ${reviewerId} not found.`
+        `ReviewedApplicantRecord with applicantRecordId ${applicantRecordId} and reviewerId ${reviewerId} not found.`,
       );
     }
     try {
