@@ -1,12 +1,7 @@
 import { Op } from "sequelize";
 import {
-  PositionTitle,
   ReviewDashboardRowDTO,
   ReviewedApplicantRecordDTO,
-  EngineeringPositionTitles,
-  DesignPositionTitles,
-  ProductPositionTitles,
-  CommunityPositionTitles,
   CreateReviewedApplicantRecordDTO,
   ReviewDashboardSidePanelDTO,
 } from "../../types";
@@ -167,7 +162,7 @@ class ReviewDashboardService implements IReviewDashboardService {
     const groups = (
       await User.findAll({
         attributes: { exclude: ["createdAt", "updatedAt"] },
-        where: { position: { [Op.ne]: null } },
+        where: { position: { [Op.in]: positions } },
       })
     ).reduce((map, user) => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -181,12 +176,7 @@ class ReviewDashboardService implements IReviewDashboardService {
     // Build FSM
     // maps (position title) => (current index of list, list of users with position_title)
     const FSM = new Map<string, [number, (number | undefined)[]]>(
-      [
-        ...EngineeringPositionTitles,
-        ...DesignPositionTitles,
-        ...ProductPositionTitles,
-        ...CommunityPositionTitles,
-      ].map((title) => [title, [0, groups.get(title) ?? []]]),
+      positions.map((title) => [title, [0, groups.get(title) ?? []]]),
     );
 
     // Validate FSM for correctness
@@ -222,6 +212,7 @@ class ReviewDashboardService implements IReviewDashboardService {
      */
     const applicantRecords = await ApplicantRecord.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
+      where: { position: { [Op.in]: positions } },
     });
     applicantRecords.forEach((record) => {
       /* eslint-disable @typescript-eslint/no-non-null-assertion */
@@ -253,7 +244,6 @@ class ReviewDashboardService implements IReviewDashboardService {
     // STEP 3:
     //   Batch the delegations into ReviewedApplicantRecords
     //   NOTE: do not add the sentinel value we inserted earlier.
-    console.log(delegations);
     return reviewedApplicantRecordService.bulkCreateReviewedApplicantRecord(
       delegations,
     );
