@@ -52,65 +52,43 @@ function buildWhereStatement(filter?: ReviewDashboardFilter) {
 
     if (filter.role) {
       if (filter.role.toString() === "int_dir") {
-        exp.push(
-          Sequelize.literal(`CAST("position" AS TEXT) = 'Internal Director'`),
-        );
+        exp.push({ position: { [Op.eq]: "Internal Director" } });
       } else if (filter.role.toString() === "ext_dir") {
-        exp.push(
-          Sequelize.literal(`CAST("position" AS TEXT) = 'External Director'`),
-        );
+        exp.push({ position: { [Op.eq]: "External Director" } });
       } else if (filter.role.toString() === "pres") {
-        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'President'`));
+        exp.push({ position: { [Op.eq]: "President" } });
       } else if (filter.role.toString() === "vpe") {
-        exp.push(
-          Sequelize.literal(`CAST("position" AS TEXT) = 'VP Engineering'`),
-        );
+        exp.push({ position: { [Op.eq]: "VP Engineering" } });
       } else if (filter.role.toString() === "vpd") {
-        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Design'`));
+        exp.push({ position: { [Op.eq]: "VP Design" } });
       } else if (filter.role.toString() === "vpp") {
-        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Product'`));
+        exp.push({ position: { [Op.eq]: "VP Product" } });
       } else if (filter.role.toString() === "vpt") {
-        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Talent'`));
+        exp.push({ position: { [Op.eq]: "VP Talent" } });
       } else if (filter.role.toString() === "vp_ext") {
-        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP External'`));
+        exp.push({ position: { [Op.eq]: "VP External" } });
       } else if (filter.role.toString() === "vp_int") {
-        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Internal'`));
+        exp.push({ position: { [Op.eq]: "VP Internal" } });
       } else if (filter.role.toString() === "vp_comms") {
-        exp.push(
-          Sequelize.literal(`CAST("position" AS TEXT) = 'VP Community'`),
-        );
+        exp.push({ position: { [Op.eq]: "VP Community" } });
       } else if (filter.role.toString() === "vp_scoping") {
-        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Scoping'`));
+        exp.push({ position: { [Op.eq]: "VP Scoping" } });
       } else if (filter.role.toString() === "vp_finance") {
-        exp.push(Sequelize.literal(`CAST("position" AS TEXT) = 'VP Finance'`));
+        exp.push({ position: { [Op.eq]: "VP Finance" } });
       } else if (filter.role.toString() === "pm") {
-        exp.push(
-          Sequelize.literal(`CAST("position" AS TEXT) = 'Project Manager'`),
-        );
+        exp.push({ position: { [Op.eq]: "Project Manager" } });
       } else if (filter.role.toString() === "pl") {
-        exp.push(
-          Sequelize.literal(`CAST("position" AS TEXT) = 'Project Lead'`),
-        );
+        exp.push({ position: { [Op.eq]: "Project Lead" } });
       } else if (filter.role.toString() === "design_mentor") {
-        exp.push(
-          Sequelize.literal(`CAST("position" AS TEXT) = 'Design Mentor'`),
-        );
+        exp.push({ position: { [Op.eq]: "Design Mentor" } });
       } else if (filter.role.toString() === "graphic_design") {
-        exp.push(
-          Sequelize.literal(`CAST("position" AS TEXT) = 'Graphic Design'`),
-        );
+        exp.push({ position: { [Op.eq]: "Graphic Design" } });
       } else if (filter.role.toString() === "product_design") {
-        exp.push(
-          Sequelize.literal(`CAST("position" AS TEXT) = 'Product Design'`),
-        );
+        exp.push({ position: { [Op.eq]: "Product Design" } });
       } else if (filter.role.toString() === "uxr") {
-        exp.push(
-          Sequelize.literal(`CAST("position" AS TEXT) = 'User Researcher'`),
-        );
+        exp.push({ position: { [Op.eq]: "User Researcher" } });
       } else if (filter.role.toString() === "dev") {
-        exp.push(
-          Sequelize.literal(`CAST("position" AS TEXT) = 'Project Developer'`),
-        );
+        exp.push({ position: { [Op.eq]: "Developer" } });
       }
     }
 
@@ -236,7 +214,9 @@ class ReviewDashboardService implements IReviewDashboardService {
           attributes: { exclude: ["createdAt", "updatedAt"] },
           include: [
             {
-              attributes: { exclude: ["createdAt", "updatedAt"] },
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "skillCategory"],
+              },
               association: "reviewedApplicantRecords",
               include: [
                 {
