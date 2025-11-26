@@ -1,4 +1,9 @@
-import { ReviewedApplicantRecordDTO, ReviewStatus } from "../../types";
+import {
+  ReviewedApplicantRecordDTO,
+  ReviewStatus,
+  CreateReviewedApplicantRecordDTO,
+  DeleteReviewedApplicantRecordDTO,
+} from "../../types";
 
 interface IReviewedApplicantRecordService {
   /**
