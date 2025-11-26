@@ -18,8 +18,9 @@ interface IReviewDashboardService {
   /**
    * Assigns each user to an applicant record to review, and
    * returns the newly created ReviewedApplicantRecords
+   * @Param positions the list of positions the algorithm should run on
    */
-  delegateReviewers(): Promise<ReviewedApplicantRecordDTO[]>;
+  delegateReviewers(positions: string[]): Promise<ReviewedApplicantRecordDTO[]>;
 
   /**
    * Fetch data that can fill out the review dashboard side panel for an applicant

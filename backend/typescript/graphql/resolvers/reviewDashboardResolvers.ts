@@ -37,9 +37,12 @@ const reviewDashboardResolvers = {
     },
   },
   Mutation: {
-    delegateReviewers: async (): Promise<ReviewedApplicantRecordDTO[]> => {
+    delegateReviewers: async (
+      _parent: undefined,
+      args: { positions: string[] },
+    ): Promise<ReviewedApplicantRecordDTO[]> => {
       try {
-        return await reviewDashboardService.delegateReviewers();
+        return await reviewDashboardService.delegateReviewers(args.positions);
       } catch (error) {
         throw new Error(getErrorMessage(error));
       }

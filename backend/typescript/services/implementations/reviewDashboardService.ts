@@ -7,6 +7,7 @@ import {
   DesignPositionTitles,
   ProductPositionTitles,
   CommunityPositionTitles,
+  CreateReviewedApplicantRecordDTO,
   ReviewDashboardSidePanelDTO,
 } from "../../types";
 import IReviewDashboardService from "../interfaces/IReviewDashboardService";
@@ -14,8 +15,11 @@ import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
 import ApplicantRecord from "../../models/applicantRecord.model";
 import User from "../../models/user.model";
+import ReviewedApplicantRecordService from "./reviewedApplicantRecordService";
 
 const Logger = logger(__filename);
+
+const reviewedApplicantRecordService = new ReviewedApplicantRecordService();
 
 function toDTO(model: ApplicantRecord): ReviewDashboardRowDTO {
   return {
@@ -145,11 +149,13 @@ class ReviewDashboardService implements IReviewDashboardService {
     }
   }
 
-  async delegateReviewers(): Promise<ReviewedApplicantRecordDTO[]> {
+  async delegateReviewers(
+    positions: string[],
+  ): Promise<ReviewedApplicantRecordDTO[]> {
     // NOTE: We do not have to concern ourselves with locality. That is, each user can be
     //       assigned to the same partner every time.
 
-    const delegations = new Map<string, [string, string | undefined]>();
+    const delegations = Array<CreateReviewedApplicantRecordDTO>();
     // maps (applicant_record_id) => pair of user_ids assigned to it
 
     // STEP 1:
@@ -167,14 +173,14 @@ class ReviewDashboardService implements IReviewDashboardService {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const pos = user.position!;
       const arr = map.get(pos) ?? [];
-      arr.push(user.id.toString());
+      arr.push(user.id);
       map.set(pos, arr);
       return map;
-    }, new Map<string, string[]>());
+    }, new Map<string, number[]>());
 
     // Build FSM
     // maps (position title) => (current index of list, list of users with position_title)
-    const FSM = new Map<string, [number, (string | undefined)[]]>(
+    const FSM = new Map<string, [number, (number | undefined)[]]>(
       [
         ...EngineeringPositionTitles,
         ...DesignPositionTitles,
@@ -228,23 +234,29 @@ class ReviewDashboardService implements IReviewDashboardService {
       newCount++;
       newCount %= FSM.get(record.position)![1].length;
       FSM.set(record.position, [newCount, userIds]);
-      delegations.set(record.id, [assignedReviewer1!, assignedReviewer2]);
-      /* eslint-enable @typescript-eslint/no-non-null-assertion */
-      if (record.position === "Developer") {
-        console.log(
-          `Assigned reviewers for applicant ${record.id} (${record.position}):`,
-          assignedReviewer1,
-          "and",
-          assignedReviewer2,
-        );
+
+      if (assignedReviewer1 !== undefined) {
+        delegations.push({
+          applicantRecordId: record.id,
+          reviewerId: assignedReviewer1,
+        });
+      }
+
+      if (assignedReviewer2 !== undefined) {
+        delegations.push({
+          applicantRecordId: record.id,
+          reviewerId: assignedReviewer2,
+        });
       }
     });
 
     // STEP 3:
     //   Batch the delegations into ReviewedApplicantRecords
     //   NOTE: do not add the sentinel value we inserted earlier.
-
-    return [];
+    console.log(delegations);
+    return reviewedApplicantRecordService.bulkCreateReviewedApplicantRecord(
+      delegations,
+    );
   }
 }
 

@@ -24,7 +24,7 @@ const reviewDashboardType = gql`
     reviewers: [ReviewerDTO!]!
     totalScore: Int
   }
-  
+
   type ReviewedApplicantRecordDTO {
     applicantRecordId: String!
     reviewerId: Int!
@@ -70,7 +70,7 @@ const reviewDashboardType = gql`
   }
 
   extend type Mutation {
-    delegateReviewers: [ReviewedApplicantRecordDTO!]!
+    delegateReviewers(positions: [String!]!): [ReviewedApplicantRecordDTO!]!
   }
 `;
 
