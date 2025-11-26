@@ -2,7 +2,7 @@ import { gql } from "apollo-server-express";
 
 const reviewPageType = gql`
   type ApplicationDTO {
-    id: Int!
+    id: String!
     academicOrCoop: String!
     academicYear: String!
     email: String!
