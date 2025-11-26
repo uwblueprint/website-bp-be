@@ -29,7 +29,7 @@ export type UserDTO = {
   firstName: string;
   lastName: string;
   email: string;
-  position?: PositionTitle;
+  position?: string;
   role: Role;
 };
 
@@ -77,14 +77,15 @@ export type ApplicantDTO = {
 };
 
 export type ApplicantRecordDTO = {
-  id: number;
+  id: string;
   applicantId: string;
-  position: PositionTitle; // EDIT LATER
+  position: string;
   roleSpecificQuestions: string[];
   choice: number;
   status: ApplicationStatus;
   skillCategory?: SkillCategory;
   combined_score?: number | null;
+  isApplicantFlagged: boolean;
 };
 
 export type ApplicationStatus =
@@ -110,7 +111,7 @@ export type ReviewerDTO = {
 export type ReviewDashboardRowDTO = {
   firstName: string;
   lastName: string;
-  position: PositionTitle;
+  position: string;
   timesApplied: string;
   applicationStatus: ApplicationStatus;
   choice: number;
@@ -203,6 +204,18 @@ export type ReviewedApplicantRecordDTO = {
   status: ReviewStatus;
   score?: number | null;
   reviewerHasConflict: boolean;
+};
+
+export type CreateReviewedApplicantRecordDTO = {
+  applicantRecordId: string;
+  reviewerId: number;
+  review?: Review;
+  reviewerHasConflict?: boolean;
+};
+
+export type DeleteReviewedApplicantRecordDTO = {
+  applicantRecordId: string;
+  reviewerId: number;
 };
 
 export type AdminCommentDTO = {

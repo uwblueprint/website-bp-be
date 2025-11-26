@@ -1,5 +1,4 @@
 import { gql } from "apollo-server-express";
-import { ApplicationStatus, PositionTitle, ReviewerDTO } from "../../types";
 
 const reviewDashboardType = gql`
   type ReviewerDTO {

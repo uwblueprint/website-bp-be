@@ -9,7 +9,7 @@ import {
   Table,
 } from "sequelize-typescript";
 import { NonAttribute } from "sequelize";
-import { PositionTitle, PositionTitles, Role } from "../types";
+import { Role } from "../types";
 import Position from "./position.model";
 import ReviewedApplicantRecord from "./reviewedApplicantRecord.model";
 
@@ -34,8 +34,8 @@ export default class User extends Model {
   role!: Role;
 
   @ForeignKey(() => Position)
-  @Column({ type: DataType.ENUM(...Object.values(PositionTitles)) })
-  position?: PositionTitle;
+  @Column({ type: DataType.STRING })
+  position?: string;
 
   @HasMany(() => ReviewedApplicantRecord, {
     foreignKey: "reviewerId",
