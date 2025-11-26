@@ -1,3 +1,5 @@
+/* eslint import/no-cycle: 0 */
+
 import { ApplicationDTO, ReviewedApplicantsDTO } from "../../types";
 import IReviewPageService from "../interfaces/IReviewPageService";
 import { getErrorMessage } from "../../utilities/errorUtils";
