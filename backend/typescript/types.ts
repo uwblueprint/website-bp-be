@@ -183,6 +183,14 @@ export type ProductPositionTitle = (typeof ProductPositionTitles)[number];
 export type CommunityPositionTitle = (typeof CommunityPositionTitles)[number];
 export type PositionTitle = (typeof PositionTitles)[number];
 
+// Legacy, needed for migrations
+export enum ReviewStatusEnum {
+  TODO = "Todo",
+  IN_PROGRESS = "In Progress",
+  DONE = "Done",
+  CONFLICT = "Conflict",
+}
+
 export type ReviewStatus =
   | "NeedsReview"
   | "InProgress"
