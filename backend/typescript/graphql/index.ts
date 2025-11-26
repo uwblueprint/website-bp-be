@@ -17,8 +17,12 @@ import userResolvers from "./resolvers/userResolvers";
 import userType from "./types/userType";
 import reviewDashboardResolvers from "./resolvers/reviewDashboardResolvers";
 import reviewDashboardType from "./types/reviewDashboardType";
+import reviewedApplicantRecordTypes from "./types/reviewedApplicantRecordTypes";
+import reviewedApplicantRecordResolvers from "./resolvers/reviewedApplicantRecordResolver";
 import adminCommentResolvers from "./resolvers/adminCommentsResolvers";
 import adminCommentType from "./types/adminCommentsType";
+import applicantRecordResolvers from "./resolvers/applicantRecordResolvers";
+import applicantRecordType from "./types/applicantRecordType";
 import reviewPageType from "./types/reviewPageType";
 import reviewPageResolvers from "./resolvers/reviewPageResolvers";
 
@@ -43,7 +47,9 @@ const executableSchema = makeExecutableSchema({
     simpleEntityType,
     userType,
     reviewDashboardType,
+    reviewedApplicantRecordTypes,
     adminCommentType,
+    applicantRecordType,
     reviewPageType,
   ],
   resolvers: merge(
@@ -52,7 +58,9 @@ const executableSchema = makeExecutableSchema({
     simpleEntityResolvers,
     userResolvers,
     reviewDashboardResolvers,
+    reviewedApplicantRecordResolvers,
     adminCommentResolvers,
+    applicantRecordResolvers,
     reviewPageResolvers,
   ),
 });
@@ -71,6 +79,8 @@ const graphQLMiddlewares = {
     userByEmail: authorizedByAdmin(),
     login: authorizedByAdmin(),
     users: authorizedByAdmin(),
+    adminCommentsByApplicantRecordId: authorizedByAdmin(),
+    adminCommentById: authorizedByAdmin(),
   },
   Mutation: {
     createEntity: authorizedByAllRoles(),
@@ -79,6 +89,10 @@ const graphQLMiddlewares = {
     createSimpleEntity: authorizedByAllRoles(),
     updateSimpleEntity: authorizedByAllRoles(),
     deleteSimpleEntity: authorizedByAllRoles(),
+    createReviewedApplicantRecord: authorizedByAllRoles(),
+    bulkCreateReviewedApplicantRecord: authorizedByAllRoles(),
+    deleteReviewedApplicantRecord: authorizedByAllRoles(),
+    bulkDeleteReviewedApplicantRecord: authorizedByAllRoles(),
     createUser: authorizedByAdmin(),
     updateUser: authorizedByAdmin(),
     deleteUserById: authorizedByAdmin(),

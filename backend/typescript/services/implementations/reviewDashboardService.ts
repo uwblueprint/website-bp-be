@@ -14,7 +14,7 @@ function toDTO(model: ApplicantRecord): ReviewDashboardRowDTO {
   return {
     firstName: model.applicant!.firstName,
     lastName: model.applicant!.lastName,
-    position: model.position as PositionTitle,
+    position: model.position,
     timesApplied: model.applicant!.timesApplied.toString(),
     applicationStatus: model.status,
     choice: model.choice,
