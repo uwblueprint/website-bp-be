@@ -181,18 +181,12 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
         const { passionFSG, teamPlayer, desireToLearn, skill } =
           reviewedRecord.review;
 
-        if (
-          passionFSG === undefined ||
-          teamPlayer === undefined ||
-          desireToLearn === undefined ||
-          skill === undefined
-        ) {
-          throw new Error(
-            "Invalid review update: All four score fields (passionFSG, teamPlayer, desireToLearn, skill) must be present after the update",
-          );
-        }
-
-        reviewedRecord.score = passionFSG + teamPlayer + desireToLearn + skill;
+        let calculatedScore = 0;
+        if (passionFSG !== undefined) calculatedScore += passionFSG;
+        if (teamPlayer !== undefined) calculatedScore += teamPlayer;
+        if (desireToLearn !== undefined) calculatedScore += desireToLearn;
+        if (skill !== undefined) calculatedScore += skill;
+        reviewedRecord.score = calculatedScore;
 
         if (review.skillCategory !== undefined) {
           reviewedRecord.skillCategory = review.skillCategory;
