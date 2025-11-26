@@ -51,7 +51,7 @@ const executableSchema = makeExecutableSchema({
     adminCommentType,
     applicantRecordType,
     reviewPageType,
-    reviewedApplicantRecordTypes
+    reviewedApplicantRecordTypes,
   ],
   resolvers: merge(
     authResolvers,

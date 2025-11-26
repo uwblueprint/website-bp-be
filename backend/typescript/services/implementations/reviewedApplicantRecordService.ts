@@ -6,6 +6,7 @@ import {
   CreateReviewedApplicantRecordDTO,
   DeleteReviewedApplicantRecordDTO,
   UpdateReviewedApplicantRecordDTO,
+  Review,
 } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
@@ -13,12 +14,32 @@ import IReviewApplicantRecordService from "../interfaces/IReviewedApplicantRecor
 
 const Logger = logger(__filename);
 
+function validateReviewScores(review: Review | undefined): void {
+  if (!review) return;
+
+  const scores = {
+    passionFSG: review.passionFSG,
+    teamPlayer: review.teamPlayer,
+    desireToLearn: review.desireToLearn,
+    skill: review.skill,
+  };
+
+  Object.entries(scores).forEach(([field, value]) => {
+    if (value !== undefined && (value < 1 || value > 5)) {
+      throw new Error(
+        `Invalid score for ${field}: ${value}. Scores must be between 1 and 5.`,
+      );
+    }
+  });
+}
+
 class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
   /* eslint-disable class-methods-use-this */
   async createReviewedApplicantRecord(
     dto: CreateReviewedApplicantRecordDTO,
   ): Promise<ReviewedApplicantRecordDTO> {
     try {
+      validateReviewScores(dto.review);
       const record = await ReviewedApplicantRecord.create(dto);
       return record.toJSON() as ReviewedApplicantRecordDTO;
     } catch (error: unknown) {
@@ -35,6 +56,10 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
     createReviewedApplicantRecordDTOs: CreateReviewedApplicantRecordDTO[],
   ): Promise<ReviewedApplicantRecordDTO[]> {
     try {
+      createReviewedApplicantRecordDTOs.forEach((dto) => {
+        validateReviewScores(dto.review);
+      });
+
       const reviewedApplicantRecords = await sequelize.transaction(
         async (t) => {
           const records = await ReviewedApplicantRecord.bulkCreate(
@@ -146,6 +171,8 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
       const oldReviewedScore = reviewedRecord.score || 0;
 
       if (review !== undefined) {
+        validateReviewScores(review);
+
         reviewedRecord.review = {
           ...reviewedRecord.review,
           ...review,
