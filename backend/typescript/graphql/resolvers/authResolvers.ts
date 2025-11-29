@@ -53,6 +53,15 @@ const authResolvers = {
       );
       return isAuthorized;
     },
+    isAuthorizedAdmin: async (
+      _parent: undefined,
+      { accessToken }: { accessToken: string },
+    ): Promise<boolean> => {
+      const isAuthorized = await authService.isAuthorizedAdmin(
+        accessToken,
+      );
+      return isAuthorized;
+    },
   },
   Mutation: {
     login: async (

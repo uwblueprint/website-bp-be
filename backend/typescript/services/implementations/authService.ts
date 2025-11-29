@@ -7,6 +7,7 @@ import { AuthDTO, Role, Token } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import FirebaseRestClient from "../../utilities/firebaseRestClient";
 import logger from "../../utilities/logger";
+import Admin from "../../models/admin.model";
 
 const Logger = logger(__filename);
 
@@ -270,6 +271,18 @@ class AuthService implements IAuthService {
         `Failed to generate email sign in link for user with email ${email} ${error}`,
       );
       throw error;
+    }
+  }
+
+  async isAuthorizedAdmin(accessToken: string): Promise<boolean> {
+    try {
+      const decodedIdToken: firebaseAdmin.auth.DecodedIdToken =
+        await firebaseAdmin.auth().verifyIdToken(accessToken, true);
+      const userId = await this.userService.getUserIdByAuthId(decodedIdToken.uid);
+      const adminEntry = await Admin.findOne({ where: { userId } });
+      return !!adminEntry;
+    } catch (error) {
+      return false;
     }
   }
 }
