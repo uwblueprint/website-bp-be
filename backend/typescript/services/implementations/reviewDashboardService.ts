@@ -215,7 +215,7 @@ class ReviewDashboardService implements IReviewDashboardService {
           include: [
             {
               attributes: {
-                exclude: ["createdAt", "updatedAt", "skillCategory"],
+                exclude: ["createdAt", "updatedAt"],
               },
               association: "reviewedApplicantRecords",
               include: [
