@@ -278,7 +278,9 @@ class AuthService implements IAuthService {
     try {
       const decodedIdToken: firebaseAdmin.auth.DecodedIdToken =
         await firebaseAdmin.auth().verifyIdToken(accessToken, true);
-      const userId = await this.userService.getUserIdByAuthId(decodedIdToken.uid);
+      const userId = await this.userService.getUserIdByAuthId(
+        decodedIdToken.uid,
+      );
       const adminEntry = await Admin.findOne({ where: { userId } });
       return !!adminEntry;
     } catch (error) {

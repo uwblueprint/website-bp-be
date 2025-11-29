@@ -57,9 +57,7 @@ const authResolvers = {
       _parent: undefined,
       { accessToken }: { accessToken: string },
     ): Promise<boolean> => {
-      const isAuthorized = await authService.isAuthorizedAdmin(
-        accessToken,
-      );
+      const isAuthorized = await authService.isAuthorizedAdmin(accessToken);
       return isAuthorized;
     },
   },
