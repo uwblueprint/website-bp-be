@@ -60,6 +60,12 @@ const reviewedApplicantRecordTypes = gql`
     bulkDeleteReviewedApplicantRecord(
       inputs: [DeleteReviewedApplicantRecord!]!
     ): [ReviewedApplicantRecord!]!
+
+    reassignReviewedApplicantRecord(
+      applicantRecordId: ID!
+      oldReviewerId: Int!
+      newReviewerId: Int!
+    ): ReviewedApplicantRecord!
   }
 `;
 
