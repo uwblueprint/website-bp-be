@@ -17,15 +17,6 @@ const reviewDashboardType = gql`
     totalScore: Int
   }
 
-  type Review {
-    passionFSG: Int
-    teamPlayer: Int
-    desireToLearn: Int
-    skill: Int
-    skillCategory: String
-    comments: String
-  }
-
   type ReviewDetails {
     reviewerFirstName: String!
     reviewerLastName: String!
