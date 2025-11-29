@@ -3,6 +3,7 @@ import IReviewPageService from "../interfaces/IReviewPageService";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
 import ApplicantRecord from "../../models/applicantRecord.model";
+import type ReviewedApplicantRecord from "../../models/reviewedApplicantRecord.model";
 import Applicant from "../../models/applicant.model";
 import User from "../../models/user.model";
 
