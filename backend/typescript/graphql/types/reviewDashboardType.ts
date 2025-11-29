@@ -16,7 +16,7 @@ const reviewDashboardType = gql`
     reviewers: [ReviewerDTO!]!
     totalScore: Int
   }
-  
+
   enum DepartmentEnum {
     Engineering
     Design
