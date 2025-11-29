@@ -13,8 +13,9 @@ const reviewedApplicantRecordTypes = gql`
     desireToLearn: Int
     skill: Int
     skillCategory: SkillCategory
+    comments: String
   }
-
+    
   input ReviewInput {
     passionFSG: Int
     teamPlayer: Int
