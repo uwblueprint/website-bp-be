@@ -16,29 +16,7 @@ const reviewDashboardType = gql`
     reviewers: [ReviewerDTO!]!
     totalScore: Int
   }
-
-  enum ApplicantRoleEnum {
-    pres
-    int_dir
-    ext_dir
-    vpe
-    vpd
-    vpp
-    vpt
-    vp_ext
-    vp_int
-    vp_comms
-    vp_scoping
-    vp_finance
-    pm
-    pl
-    design_mentor
-    graphic_design
-    product_design
-    uxr
-    dev
-  }
-
+  
   enum DepartmentEnum {
     Engineering
     Design
@@ -69,7 +47,7 @@ const reviewDashboardType = gql`
 
   input ReviewDashboardFilter {
     department: DepartmentEnum
-    role: ApplicantRoleEnum
+    role: [String!]
     additionalFilters: [AdditionalFiltersEnum!]
   }
 

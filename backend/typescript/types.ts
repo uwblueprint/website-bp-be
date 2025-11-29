@@ -298,6 +298,6 @@ export enum AdditionalFilters {
 
 export type ReviewDashboardFilter = {
   department?: Department;
-  role?: ApplicantRole;
+  role?: string[];
   additionalFilters?: AdditionalFilters[];
 };

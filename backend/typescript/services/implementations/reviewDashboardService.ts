@@ -50,46 +50,12 @@ function buildWhereStatement(filter?: ReviewDashboardFilter) {
       }
     }
 
-    if (filter.role) {
-      if (filter.role.toString() === "int_dir") {
-        exp.push({ position: { [Op.eq]: "Internal Director" } });
-      } else if (filter.role.toString() === "ext_dir") {
-        exp.push({ position: { [Op.eq]: "External Director" } });
-      } else if (filter.role.toString() === "pres") {
-        exp.push({ position: { [Op.eq]: "President" } });
-      } else if (filter.role.toString() === "vpe") {
-        exp.push({ position: { [Op.eq]: "VP Engineering" } });
-      } else if (filter.role.toString() === "vpd") {
-        exp.push({ position: { [Op.eq]: "VP Design" } });
-      } else if (filter.role.toString() === "vpp") {
-        exp.push({ position: { [Op.eq]: "VP Product" } });
-      } else if (filter.role.toString() === "vpt") {
-        exp.push({ position: { [Op.eq]: "VP Talent" } });
-      } else if (filter.role.toString() === "vp_ext") {
-        exp.push({ position: { [Op.eq]: "VP External" } });
-      } else if (filter.role.toString() === "vp_int") {
-        exp.push({ position: { [Op.eq]: "VP Internal" } });
-      } else if (filter.role.toString() === "vp_comms") {
-        exp.push({ position: { [Op.eq]: "VP Community" } });
-      } else if (filter.role.toString() === "vp_scoping") {
-        exp.push({ position: { [Op.eq]: "VP Scoping" } });
-      } else if (filter.role.toString() === "vp_finance") {
-        exp.push({ position: { [Op.eq]: "VP Finance" } });
-      } else if (filter.role.toString() === "pm") {
-        exp.push({ position: { [Op.eq]: "Project Manager" } });
-      } else if (filter.role.toString() === "pl") {
-        exp.push({ position: { [Op.eq]: "Project Lead" } });
-      } else if (filter.role.toString() === "design_mentor") {
-        exp.push({ position: { [Op.eq]: "Design Mentor" } });
-      } else if (filter.role.toString() === "graphic_design") {
-        exp.push({ position: { [Op.eq]: "Graphic Design" } });
-      } else if (filter.role.toString() === "product_design") {
-        exp.push({ position: { [Op.eq]: "Product Design" } });
-      } else if (filter.role.toString() === "uxr") {
-        exp.push({ position: { [Op.eq]: "User Researcher" } });
-      } else if (filter.role.toString() === "dev") {
-        exp.push({ position: { [Op.eq]: "Developer" } });
-      }
+    if (Array.isArray(filter.role) && filter.role.length > 0) {
+      exp.push({
+        position: {
+          [Op.in]: filter.role,
+        },
+      });
     }
 
     if (filter.additionalFilters) {
