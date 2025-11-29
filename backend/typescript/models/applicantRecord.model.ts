@@ -67,4 +67,7 @@ export default class ApplicantRecord extends Model {
 
   @HasMany(() => ReviewedApplicantRecord, "applicantRecordId")
   reviewedApplicantRecords?: NonAttribute<ReviewedApplicantRecord[]>;
+
+  @BelongsTo(() => Position, { foreignKey: "position" })
+  appliedTo?: NonAttribute<Position>;
 }
