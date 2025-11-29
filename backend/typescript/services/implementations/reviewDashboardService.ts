@@ -4,6 +4,7 @@ import {
   ReviewedApplicantRecordDTO,
   CreateReviewedApplicantRecordDTO,
   ReviewDashboardSidePanelDTO,
+  PositionTitle,
 } from "../../types";
 import IReviewDashboardService from "../interfaces/IReviewDashboardService";
 import { getErrorMessage } from "../../utilities/errorUtils";
