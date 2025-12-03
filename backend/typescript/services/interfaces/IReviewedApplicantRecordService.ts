@@ -37,6 +37,18 @@ interface IReviewApplicantRecordService {
   bulkDeleteReviewedApplicantRecord(
     deleteReviewedApplicantRecords: DeleteReviewedApplicantRecordDTO[],
   ): Promise<ReviewedApplicantRecordDTO[]>;
+
+  /**
+   * Reassigns a reviewed applicant record from one reviewer to another
+   * @Param applicantRecordId the ID of applicant record to reassign
+   * @Param oldReviewerId the ID of the current reviewer
+   * @Param newReviewerId the ID of the new reviewer
+   */
+  reassignReviewedApplicantRecord(
+    applicantRecordId: string,
+    oldReviewerId: number,
+    newReviewerId: number,
+  ): Promise<ReviewedApplicantRecordDTO>;
 }
 
 export default IReviewApplicantRecordService;
