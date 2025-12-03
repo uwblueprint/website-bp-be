@@ -7,12 +7,11 @@ import ApplicantRecord from "./applicantRecord.model";
 @Table({ tableName: "applicants" })
 export default class Applicant extends Model {
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.UUIDV4,
     primaryKey: true,
     unique: true,
-    autoIncrement: true,
   })
-  id!: number;
+  id!: string;
 
   @Column({ type: DataType.STRING })
   academicOrCoop!: string;

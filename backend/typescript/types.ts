@@ -34,7 +34,7 @@ export type UserDTO = {
 };
 
 export type ApplicationDTO = {
-  id: number;
+  id: string;
   academicOrCoop: string;
   academicYear: string;
   email: string;
@@ -58,7 +58,7 @@ export type ApplicationDTO = {
 };
 
 export type ApplicantDTO = {
-  id: number;
+  id: string;
   academicOrCoop: string;
   academicYear: string; // MAYBE CHANGE WITH ENUM
   email: string;
@@ -90,12 +90,12 @@ export type ApplicantRecordDTO = {
 
 export type ApplicationStatus =
   | "Applied"
-  | "In Review"
+  | "InReview"
   | "Reviewed"
-  | "Interview"
-  | "Interview Complete"
+  | "Selected"
+  | "Interviewed"
   | "Offer"
-  | "Not Considered";
+  | "Rejected";
 
 export type SkillCategory = "Junior" | "Intermediate" | "Senior";
 
@@ -203,6 +203,7 @@ export type Review = {
   desireToLearn?: number;
   skill?: number;
   skillCategory?: SkillCategory;
+  comments?: string;
 };
 
 export type ReviewedApplicantRecordDTO = {
@@ -224,6 +225,23 @@ export type CreateReviewedApplicantRecordDTO = {
 export type DeleteReviewedApplicantRecordDTO = {
   applicantRecordId: string;
   reviewerId: number;
+};
+
+export type ReviewDetails = {
+  reviewerFirstName: string;
+  reviewerLastName: string;
+  review: Review;
+};
+
+export type ReviewDashboardSidePanelDTO = {
+  firstName: string;
+  lastName: string;
+  positionTitle: PositionTitle;
+  program: string;
+  resumeUrl: string;
+  applicationStatus: ApplicationStatus;
+  skillCategory: SkillCategory | null;
+  reviewDetails: ReviewDetails[];
 };
 
 export type AdminCommentDTO = {
