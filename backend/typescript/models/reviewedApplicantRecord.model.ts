@@ -9,12 +9,7 @@ import {
   BelongsTo,
 } from "sequelize-typescript";
 import { NonAttribute } from "sequelize";
-import {
-  Review,
-  ReviewStatus,
-  ReviewStatusEnum,
-  SkillCategory,
-} from "../types";
+import { Review, ReviewStatus, SkillCategory } from "../types";
 import ApplicantRecord from "./applicantRecord.model";
 import User from "./user.model";
 
@@ -33,7 +28,7 @@ export default class ReviewedApplicantRecord extends Model {
 
   @Column({
     type: DataType.STRING,
-    defaultValue: ReviewStatusEnum.TODO,
+    defaultValue: "NeedsReview",
   })
   status!: ReviewStatus;
 
