@@ -222,6 +222,13 @@ export type DeleteReviewedApplicantRecordDTO = {
   reviewerId: number;
 };
 
+export type UpdateReviewedApplicantRecordDTO = {
+  applicantRecordId: string;
+  reviewerId: number;
+  review?: Review;
+  status?: ReviewStatus;
+};
+
 export type ReviewDetails = {
   reviewerFirstName: string;
   reviewerLastName: string;

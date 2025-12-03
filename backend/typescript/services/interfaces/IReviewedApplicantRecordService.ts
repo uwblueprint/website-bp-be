@@ -2,6 +2,7 @@ import {
   ReviewedApplicantRecordDTO,
   CreateReviewedApplicantRecordDTO,
   DeleteReviewedApplicantRecordDTO,
+  UpdateReviewedApplicantRecordDTO,
 } from "../../types";
 
 interface IReviewApplicantRecordService {
@@ -37,6 +38,15 @@ interface IReviewApplicantRecordService {
   bulkDeleteReviewedApplicantRecord(
     deleteReviewedApplicantRecords: DeleteReviewedApplicantRecordDTO[],
   ): Promise<ReviewedApplicantRecordDTO[]>;
+
+  /**
+   * Updates the review content and/or status of a ReviewedApplicantRecord
+   * Also updates the combined score in the ApplicantRecord table
+   * @Param updateReviewedApplicantRecordDTO data to update reviewed applicant record
+   */
+  updateReviewedApplicantRecord(
+    updateReviewedApplicantRecordDTO: UpdateReviewedApplicantRecordDTO,
+  ): Promise<ReviewedApplicantRecordDTO>;
 }
 
 export default IReviewApplicantRecordService;
