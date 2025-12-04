@@ -7,6 +7,15 @@ const reviewedApplicantRecordTypes = gql`
     SENIOR
   }
 
+  type Review {
+    passionFSG: Int
+    teamPlayer: Int
+    desireToLearn: Int
+    skill: Int
+    skillCategory: SkillCategory
+    comments: String
+  }
+
   input ReviewInput {
     passionFSG: Int
     teamPlayer: Int

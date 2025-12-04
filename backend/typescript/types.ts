@@ -90,12 +90,12 @@ export type ApplicantRecordDTO = {
 
 export type ApplicationStatus =
   | "Applied"
-  | "In Review"
+  | "InReview"
   | "Reviewed"
-  | "Interview"
-  | "Interview Complete"
+  | "Selected"
+  | "Interviewed"
   | "Offer"
-  | "Not Considered";
+  | "Rejected";
 
 export type SkillCategory = "Junior" | "Intermediate" | "Senior";
 
