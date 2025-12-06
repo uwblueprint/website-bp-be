@@ -156,72 +156,81 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
     review,
     status,
   }: UpdateReviewedApplicantRecordDTO): Promise<ReviewedApplicantRecordDTO> {
-    const updatedRecord = await sequelize.transaction(async (t) => {
-      const reviewedRecord = await ReviewedApplicantRecord.findOne({
-        where: { applicantRecordId, reviewerId },
-        transaction: t,
-      });
+    try {
+      const updatedRecord = await sequelize.transaction(async (t) => {
+        const reviewedRecord = await ReviewedApplicantRecord.findOne({
+          where: { applicantRecordId, reviewerId },
+          transaction: t,
+        });
 
-      if (!reviewedRecord) {
-        throw new Error(
-          `ReviewedApplicantRecord not found for applicantRecordId: ${applicantRecordId} and reviewerId: ${reviewerId}`,
-        );
-      }
-
-      const oldReviewedScore = reviewedRecord.score || 0;
-
-      if (review !== undefined) {
-        validateReviewScores(review);
-
-        reviewedRecord.review = {
-          ...reviewedRecord.review,
-          ...review,
-        };
-
-        const { passionFSG, teamPlayer, desireToLearn, skill } =
-          reviewedRecord.review;
-
-        let calculatedScore = 0;
-        if (passionFSG !== undefined) calculatedScore += passionFSG;
-        if (teamPlayer !== undefined) calculatedScore += teamPlayer;
-        if (desireToLearn !== undefined) calculatedScore += desireToLearn;
-        if (skill !== undefined) calculatedScore += skill;
-        reviewedRecord.score = calculatedScore;
-
-        if (review.skillCategory !== undefined) {
-          reviewedRecord.skillCategory = review.skillCategory;
+        if (!reviewedRecord) {
+          throw new Error(
+            `ReviewedApplicantRecord not found for applicantRecordId: ${applicantRecordId} and reviewerId: ${reviewerId}`,
+          );
         }
-      }
 
-      if (status !== undefined) {
-        reviewedRecord.status = status;
-      }
+        const oldReviewedScore = reviewedRecord.score || 0;
 
-      await reviewedRecord.save({ transaction: t });
+        if (review !== undefined) {
+          validateReviewScores(review);
 
-      const newReviewedScore = reviewedRecord.score || 0;
+          reviewedRecord.review = {
+            ...reviewedRecord.review,
+            ...review,
+          };
 
-      const applicantRecord = await ApplicantRecord.findOne({
-        where: { id: applicantRecordId },
-        transaction: t,
+          const { passionFSG, teamPlayer, desireToLearn, skill } =
+            reviewedRecord.review;
+
+          let calculatedScore = 0;
+          if (passionFSG !== undefined) calculatedScore += passionFSG;
+          if (teamPlayer !== undefined) calculatedScore += teamPlayer;
+          if (desireToLearn !== undefined) calculatedScore += desireToLearn;
+          if (skill !== undefined) calculatedScore += skill;
+          reviewedRecord.score = calculatedScore;
+
+          if (review.skillCategory !== undefined) {
+            reviewedRecord.skillCategory = review.skillCategory;
+          }
+        }
+
+        if (status !== undefined) {
+          reviewedRecord.status = status;
+        }
+
+        await reviewedRecord.save({ transaction: t });
+
+        const newReviewedScore = reviewedRecord.score || 0;
+
+        const applicantRecord = await ApplicantRecord.findOne({
+          where: { id: applicantRecordId },
+          transaction: t,
+        });
+
+        if (!applicantRecord) {
+          throw new Error(
+            `ApplicantRecord not found for applicantRecordId: ${applicantRecordId}`,
+          );
+        }
+
+        const oldCombinedScore = applicantRecord.combined_score || 0;
+        applicantRecord.combined_score =
+          oldCombinedScore - oldReviewedScore + newReviewedScore;
+
+        await applicantRecord.save({ transaction: t });
+
+        return reviewedRecord;
       });
 
-      if (!applicantRecord) {
-        throw new Error(
-          `ApplicantRecord not found for applicantRecordId: ${applicantRecordId}`,
-        );
-      }
-
-      const oldCombinedScore = applicantRecord.combined_score || 0;
-      applicantRecord.combined_score =
-        oldCombinedScore - oldReviewedScore + newReviewedScore;
-
-      await applicantRecord.save({ transaction: t });
-
-      return reviewedRecord;
-    });
-
-    return updatedRecord.toJSON() as ReviewedApplicantRecordDTO;
+      return updatedRecord.toJSON() as ReviewedApplicantRecordDTO;
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to update reviewed applicant record. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
   }
 }
 
