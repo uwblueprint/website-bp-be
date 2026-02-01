@@ -192,6 +192,9 @@ class AuthService implements IAuthService {
         decodedIdToken.uid,
       );
 
+      // eslint-disable-next-line no-console
+      console.log("DUMMY COMMIT");
+
       const firebaseUser = await firebaseAdmin
         .auth()
         .getUser(decodedIdToken.uid);
