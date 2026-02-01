@@ -194,6 +194,8 @@ class AuthService implements IAuthService {
 
       // eslint-disable-next-line no-console
       console.log("DUMMY COMMIT");
+      // eslint-disable-next-line no-console
+      console.log("DUMMY COMMIT2");
 
       const firebaseUser = await firebaseAdmin
         .auth()
