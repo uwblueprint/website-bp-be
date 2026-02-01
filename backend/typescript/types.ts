@@ -88,6 +88,9 @@ export type ApplicantRecordDTO = {
   isApplicantFlagged: boolean;
 };
 
+export const teamRoleValues = ["PM", "DESIGNER", "PL", "DEVELOPER"] as const;
+export type TeamRole = (typeof teamRoleValues)[number];
+
 export type ApplicationStatus =
   | "Applied"
   | "InReview"
@@ -126,6 +129,15 @@ export type UpdateUserDTO = Omit<UserDTO, "id">;
 export type RegisterUserDTO = Omit<CreateUserDTO, "role">;
 
 export type AuthDTO = Token & UserDTO;
+
+export type TeamMemberDTO = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  teamRole: TeamRole;
+};
+
+export type CreateTeamMemberDTO = Omit<TeamMemberDTO, "id">;
 
 export type Letters = "A" | "B" | "C" | "D";
 
