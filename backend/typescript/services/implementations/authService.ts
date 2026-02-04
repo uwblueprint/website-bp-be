@@ -302,7 +302,10 @@ class AuthService implements IAuthService {
 
       return reviewedApplicantRecord !== null;
     } catch (error) {
-      return false;
+      Logger.error(
+        `Failed to verify if user is authorized reviewer for applicant record ${applicantRecordId}`,
+      );
+      throw error;
     }
   }
 }
