@@ -1,4 +1,4 @@
-import { ApplicationDTO, ReviewedApplicantsDTO } from "../../types";
+import { ApplicationDTO, ReviewedApplicantRecordDTO, ReviewedApplicantsDTO } from "../../types";
 import ReviewPageService from "../../services/implementations/reviewPageService";
 import { getErrorMessage } from "../../utilities/errorUtils";
 
@@ -24,6 +24,18 @@ const reviewPageResolvers = {
         return await reviewPageService.getReviewedApplicantsByUserId(
           args.userId,
         );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
+  },
+  Mutation: {
+    reportReviewConflict: async (
+      _parent: undefined,
+      args: { applicantRecordId: string, reviewerId: number },
+    ): Promise<ReviewedApplicantRecordDTO> => {
+      try {
+        return await reviewPageService.reportReviewConflict(args.applicantRecordId, args.reviewerId);
       } catch (error) {
         throw new Error(getErrorMessage(error));
       }
