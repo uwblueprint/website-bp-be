@@ -90,6 +90,13 @@ interface IAuthService {
    * @returns true if email sent successfully
    */
   sendSignInLink(email: string): Promise<boolean>;
+
+  /**
+   * Determine if the user associated with the provided access token is an admin
+   * @param accessToken user's access token
+   * @returns true if Admin entry exists with userId associated with accessToken, false otherwise
+   */
+  isAuthorizedAdmin(accessToken: string): Promise<boolean>;
 }
 
 export default IAuthService;
