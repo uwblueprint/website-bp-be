@@ -53,6 +53,19 @@ const authResolvers = {
       );
       return isAuthorized;
     },
+    isAuthorizedReviewer: async (
+      _parent: undefined,
+      {
+        accessToken,
+        applicantRecordId,
+      }: { accessToken: string; applicantRecordId: string },
+    ): Promise<boolean> => {
+      const isAuthorized = await authService.isAuthorizedReviewer(
+        accessToken,
+        applicantRecordId,
+      );
+      return isAuthorized;
+    },
   },
   Mutation: {
     login: async (
