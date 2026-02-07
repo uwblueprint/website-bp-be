@@ -25,8 +25,16 @@ const reviewPageType = gql`
     timestamp: Int
   }
 
+  type ReviewedApplicantsDTO {
+    applicantRecordId: String!
+    reviewStatus: String!
+    applicantFirstName: String!
+    applicantLastName: String!
+  }
+
   extend type Query {
     reviewApplicantPage(applicantRecordId: String!): ApplicationDTO!
+    getReviewedApplicantsByUserId(userId: Int!): [ReviewedApplicantsDTO!]!
   }
 `;
 

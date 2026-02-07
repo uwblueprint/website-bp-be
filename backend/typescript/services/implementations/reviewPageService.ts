@@ -1,13 +1,16 @@
-import { ApplicationDTO } from "../../types";
+import { ApplicationDTO, ReviewedApplicantsDTO } from "../../types";
 import IReviewPageService from "../interfaces/IReviewPageService";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
 import ApplicantRecord from "../../models/applicantRecord.model";
+import type ReviewedApplicantRecord from "../../models/reviewedApplicantRecord.model";
 import Applicant from "../../models/applicant.model";
+import User from "../../models/user.model";
 
 const Logger = logger(__filename);
 
-function toDTO(model: Applicant): ApplicationDTO {
+function toApplicationDTO(model: Applicant): ApplicationDTO {
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   const firstChoice = model.applicantRecords!.find((ar) => ar.choice === 1);
   const secondChoice = model.applicantRecords!.find((ar) => ar.choice === 2);
 
@@ -36,6 +39,18 @@ function toDTO(model: Applicant): ApplicationDTO {
   };
 }
 
+function toReviewedApplicantRecordDTO(
+  model: ReviewedApplicantRecord,
+): ReviewedApplicantsDTO {
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
+  return {
+    applicantRecordId: model.applicantRecordId,
+    reviewStatus: model.status,
+    applicantFirstName: model.applicantRecord!.applicant!.firstName,
+    applicantLastName: model.applicantRecord!.applicant!.lastName,
+  };
+}
+
 class ReviewPageService implements IReviewPageService {
   /* eslint-disable class-methods-use-this */
   async getReviewPage(applicantRecordId: string): Promise<ApplicationDTO> {
@@ -60,7 +75,42 @@ class ReviewPageService implements IReviewPageService {
       });
       if (!applicant) throw new Error(`Database integrity has been violated`);
 
-      return toDTO(applicant);
+      return toApplicationDTO(applicant);
+    } catch (error: unknown) {
+      Logger.error(`Failed to fetch. Reason = ${getErrorMessage(error)}`);
+      throw error;
+    }
+  }
+
+  async getReviewedApplicantsByUserId(
+    userId: number,
+  ): Promise<ReviewedApplicantsDTO[]> {
+    try {
+      const user: User | null = await User.findOne({
+        where: { id: userId },
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        include: [
+          {
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+            association: "reviewedApplicantRecords",
+            include: [
+              {
+                attributes: { exclude: ["createdAt", "updatedAt"] },
+                association: "applicantRecord",
+                include: [
+                  {
+                    attributes: { exclude: ["createdAt", "updatedAt"] },
+                    association: "applicant",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+      if (!user) throw new Error(`No user with ${userId} found.`);
+      if (!user.reviewedApplicantRecords) return [];
+      return user.reviewedApplicantRecords.map(toReviewedApplicantRecordDTO);
     } catch (error: unknown) {
       Logger.error(`Failed to fetch. Reason = ${getErrorMessage(error)}`);
       throw error;
