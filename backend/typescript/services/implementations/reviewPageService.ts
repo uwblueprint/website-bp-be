@@ -1,4 +1,8 @@
-import { ApplicationDTO, ReviewedApplicantRecordDTO, ReviewedApplicantsDTO } from "../../types";
+import {
+  ApplicationDTO,
+  ReviewedApplicantRecordDTO,
+  ReviewedApplicantsDTO,
+} from "../../types";
 import IReviewPageService from "../interfaces/IReviewPageService";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
@@ -129,18 +133,26 @@ class ReviewPageService implements IReviewPageService {
     }
   }
 
-  async reportReviewConflict(applicantRecordId: string, reviewerId: number): Promise<ReviewedApplicantRecordDTO> {
+  async reportReviewConflict(
+    applicantRecordId: string,
+    reviewerId: number,
+  ): Promise<ReviewedApplicantRecordDTO> {
     try {
-      const reviewedApplicantRecord: ReviewedApplicantRecord | null = await ReviewedApplicantRecord.findOne({
-        where: { applicantRecordId, reviewerId },
-      });
-      if (!reviewedApplicantRecord) throw new Error(`No reviewed applicant record with ${applicantRecordId} and ${reviewerId} found.`);
+      const reviewedApplicantRecord: ReviewedApplicantRecord | null =
+        await ReviewedApplicantRecord.findOne({
+          where: { applicantRecordId, reviewerId },
+        });
+      if (!reviewedApplicantRecord)
+        throw new Error(
+          `No reviewed applicant record with ${applicantRecordId} and ${reviewerId} found.`,
+        );
       reviewedApplicantRecord.reviewerHasConflict = true;
       await reviewedApplicantRecord.save();
       return toReviewedApplicantRecordDTO(reviewedApplicantRecord);
-    }
-    catch (error: unknown) {
-      Logger.error(`Failed to report conflict. Reason = ${getErrorMessage(error)}`);
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to report conflict. Reason = ${getErrorMessage(error)}`,
+      );
       throw error;
     }
   }

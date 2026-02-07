@@ -1,4 +1,8 @@
-import { ApplicationDTO, ReviewedApplicantRecordDTO, ReviewedApplicantsDTO } from "../../types";
+import {
+  ApplicationDTO,
+  ReviewedApplicantRecordDTO,
+  ReviewedApplicantsDTO,
+} from "../../types";
 
 interface IReviewPageService {
   /**
@@ -20,7 +24,10 @@ interface IReviewPageService {
    * @param applicantRecordId the id of the applicant record that the reviewer is interested in
    * @param reviewerId the id of the reviewer that is reporting the conflict
    */
-  reportReviewConflict(applicantRecordId: string, reviewerId: number): Promise<ReviewedApplicantRecordDTO>;
+  reportReviewConflict(
+    applicantRecordId: string,
+    reviewerId: number,
+  ): Promise<ReviewedApplicantRecordDTO>;
 }
 
 export default IReviewPageService;
