@@ -76,8 +76,9 @@ class ReviewPageService implements IReviewPageService {
           where: { id: applicantRecordId },
           attributes: { exclude: ["createdAt", "updatedAt"] },
         });
-      if (!applicantRecord)
+      if (!applicantRecord) {
         throw new Error(`Database integrity has been violated`);
+      }
 
       const applicant: Applicant | null = await Applicant.findOne({
         where: { id: applicantRecord.applicantId },
@@ -89,7 +90,9 @@ class ReviewPageService implements IReviewPageService {
           },
         ],
       });
-      if (!applicant) throw new Error(`Database integrity has been violated`);
+      if (!applicant) {
+        throw new Error(`Database integrity has been violated`);
+      }
 
       return toApplicationDTO(applicant);
     } catch (error: unknown) {
@@ -124,8 +127,12 @@ class ReviewPageService implements IReviewPageService {
           },
         ],
       });
-      if (!user) throw new Error(`No user with ${userId} found.`);
-      if (!user.reviewedApplicantRecords) return [];
+      if (!user) {
+        throw new Error(`No user with ${userId} found.`);
+      }
+      if (!user.reviewedApplicantRecords) {
+        return [];
+      }
       return user.reviewedApplicantRecords.map(toReviewedApplicantsDTO);
     } catch (error: unknown) {
       Logger.error(`Failed to fetch. Reason = ${getErrorMessage(error)}`);
@@ -142,10 +149,11 @@ class ReviewPageService implements IReviewPageService {
         await ReviewedApplicantRecord.findOne({
           where: { applicantRecordId, reviewerId },
         });
-      if (!reviewedApplicantRecord)
+      if (!reviewedApplicantRecord) {
         throw new Error(
           `No reviewed applicant record with ${applicantRecordId} and ${reviewerId} found.`,
         );
+      }
       reviewedApplicantRecord.reviewerHasConflict = true;
       await reviewedApplicantRecord.save();
       return toReviewedApplicantRecordDTO(reviewedApplicantRecord);
