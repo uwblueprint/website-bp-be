@@ -259,3 +259,18 @@ export type CreateAdminCommentDTO = Pick<
   AdminCommentDTO,
   "userId" | "applicantRecordId" | "comment"
 >;
+
+export type FirebaseFileDTO = {
+  id: string;
+  storagePath: string;
+  originalFileName: string;
+  uploadedUserId: number;
+  sizeBytes: bigint;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type CreateFirebaseFileDTO = Omit<
+  FirebaseFileDTO,
+  "id" | "createdAt" | "updatedAt"
+>;
