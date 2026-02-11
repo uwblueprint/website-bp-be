@@ -7,6 +7,13 @@ const reviewedApplicantRecordTypes = gql`
     SENIOR
   }
 
+  enum ReviewStatus {
+    NeedsReview
+    InProgress
+    Done
+    ConflictReported
+  }
+
   type Review {
     passionFSG: Int
     teamPlayer: Int
@@ -28,7 +35,7 @@ const reviewedApplicantRecordTypes = gql`
     applicantRecordId: ID!
     reviewerId: Int!
     review: Review
-    status: String
+    status: ReviewStatus
     score: Int
     reviewerHasConflict: Boolean
   }
@@ -37,7 +44,7 @@ const reviewedApplicantRecordTypes = gql`
     applicantRecordId: ID!
     reviewerId: Int!
     review: ReviewInput
-    status: String
+    status: ReviewStatus
   }
 
   input DeleteReviewedApplicantRecord {
@@ -61,6 +68,12 @@ const reviewedApplicantRecordTypes = gql`
     bulkDeleteReviewedApplicantRecord(
       inputs: [DeleteReviewedApplicantRecord!]!
     ): [ReviewedApplicantRecord!]!
+
+    updateReviewStatus(
+      applicantRecordId: ID!
+      reviewerId: Int!
+      status: ReviewStatus!
+    ): ReviewedApplicantRecord!
   }
 `;
 

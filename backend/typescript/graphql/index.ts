@@ -17,8 +17,8 @@ import userResolvers from "./resolvers/userResolvers";
 import userType from "./types/userType";
 import reviewDashboardResolvers from "./resolvers/reviewDashboardResolvers";
 import reviewDashboardType from "./types/reviewDashboardType";
+import reviewedApplicantRecordResolvers from "./resolvers/reviewedApplicantRecordResolvers";
 import reviewedApplicantRecordTypes from "./types/reviewedApplicantRecordTypes";
-import reviewedApplicantRecordResolvers from "./resolvers/reviewedApplicantRecordResolver";
 import adminCommentResolvers from "./resolvers/adminCommentsResolvers";
 import adminCommentType from "./types/adminCommentsType";
 import applicantRecordResolvers from "./resolvers/applicantRecordResolvers";
@@ -103,6 +103,7 @@ const graphQLMiddlewares = {
     createAdminComment: authorizedByAdmin(),
     updateAdminComment: authorizedByAdmin(),
     deleteAdminCommentById: authorizedByAdmin(),
+    updateReviewStatus: authorizedByAllRoles(),
   },
 };
 

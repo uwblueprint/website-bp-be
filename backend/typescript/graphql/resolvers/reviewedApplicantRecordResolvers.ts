@@ -1,12 +1,15 @@
 import ReviewedApplicantRecordService from "../../services/implementations/reviewedApplicantRecordService";
+import IReviewedApplicantRecordService from "../../services/interfaces/reviewedApplicantRecordService";
 import {
   ReviewedApplicantRecordDTO,
   CreateReviewedApplicantRecordDTO,
   DeleteReviewedApplicantRecordDTO,
+  ReviewStatus,
 } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 
-const reviewedApplicantRecordService = new ReviewedApplicantRecordService();
+const reviewedApplicantRecordService: IReviewedApplicantRecordService =
+  new ReviewedApplicantRecordService();
 
 const reviewedApplicantRecordResolvers = {
   Mutation: {
@@ -60,6 +63,25 @@ const reviewedApplicantRecordResolvers = {
       } catch (error) {
         throw new Error(getErrorMessage(error));
       }
+    },
+
+    updateReviewStatus: async (
+      _parent: undefined,
+      {
+        applicantRecordId,
+        reviewerId,
+        status,
+      }: {
+        applicantRecordId: string;
+        reviewerId: number;
+        status: ReviewStatus;
+      },
+    ): Promise<ReviewedApplicantRecordDTO> => {
+      return reviewedApplicantRecordService.updateReviewStatus(
+        applicantRecordId,
+        reviewerId,
+        status,
+      );
     },
   },
 };
