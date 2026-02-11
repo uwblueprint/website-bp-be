@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { Migration } from "../umzug";
 
-const TABLE_NAME = "files";
+const TABLE_NAME = "firebase_files";
 
 export const up: Migration = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().createTable(TABLE_NAME, {

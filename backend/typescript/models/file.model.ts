@@ -7,7 +7,7 @@ import {
 } from "sequelize-typescript";
 import User from "./user.model";
 
-@Table({ tableName: "files" })
+@Table({ tableName: "firebase_files" })
 export default class File extends Model {
   @Column({
     type: DataType.UUID,
