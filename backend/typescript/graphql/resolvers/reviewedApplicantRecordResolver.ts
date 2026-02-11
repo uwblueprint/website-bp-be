@@ -61,6 +61,25 @@ const reviewedApplicantRecordResolvers = {
         throw new Error(getErrorMessage(error));
       }
     },
+
+    reassignReviewedApplicantRecord: async (
+      _parent: undefined,
+      args: {
+        applicantRecordId: string;
+        oldReviewerId: number;
+        newReviewerId: number;
+      },
+    ): Promise<ReviewedApplicantRecordDTO> => {
+      try {
+        return await reviewedApplicantRecordService.reassignReviewedApplicantRecord(
+          args.applicantRecordId,
+          args.oldReviewerId,
+          args.newReviewerId,
+        );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
   },
 };
 

@@ -121,6 +121,51 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
       throw error;
     }
   }
+
+  async reassignReviewedApplicantRecord(
+    applicantRecordId: string,
+    oldReviewerId: number,
+    newReviewerId: number,
+  ): Promise<ReviewedApplicantRecordDTO> {
+    try {
+      return await sequelize.transaction(async (t) => {
+        const oldRecord = await ReviewedApplicantRecord.findOne({
+          where: { applicantRecordId, reviewerId: oldReviewerId },
+          transaction: t,
+        });
+
+        if (!oldRecord) {
+          throw new Error(
+            `ReviewedApplicantRecord not found for applicantRecordId: ${applicantRecordId} and reviewerId: ${oldReviewerId}`,
+          );
+        }
+
+        const oldRecordData = oldRecord.toJSON() as ReviewedApplicantRecordDTO;
+
+        await oldRecord.destroy({ transaction: t });
+
+        const newRecord = await ReviewedApplicantRecord.create(
+          {
+            applicantRecordId,
+            reviewerId: newReviewerId,
+            review: oldRecordData.review,
+            status: oldRecordData.status,
+            reviewerHasConflict: false,
+          },
+          { transaction: t },
+        );
+
+        return newRecord.toJSON() as ReviewedApplicantRecordDTO;
+      });
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to reassign reviewed applicant record. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
+  }
 }
 
 export default ReviewedApplicantRecordService;
