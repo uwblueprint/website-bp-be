@@ -1,13 +1,20 @@
-import { ApplicationDTO } from "../../types";
+import {
+  ApplicationDTO,
+  ReviewedApplicantRecordDTO,
+  ReviewedApplicantsDTO,
+} from "../../types";
 import IReviewPageService from "../interfaces/IReviewPageService";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
 import ApplicantRecord from "../../models/applicantRecord.model";
+import ReviewedApplicantRecord from "../../models/reviewedApplicantRecord.model";
 import Applicant from "../../models/applicant.model";
+import User from "../../models/user.model";
 
 const Logger = logger(__filename);
 
-function toDTO(model: Applicant): ApplicationDTO {
+function toApplicationDTO(model: Applicant): ApplicationDTO {
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   const firstChoice = model.applicantRecords!.find((ar) => ar.choice === 1);
   const secondChoice = model.applicantRecords!.find((ar) => ar.choice === 2);
 
@@ -36,6 +43,30 @@ function toDTO(model: Applicant): ApplicationDTO {
   };
 }
 
+function toReviewedApplicantsDTO(
+  model: ReviewedApplicantRecord,
+): ReviewedApplicantsDTO {
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
+  return {
+    applicantRecordId: model.applicantRecordId,
+    reviewStatus: model.status,
+    applicantFirstName: model.applicantRecord!.applicant!.firstName,
+    applicantLastName: model.applicantRecord!.applicant!.lastName,
+  };
+}
+
+function toReviewedApplicantRecordDTO(
+  model: ReviewedApplicantRecord,
+): ReviewedApplicantRecordDTO {
+  return {
+    applicantRecordId: model.applicantRecordId,
+    reviewerId: model.reviewerId,
+    review: model.review,
+    status: model.status,
+    reviewerHasConflict: model.reviewerHasConflict,
+  };
+}
+
 class ReviewPageService implements IReviewPageService {
   /* eslint-disable class-methods-use-this */
   async getReviewPage(applicantRecordId: string): Promise<ApplicationDTO> {
@@ -45,8 +76,9 @@ class ReviewPageService implements IReviewPageService {
           where: { id: applicantRecordId },
           attributes: { exclude: ["createdAt", "updatedAt"] },
         });
-      if (!applicantRecord)
+      if (!applicantRecord) {
         throw new Error(`Database integrity has been violated`);
+      }
 
       const applicant: Applicant | null = await Applicant.findOne({
         where: { id: applicantRecord.applicantId },
@@ -58,11 +90,77 @@ class ReviewPageService implements IReviewPageService {
           },
         ],
       });
-      if (!applicant) throw new Error(`Database integrity has been violated`);
+      if (!applicant) {
+        throw new Error(`Database integrity has been violated`);
+      }
 
-      return toDTO(applicant);
+      return toApplicationDTO(applicant);
     } catch (error: unknown) {
       Logger.error(`Failed to fetch. Reason = ${getErrorMessage(error)}`);
+      throw error;
+    }
+  }
+
+  async getReviewedApplicantsByUserId(
+    userId: number,
+  ): Promise<ReviewedApplicantsDTO[]> {
+    try {
+      const user: User | null = await User.findOne({
+        where: { id: userId },
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        include: [
+          {
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+            association: "reviewedApplicantRecords",
+            include: [
+              {
+                attributes: { exclude: ["createdAt", "updatedAt"] },
+                association: "applicantRecord",
+                include: [
+                  {
+                    attributes: { exclude: ["createdAt", "updatedAt"] },
+                    association: "applicant",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+      if (!user) {
+        throw new Error(`No user with ${userId} found.`);
+      }
+      if (!user.reviewedApplicantRecords) {
+        return [];
+      }
+      return user.reviewedApplicantRecords.map(toReviewedApplicantsDTO);
+    } catch (error: unknown) {
+      Logger.error(`Failed to fetch. Reason = ${getErrorMessage(error)}`);
+      throw error;
+    }
+  }
+
+  async reportReviewConflict(
+    applicantRecordId: string,
+    reviewerId: number,
+  ): Promise<ReviewedApplicantRecordDTO> {
+    try {
+      const reviewedApplicantRecord: ReviewedApplicantRecord | null =
+        await ReviewedApplicantRecord.findOne({
+          where: { applicantRecordId, reviewerId },
+        });
+      if (!reviewedApplicantRecord) {
+        throw new Error(
+          `No reviewed applicant record with ${applicantRecordId} and ${reviewerId} found.`,
+        );
+      }
+      reviewedApplicantRecord.reviewerHasConflict = true;
+      await reviewedApplicantRecord.save();
+      return toReviewedApplicantRecordDTO(reviewedApplicantRecord);
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to report conflict. Reason = ${getErrorMessage(error)}`,
+      );
       throw error;
     }
   }

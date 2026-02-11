@@ -246,6 +246,13 @@ export type ReviewDashboardSidePanelDTO = {
   reviewDetails: ReviewDetails[];
 };
 
+export type ReviewedApplicantsDTO = {
+  applicantRecordId: string;
+  reviewStatus: ReviewStatus;
+  applicantFirstName: string;
+  applicantLastName: string;
+};
+
 export type AdminCommentDTO = {
   id: string;
   userId: number;
@@ -258,4 +265,19 @@ export type AdminCommentDTO = {
 export type CreateAdminCommentDTO = Pick<
   AdminCommentDTO,
   "userId" | "applicantRecordId" | "comment"
+>;
+
+export type FirebaseFileDTO = {
+  id: string;
+  storagePath: string;
+  originalFileName: string;
+  uploadedUserId: number;
+  sizeBytes: bigint;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type CreateFirebaseFileDTO = Omit<
+  FirebaseFileDTO,
+  "id" | "createdAt" | "updatedAt"
 >;
