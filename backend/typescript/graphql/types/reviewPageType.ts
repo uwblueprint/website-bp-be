@@ -32,6 +32,22 @@ const reviewPageType = gql`
     applicantLastName: String!
   }
 
+  type ReviewedApplicantRecordDTO {
+    applicantRecordId: String!
+    reviewerId: Int!
+    review: Review!
+    status: String!
+    score: Int
+    reviewerHasConflict: Boolean!
+  }
+
+  extend type Mutation {
+    reportReviewConflict(
+      applicantRecordId: String!
+      reviewerId: Int!
+    ): ReviewedApplicantRecordDTO!
+  }
+
   extend type Query {
     reviewApplicantPage(applicantRecordId: String!): ApplicationDTO!
     getReviewedApplicantsByUserId(userId: Int!): [ReviewedApplicantsDTO!]!
