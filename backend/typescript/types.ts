@@ -99,6 +99,17 @@ export type ApplicationStatus =
 
 export type SkillCategory = "Junior" | "Intermediate" | "Senior";
 
+export type Interview = {
+  passionFSG?: number;
+  teamPlayer?: number;
+  desireToLearn?: number;
+  skill?: number;
+  skillCategory?: SkillCategory;
+  comments?: string;
+};
+
+export type InterviewStatus = "NeedsReview" | "InProgress" | "Complete";
+
 export type ApplicantRecordExtraInfo = {
   adminReview?: string;
 };
@@ -222,6 +233,17 @@ export type DeleteReviewedApplicantRecordDTO = {
   reviewerId: number;
 };
 
+export type InterviewedApplicantRecordDTO = {
+  id: string;
+  applicantRecordId: string;
+  score: number | null;
+  interviewJson: Interview | null;
+  status: InterviewStatus;
+  interviewNotesId: string | null;
+  schedulingLink: string | null;
+  interviewDate: Date | null;
+};
+
 export type ReviewDetails = {
   reviewerFirstName: string;
   reviewerLastName: string;
@@ -274,3 +296,17 @@ export type CreateFirebaseFileDTO = Omit<
   FirebaseFileDTO,
   "id" | "createdAt" | "updatedAt"
 >;
+
+export const interviewConflictOptions = [
+  "APPLICANT_CONFLICT", // Conflict of interest with the applicant
+  "APPLICANT_NO_RESPONSE", // Applicant did not respond to the interview request
+  "PARTNER_NO_RESPONSE", // Partner did not respond to the interview request
+  "CANNOT_ATTEND", // Cannot make interview
+] as const;
+export type InterviewConflict = (typeof interviewConflictOptions)[number];
+
+export type InterviewDelegationDTO = {
+  interviewedApplicantRecordId: string;
+  interviewerId: number;
+  interviewHasConflict?: InterviewConflict | null;
+};
