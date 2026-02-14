@@ -7,6 +7,7 @@ const authType = gql`
     lastName: String!
     email: String!
     role: Role!
+    position: String
     accessToken: String!
     refreshToken: String!
   }
@@ -29,6 +30,7 @@ const authType = gql`
       accessToken: String!
       applicantRecordId: String!
     ): Boolean!
+    getCurrentUser(accessToken: String!): AuthDTO!
   }
 
   extend type Mutation {
