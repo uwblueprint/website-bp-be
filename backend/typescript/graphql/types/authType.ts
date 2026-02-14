@@ -30,7 +30,6 @@ const authType = gql`
       accessToken: String!
       applicantRecordId: String!
     ): Boolean!
-    getCurrentUser(accessToken: String!): AuthDTO!
   }
 
   extend type Mutation {
