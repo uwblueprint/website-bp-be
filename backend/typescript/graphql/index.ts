@@ -51,6 +51,7 @@ const executableSchema = makeExecutableSchema({
     adminCommentType,
     applicantRecordType,
     reviewPageType,
+    reviewedApplicantRecordTypes,
   ],
   resolvers: merge(
     authResolvers,
@@ -62,6 +63,7 @@ const executableSchema = makeExecutableSchema({
     adminCommentResolvers,
     applicantRecordResolvers,
     reviewPageResolvers,
+    reviewedApplicantRecordResolvers,
   ),
 });
 
@@ -93,6 +95,7 @@ const graphQLMiddlewares = {
     bulkCreateReviewedApplicantRecord: authorizedByAllRoles(),
     deleteReviewedApplicantRecord: authorizedByAllRoles(),
     bulkDeleteReviewedApplicantRecord: authorizedByAllRoles(),
+    updateReviewedApplicantRecord: authorizedByAllRoles(),
     createUser: authorizedByAdmin(),
     updateUser: authorizedByAdmin(),
     deleteUserById: authorizedByAdmin(),
