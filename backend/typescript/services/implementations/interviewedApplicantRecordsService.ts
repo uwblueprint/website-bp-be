@@ -64,7 +64,8 @@ class InterviewedApplicantRecordsService
           applicantRecordId,
           score,
           interviewJson: interviewJSON,
-          status,
+          // TODO: if default value ends up getting set at model level, remove nullish coalescing
+          status: status ?? "NeedsReview",
           interviewNotesId,
           schedulingLink,
           interviewDate,
