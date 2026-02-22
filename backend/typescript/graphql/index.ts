@@ -25,6 +25,8 @@ import applicantRecordResolvers from "./resolvers/applicantRecordResolvers";
 import applicantRecordType from "./types/applicantRecordType";
 import reviewPageType from "./types/reviewPageType";
 import reviewPageResolvers from "./resolvers/reviewPageResolvers";
+import interviewedApplicantRecordsTypes from "./types/interviewedApplicantRecordsTypes";
+import interviewedApplicantRecordsResolvers from "./resolvers/interviewedApplicantRecordsResolvers";
 
 const query = gql`
   type Query {
@@ -52,6 +54,7 @@ const executableSchema = makeExecutableSchema({
     applicantRecordType,
     reviewPageType,
     reviewedApplicantRecordTypes,
+    interviewedApplicantRecordsTypes,
   ],
   resolvers: merge(
     authResolvers,
@@ -64,6 +67,7 @@ const executableSchema = makeExecutableSchema({
     applicantRecordResolvers,
     reviewPageResolvers,
     reviewedApplicantRecordResolvers,
+    interviewedApplicantRecordsResolvers,
   ),
 });
 
