@@ -243,12 +243,12 @@ export type UpdateReviewedApplicantRecordDTO = {
 export type InterviewedApplicantRecordDTO = {
   id: string;
   applicantRecordId: string;
-  score: number | null;
-  interviewJson: Interview | null;
+  score?: number;
+  interviewJson?: Interview;
   status: InterviewStatus;
-  interviewNotesId: string | null;
-  schedulingLink: string | null;
-  interviewDate: Date | null;
+  interviewNotesId?: string;
+  schedulingLink?: string;
+  interviewDate?: Date;
 };
 
 export type ReviewDetails = {

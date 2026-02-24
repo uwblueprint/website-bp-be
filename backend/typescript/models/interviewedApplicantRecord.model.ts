@@ -30,17 +30,18 @@ export default class InterviewedApplicantRecord extends Model {
     type: DataType.INTEGER,
     allowNull: true,
   })
-  score!: number | null;
+  score?: number;
 
   @Column({
     type: DataType.JSONB,
     allowNull: true,
   })
-  interviewJson!: Interview | null;
+  interviewJson?: Interview;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
+    defaultValue: "NeedsReview",
   })
   status!: InterviewStatus;
 
@@ -49,19 +50,19 @@ export default class InterviewedApplicantRecord extends Model {
     type: DataType.UUID,
     allowNull: true,
   })
-  interviewNotesId!: string | null;
+  interviewNotesId?: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
   })
-  schedulingLink!: string | null;
+  schedulingLink?: string;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
   })
-  interviewDate!: Date | null;
+  interviewDate?: Date;
 
   @Column({
     type: DataType.DATE,
