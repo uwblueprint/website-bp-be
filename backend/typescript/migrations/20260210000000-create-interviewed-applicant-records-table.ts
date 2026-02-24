@@ -31,6 +31,7 @@ export const up: Migration = async ({ context: sequelize }) => {
     status: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: "NeedsReview",
     },
     interviewNotesId: {
       type: DataTypes.UUID,
