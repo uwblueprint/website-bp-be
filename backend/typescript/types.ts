@@ -317,3 +317,13 @@ export type InterviewDelegationDTO = {
   interviewerId: number;
   interviewHasConflict?: InterviewConflict;
 };
+
+export type CreateInterviewDelegationDTO = Omit<
+  InterviewDelegationDTO,
+  "interviewHasConflict"
+>;
+
+export type DeleteInterviewDelegationDTO = Omit<
+  InterviewDelegationDTO,
+  "interviewHasConflict"
+>;
