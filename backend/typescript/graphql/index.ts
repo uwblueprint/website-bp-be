@@ -25,6 +25,8 @@ import applicantRecordResolvers from "./resolvers/applicantRecordResolvers";
 import applicantRecordType from "./types/applicantRecordType";
 import reviewPageType from "./types/reviewPageType";
 import reviewPageResolvers from "./resolvers/reviewPageResolvers";
+import firebaseFileType from "./types/firebaseFileType";
+import firebaseFileResolvers from "./resolvers/firebaseFileResolvers";
 
 const query = gql`
   type Query {
@@ -52,6 +54,7 @@ const executableSchema = makeExecutableSchema({
     applicantRecordType,
     reviewPageType,
     reviewedApplicantRecordTypes,
+    firebaseFileType,
   ],
   resolvers: merge(
     authResolvers,
@@ -64,6 +67,7 @@ const executableSchema = makeExecutableSchema({
     applicantRecordResolvers,
     reviewPageResolvers,
     reviewedApplicantRecordResolvers,
+    firebaseFileResolvers,
   ),
 });
 
@@ -106,6 +110,7 @@ const graphQLMiddlewares = {
     createAdminComment: authorizedByAdmin(),
     updateAdminComment: authorizedByAdmin(),
     deleteAdminCommentById: authorizedByAdmin(),
+    createFirebaseFile: authorizedByAllRoles(),
   },
 };
 
