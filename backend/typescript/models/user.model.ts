@@ -37,6 +37,9 @@ export default class User extends Model {
   @Column({ type: DataType.STRING })
   position?: string;
 
+  @Column({ type: DataType.BOOLEAN, defaultValue: true })
+  isActive!: boolean;
+
   @HasMany(() => ReviewedApplicantRecord, {
     foreignKey: "reviewerId",
     sourceKey: "id",
