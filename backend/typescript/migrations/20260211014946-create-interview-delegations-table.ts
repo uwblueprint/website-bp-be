@@ -1,6 +1,5 @@
 import { DataType } from "sequelize-typescript";
 import { Migration } from "../umzug";
-import { interviewConflictOptions } from "../types";
 
 const TABLE_NAME = "interview_delegations";
 
@@ -25,7 +24,7 @@ export const up: Migration = async ({ context: sequelize }) => {
       primaryKey: true,
     },
     interviewHasConflict: {
-      type: DataType.ENUM(...interviewConflictOptions),
+      type: DataType.STRING,
       allowNull: true,
       defaultValue: null,
     },

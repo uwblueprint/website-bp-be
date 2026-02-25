@@ -304,13 +304,13 @@ export type CreateFirebaseFileDTO = Omit<
   "id" | "createdAt" | "updatedAt"
 >;
 
-export const interviewConflictOptions = [
+export const INTERVIEW_CONFLICT_OPTIONS = [
   "APPLICANT_CONFLICT", // Conflict of interest with the applicant
   "APPLICANT_NO_RESPONSE", // Applicant did not respond to the interview request
   "PARTNER_NO_RESPONSE", // Partner did not respond to the interview request
   "CANNOT_ATTEND", // Cannot make interview
 ] as const;
-export type InterviewConflict = (typeof interviewConflictOptions)[number];
+export type InterviewConflict = (typeof INTERVIEW_CONFLICT_OPTIONS)[number];
 
 export type InterviewDelegationDTO = {
   interviewedApplicantRecordId: string;

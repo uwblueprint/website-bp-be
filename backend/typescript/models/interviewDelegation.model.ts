@@ -9,7 +9,7 @@ import {
   Table,
 } from "sequelize-typescript";
 import { NonAttribute } from "sequelize";
-import { InterviewConflict, interviewConflictOptions } from "../types";
+import { InterviewConflict } from "../types";
 import User from "./user.model";
 import InterviewedApplicantRecord from "./interviewedApplicantRecord.model";
 
@@ -24,7 +24,7 @@ export default class InterviewDelegation extends Model {
   interviewerId!: number;
 
   @Column({
-    type: DataType.ENUM(...interviewConflictOptions),
+    type: DataType.STRING,
     allowNull: true,
     defaultValue: null,
   })
