@@ -99,6 +99,17 @@ export type ApplicationStatus =
 
 export type SkillCategory = "Junior" | "Intermediate" | "Senior";
 
+export type Interview = {
+  passionFSG?: number;
+  teamPlayer?: number;
+  desireToLearn?: number;
+  skill?: number;
+  skillCategory?: SkillCategory;
+  comments?: string;
+};
+
+export type InterviewStatus = "NeedsReview" | "InProgress" | "Complete";
+
 export type ApplicantRecordExtraInfo = {
   adminReview?: string;
 };
@@ -227,6 +238,17 @@ export type UpdateReviewedApplicantRecordDTO = {
   reviewerId: number;
   review?: Review;
   status?: ReviewStatus;
+};
+
+export type InterviewedApplicantRecordDTO = {
+  id: string;
+  applicantRecordId: string;
+  score?: number;
+  interviewJson?: Interview;
+  status: InterviewStatus;
+  interviewNotesId?: string;
+  schedulingLink?: string;
+  interviewDate?: Date;
 };
 
 export type ReviewDetails = {
