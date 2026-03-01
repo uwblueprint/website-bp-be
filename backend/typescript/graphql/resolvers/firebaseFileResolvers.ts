@@ -50,7 +50,7 @@ const firebaseFileResolvers = {
       await writeFile(createReadStream(), tempFilePath);
 
       const sizeBytes = BigInt(fs.statSync(tempFilePath).size);
-      const storagePath = `${uuidv4()}/${filename}`;
+      const storagePath = `interview_notes/${uuidv4()}/${filename}`;
 
       try {
         const newFile = await firebaseFileService.createFile(
