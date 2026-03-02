@@ -95,13 +95,18 @@ class InterviewedApplicantRecordsService
       if (!record) {
         throw new Error(`No interviewed applicant record with id ${id} found.`);
       }
-      if (score !== undefined) record.score = score;
-      if (interviewJSON !== undefined) record.interviewJson = interviewJSON;
-      if (status !== undefined) record.status = status;
-      if (interviewNotesId !== undefined)
-        record.interviewNotesId = interviewNotesId;
-      if (schedulingLink !== undefined) record.schedulingLink = schedulingLink;
-      if (interviewDate !== undefined) record.interviewDate = interviewDate;
+      const fieldMapping: Partial<InterviewedApplicantRecord> = {
+        score,
+        interviewJson: interviewJSON,
+        status,
+        interviewNotesId,
+        schedulingLink,
+        interviewDate,
+      };
+      const updates = Object.fromEntries(
+        Object.entries(fieldMapping).filter(([, v]) => v !== undefined),
+      );
+      record.set(updates);
       await record.save();
       return toInterviewedApplicantRecordDTO(record);
     } catch (error: unknown) {
