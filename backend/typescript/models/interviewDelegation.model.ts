@@ -30,6 +30,20 @@ export default class InterviewDelegation extends Model {
   })
   interviewHasConflict?: InterviewConflict;
 
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+    defaultValue: DataType.NOW,
+  })
+  createdAt!: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+    defaultValue: DataType.NOW,
+  })
+  updatedAt!: Date;
+
   @BelongsTo(() => InterviewedApplicantRecord, {
     foreignKey: "interviewedApplicantRecordId",
     targetKey: "id",
