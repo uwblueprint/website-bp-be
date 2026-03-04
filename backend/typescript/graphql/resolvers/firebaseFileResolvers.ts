@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 import { FileUpload } from "graphql-upload";
 /* eslint-disable-next-line import/no-extraneous-dependencies */
 import { ReadStream } from "fs-capacitor";
@@ -17,6 +18,8 @@ const fileStorageService = new FileStorageService(defaultBucket);
 const firebaseFileService: IFirebaseFileService = new FirebaseFileService(
   fileStorageService,
 );
+
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
 
 const writeFile = (readStream: ReadStream, filePath: string): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -44,20 +47,31 @@ const firebaseFileResolvers = {
         throw new Error(getFileTypeValidationError(mimetype));
       }
 
+      const sanitizedFilename = path.basename(filename);
+
       const uploadDir = "uploads";
-      const tempFilePath = `${uploadDir}/${filename}`;
+      const fileUUID = uuidv4();
+      const tempFilePath = `${uploadDir}/${fileUUID}-${sanitizedFilename}`;
 
       await writeFile(createReadStream(), tempFilePath);
 
       const sizeBytes = BigInt(fs.statSync(tempFilePath).size);
-      const storagePath = `interview_notes/${uuidv4()}/${filename}`;
+
+      if (sizeBytes > BigInt(MAX_FILE_SIZE_BYTES)) {
+        fs.unlinkSync(tempFilePath);
+        throw new Error(
+          `File size ${sizeBytes} bytes exceeds the maximum allowed size of ${MAX_FILE_SIZE_BYTES} bytes`,
+        );
+      }
+
+      const storagePath = `interview_notes/${fileUUID}/${sanitizedFilename}`;
 
       try {
         const newFile = await firebaseFileService.createFile(
           tempFilePath,
           {
             storagePath,
-            originalFileName: filename,
+            originalFileName: sanitizedFilename,
             uploadedUserId,
             sizeBytes,
           },
