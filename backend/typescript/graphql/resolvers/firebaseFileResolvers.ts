@@ -47,11 +47,9 @@ const firebaseFileResolvers = {
         throw new Error(getFileTypeValidationError(mimetype));
       }
 
-      const sanitizedFilename = path.basename(filename);
-
       const uploadDir = "uploads";
       const fileUUID = uuidv4();
-      const tempFilePath = `${uploadDir}/${fileUUID}-${sanitizedFilename}`;
+      const tempFilePath = `${uploadDir}/${fileUUID}`;
 
       await writeFile(createReadStream(), tempFilePath);
 
@@ -64,14 +62,14 @@ const firebaseFileResolvers = {
         );
       }
 
-      const storagePath = `interview_notes/${fileUUID}/${sanitizedFilename}`;
+      const storagePath = `interview_notes/${fileUUID}`;
 
       try {
         const newFile = await firebaseFileService.createFile(
           tempFilePath,
           {
             storagePath,
-            originalFileName: sanitizedFilename,
+            originalFileName: fileUUID,
             uploadedUserId,
             sizeBytes,
           },
