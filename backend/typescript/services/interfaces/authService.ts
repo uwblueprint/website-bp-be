@@ -90,6 +90,17 @@ interface IAuthService {
    * @returns true if email sent successfully
    */
   sendSignInLink(email: string): Promise<boolean>;
+
+  /**
+   * Checks whether a user is an authorized reviewer for a specific applicant record
+   * @param accessToken user's access token
+   * @param applicantRecordId ID of the applicant record
+   * @returns true if user is authorized as a reviewer, false otherwise
+   */
+  isAuthorizedReviewer(
+    accessToken: string,
+    applicantRecordId: string,
+  ): Promise<boolean>;
 }
 
 export default IAuthService;

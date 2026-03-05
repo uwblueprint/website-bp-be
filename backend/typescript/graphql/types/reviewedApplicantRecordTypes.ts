@@ -13,6 +13,7 @@ const reviewedApplicantRecordTypes = gql`
     desireToLearn: Int
     skill: Int
     skillCategory: SkillCategory
+    comments: String
   }
 
   input ReviewInput {
@@ -44,6 +45,13 @@ const reviewedApplicantRecordTypes = gql`
     reviewerId: Int!
   }
 
+  input UpdateReviewedApplicantRecordInput {
+    applicantRecordId: ID!
+    reviewerId: Int!
+    review: ReviewInput
+    status: String
+  }
+
   extend type Mutation {
     createReviewedApplicantRecord(
       input: CreateReviewedApplicantRecordInput!
@@ -60,6 +68,10 @@ const reviewedApplicantRecordTypes = gql`
     bulkDeleteReviewedApplicantRecord(
       inputs: [DeleteReviewedApplicantRecord!]!
     ): [ReviewedApplicantRecord!]!
+
+    updateReviewedApplicantRecord(
+      input: UpdateReviewedApplicantRecordInput!
+    ): ReviewedApplicantRecord!
   }
 `;
 

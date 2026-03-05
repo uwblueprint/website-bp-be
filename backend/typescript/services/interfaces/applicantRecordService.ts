@@ -1,6 +1,14 @@
-import { ApplicantRecordDTO } from "../../types";
+import { ApplicantRecordDTO, ApplicationStatus } from "../../types";
 
 interface IApplicantRecordService {
+  updateApplicantStatus(
+    applicantRecordId: string,
+    status: ApplicationStatus,
+  ): Promise<ApplicantRecordDTO>;
+  bulkUpdateApplicantStatus(
+    applicantRecordIds: string[],
+    status: ApplicationStatus,
+  ): Promise<ApplicantRecordDTO[]>;
   setApplicantRecordFlag(
     applicantRecordId: string,
     flagValue: boolean,

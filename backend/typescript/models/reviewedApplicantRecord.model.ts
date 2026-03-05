@@ -59,4 +59,10 @@ export default class ReviewedApplicantRecord extends Model {
 
   @BelongsTo(() => User, { foreignKey: "reviewerId", targetKey: "id" })
   user?: NonAttribute<User>;
+
+  @BelongsTo(() => ApplicantRecord, {
+    foreignKey: "applicantRecordId",
+    targetKey: "id",
+  })
+  applicantRecord?: NonAttribute<ApplicantRecord>;
 }
