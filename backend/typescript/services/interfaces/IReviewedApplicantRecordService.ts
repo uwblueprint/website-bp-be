@@ -6,6 +6,16 @@ import {
 
 interface IReviewApplicantRecordService {
   /**
+   * Gets a single reviewed applicant record by composite key
+   * @Param applicantRecordId the ID of the applicant record
+   * @Param reviewerId the ID of the reviewer
+   */
+  getReviewedApplicantRecord(
+    applicantRecordId: string,
+    reviewerId: number,
+  ): Promise<ReviewedApplicantRecordDTO>;
+
+  /**
    * Creates a single reviewed applicant record entry
    * @Param createReviewedApplicantRecordDTO data to create reviewed applicant record
    */
