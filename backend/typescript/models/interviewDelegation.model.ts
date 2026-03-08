@@ -1,5 +1,4 @@
 /* eslint import/no-cycle: 0 */
-
 import {
   BelongsTo,
   Column,
@@ -12,6 +11,7 @@ import { NonAttribute } from "sequelize";
 import { InterviewConflict } from "../types";
 import User from "./user.model";
 import InterviewedApplicantRecord from "./interviewedApplicantRecord.model";
+import InterviewGroup from "./interviewGroup.model";
 
 @Table({ tableName: "interview_delegations" })
 export default class InterviewDelegation extends Model {
@@ -30,6 +30,13 @@ export default class InterviewDelegation extends Model {
   })
   interviewHasConflict?: InterviewConflict;
 
+  @Column({
+    type: DataType.UUID,
+    allowNull: true,
+    defaultValue: null,
+  })
+  groupId?: string;
+
   @BelongsTo(() => InterviewedApplicantRecord, {
     foreignKey: "interviewedApplicantRecordId",
     targetKey: "id",
@@ -41,4 +48,10 @@ export default class InterviewDelegation extends Model {
     targetKey: "id",
   })
   interviewer?: NonAttribute<User>;
+
+  @BelongsTo(() => InterviewGroup, {
+    foreignKey: "groupId",
+    targetKey: "id",
+  })
+  interviewGroup?: NonAttribute<InterviewGroup>;
 }

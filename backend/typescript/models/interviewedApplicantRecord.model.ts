@@ -5,7 +5,7 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { Interview, InterviewStatus } from "../types";
+import { Interview, InterviewStatus, InterviewStatusEnum } from "../types";
 import ApplicantRecord from "./applicantRecord.model";
 import File from "./file.model";
 
@@ -41,7 +41,7 @@ export default class InterviewedApplicantRecord extends Model {
   @Column({
     type: DataType.STRING,
     allowNull: false,
-    defaultValue: "NeedsReview",
+    defaultValue: InterviewStatusEnum.NEEDS_REVIEW,
   })
   status!: InterviewStatus;
 
@@ -51,12 +51,6 @@ export default class InterviewedApplicantRecord extends Model {
     allowNull: true,
   })
   interviewNotesId?: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  schedulingLink?: string;
 
   @Column({
     type: DataType.DATE,
