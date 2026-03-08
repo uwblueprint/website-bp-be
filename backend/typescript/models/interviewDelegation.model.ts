@@ -23,19 +23,19 @@ export default class InterviewDelegation extends Model {
   @Column({ type: DataType.INTEGER, primaryKey: true })
   interviewerId!: number;
 
+  @ForeignKey(() => InterviewGroup)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  groupId!: string;
+
   @Column({
     type: DataType.STRING,
     allowNull: true,
     defaultValue: null,
   })
   interviewHasConflict?: InterviewConflict;
-
-  @Column({
-    type: DataType.UUID,
-    allowNull: true,
-    defaultValue: null,
-  })
-  groupId?: string;
 
   @BelongsTo(() => InterviewedApplicantRecord, {
     foreignKey: "interviewedApplicantRecordId",

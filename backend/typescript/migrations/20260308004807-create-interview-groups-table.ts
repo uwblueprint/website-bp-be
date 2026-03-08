@@ -19,6 +19,16 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: false,
       defaultValue: "Availability Pending", // Default to "Availability Pending" when creating a new interview group
     },
+    createdAt: {
+      type: DataType.DATE,
+      allowNull: false,
+      defaultValue: DataType.NOW,
+    },
+    updatedAt: {
+      type: DataType.DATE,
+      allowNull: false,
+      defaultValue: DataType.NOW,
+    },
   });
 };
 

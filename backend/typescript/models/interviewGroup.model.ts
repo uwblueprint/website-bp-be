@@ -18,6 +18,20 @@ export default class InterviewGroup extends Model {
   })
   status!: InterviewGroupStatus;
 
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+    defaultValue: DataType.NOW,
+  })
+  createdAt!: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+    defaultValue: DataType.NOW,
+  })
+  updatedAt!: Date;
+
   @HasMany(() => InterviewDelegation, "groupId")
   interviewDelegations?: InterviewDelegation[];
 }
