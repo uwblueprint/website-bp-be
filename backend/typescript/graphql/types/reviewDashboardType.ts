@@ -25,15 +25,6 @@ const reviewDashboardType = gql`
     totalScore: Int
   }
 
-  type ReviewedApplicantRecordDTO {
-    applicantRecordId: String!
-    reviewerId: Int!
-    review: Review
-    status: String!
-    score: Int
-    reviewerHasConflict: Boolean!
-  }
-
   type ReviewDetails {
     reviewerFirstName: String!
     reviewerLastName: String!
