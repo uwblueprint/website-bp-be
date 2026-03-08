@@ -99,6 +99,17 @@ export type ApplicationStatus =
 
 export type SkillCategory = "Junior" | "Intermediate" | "Senior";
 
+export type Interview = {
+  passionFSG?: number;
+  teamPlayer?: number;
+  desireToLearn?: number;
+  skill?: number;
+  skillCategory?: SkillCategory;
+  comments?: string;
+};
+
+export type InterviewStatus = "NeedsReview" | "InProgress" | "Complete";
+
 export type ApplicantRecordExtraInfo = {
   adminReview?: string;
 };
@@ -222,6 +233,24 @@ export type DeleteReviewedApplicantRecordDTO = {
   reviewerId: number;
 };
 
+export type UpdateReviewedApplicantRecordDTO = {
+  applicantRecordId: string;
+  reviewerId: number;
+  review?: Review;
+  status?: ReviewStatus;
+};
+
+export type InterviewedApplicantRecordDTO = {
+  id: string;
+  applicantRecordId: string;
+  score?: number;
+  interviewJson?: Interview;
+  status: InterviewStatus;
+  interviewNotesId?: string;
+  schedulingLink?: string;
+  interviewDate?: Date;
+};
+
 export type ReviewDetails = {
   reviewerFirstName: string;
   reviewerLastName: string;
@@ -259,3 +288,32 @@ export type CreateAdminCommentDTO = Pick<
   AdminCommentDTO,
   "userId" | "applicantRecordId" | "comment"
 >;
+
+export type FirebaseFileDTO = {
+  id: string;
+  storagePath: string;
+  originalFileName: string;
+  uploadedUserId: number;
+  sizeBytes: bigint;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type CreateFirebaseFileDTO = Omit<
+  FirebaseFileDTO,
+  "id" | "createdAt" | "updatedAt"
+>;
+
+export const INTERVIEW_CONFLICT_OPTIONS = [
+  "APPLICANT_CONFLICT", // Conflict of interest with the applicant
+  "APPLICANT_NO_RESPONSE", // Applicant did not respond to the interview request
+  "PARTNER_NO_RESPONSE", // Partner did not respond to the interview request
+  "CANNOT_ATTEND", // Cannot make interview
+] as const;
+export type InterviewConflict = (typeof INTERVIEW_CONFLICT_OPTIONS)[number];
+
+export type InterviewDelegationDTO = {
+  interviewedApplicantRecordId: string;
+  interviewerId: number;
+  interviewHasConflict?: InterviewConflict;
+};

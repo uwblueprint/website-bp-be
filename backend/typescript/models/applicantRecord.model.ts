@@ -62,6 +62,12 @@ export default class ApplicantRecord extends Model {
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
   isApplicantFlagged!: boolean;
 
+  @Column({ type: DataType.BOOLEAN, defaultValue: false })
+  isShortlistedForInterview!: boolean;
+
+  @Column({ type: DataType.BOOLEAN, defaultValue: false })
+  isShortlistedForOffer!: boolean;
+
   @BelongsTo(() => Applicant, "applicantId")
   applicant?: NonAttribute<Applicant>;
 

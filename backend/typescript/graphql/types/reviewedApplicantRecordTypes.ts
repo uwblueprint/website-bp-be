@@ -50,6 +50,11 @@ const reviewedApplicantRecordTypes = gql`
       applicantRecordId: ID!
       reviewerId: Int!
     ): ReviewedApplicantRecord!
+  input UpdateReviewedApplicantRecordInput {
+    applicantRecordId: ID!
+    reviewerId: Int!
+    review: ReviewInput
+    status: String
   }
 
   extend type Mutation {
@@ -68,6 +73,10 @@ const reviewedApplicantRecordTypes = gql`
     bulkDeleteReviewedApplicantRecord(
       inputs: [DeleteReviewedApplicantRecord!]!
     ): [ReviewedApplicantRecord!]!
+
+    updateReviewedApplicantRecord(
+      input: UpdateReviewedApplicantRecordInput!
+    ): ReviewedApplicantRecord!
   }
 `;
 

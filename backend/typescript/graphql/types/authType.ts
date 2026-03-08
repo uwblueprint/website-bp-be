@@ -6,6 +6,7 @@ const authType = gql`
     firstName: String!
     lastName: String!
     email: String!
+    position: String
     role: Role!
     accessToken: String!
     refreshToken: String!
@@ -25,6 +26,10 @@ const authType = gql`
   extend type Query {
     login(email: String!, password: String!): loginOK!
     isAuthorizedByRole(accessToken: String!, roles: [Role!]!): Boolean!
+    isAuthorizedReviewer(
+      accessToken: String!
+      applicantRecordId: String!
+    ): Boolean!
   }
 
   extend type Mutation {

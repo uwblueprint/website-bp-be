@@ -3,6 +3,7 @@ import {
   ReviewedApplicantRecordDTO,
   CreateReviewedApplicantRecordDTO,
   DeleteReviewedApplicantRecordDTO,
+  UpdateReviewedApplicantRecordDTO,
 } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 
@@ -71,6 +72,19 @@ const reviewedApplicantRecordResolvers = {
       try {
         return await reviewedApplicantRecordService.bulkDeleteReviewedApplicantRecord(
           args.inputs,
+        );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
+
+    updateReviewedApplicantRecord: async (
+      _parent: undefined,
+      args: { input: UpdateReviewedApplicantRecordDTO },
+    ): Promise<ReviewedApplicantRecordDTO> => {
+      try {
+        return await reviewedApplicantRecordService.updateReviewedApplicantRecord(
+          args.input,
         );
       } catch (error) {
         throw new Error(getErrorMessage(error));
