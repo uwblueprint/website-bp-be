@@ -35,6 +35,30 @@ function validateReviewScores(review: Review | undefined): void {
 
 class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
   /* eslint-disable class-methods-use-this */
+  async getReviewedApplicantRecord(
+    applicantRecordId: string,
+    reviewerId: number,
+  ): Promise<ReviewedApplicantRecordDTO> {
+    try {
+      const record = await ReviewedApplicantRecord.findOne({
+        where: { applicantRecordId, reviewerId },
+      });
+
+      if (!record) {
+        throw new Error("ReviewedApplicantRecord not found");
+      }
+
+      return record.toJSON() as ReviewedApplicantRecordDTO;
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to get reviewed applicant record. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
+  }
+
   async createReviewedApplicantRecord(
     dto: CreateReviewedApplicantRecordDTO,
   ): Promise<ReviewedApplicantRecordDTO> {
