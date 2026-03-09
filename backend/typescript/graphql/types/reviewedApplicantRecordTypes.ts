@@ -45,6 +45,11 @@ const reviewedApplicantRecordTypes = gql`
     reviewerId: Int!
   }
 
+  extend type Query {
+    getReviewedApplicantRecord(
+      applicantRecordId: ID!
+      reviewerId: Int!
+    ): ReviewedApplicantRecord!
   input UpdateReviewedApplicantRecordInput {
     applicantRecordId: ID!
     reviewerId: Int!
