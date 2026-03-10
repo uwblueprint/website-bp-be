@@ -27,6 +27,8 @@ import reviewPageType from "./types/reviewPageType";
 import reviewPageResolvers from "./resolvers/reviewPageResolvers";
 import interviewDelegationsTypes from "./types/interviewDelegationsTypes";
 import interviewDelegationsResolvers from "./resolvers/interviewDelegationsResolvers";
+import interviewDashboardTypes from "./types/interviewDashboardTypes";
+import interviewDashboardResolvers from "./resolvers/interviewDashboardResolvers";
 
 const query = gql`
   type Query {
@@ -54,6 +56,7 @@ const executableSchema = makeExecutableSchema({
     applicantRecordType,
     reviewPageType,
     interviewDelegationsTypes,
+    interviewDashboardTypes,
     reviewedApplicantRecordTypes,
   ],
   resolvers: merge(
@@ -67,6 +70,7 @@ const executableSchema = makeExecutableSchema({
     applicantRecordResolvers,
     reviewPageResolvers,
     interviewDelegationsResolvers,
+    interviewDashboardResolvers,
     reviewedApplicantRecordResolvers,
   ),
 });
@@ -116,6 +120,7 @@ const graphQLMiddlewares = {
     deleteInterviewDelegation: authorizedByAllRoles(),
     bulkCreateInterviewDelegations: authorizedByAllRoles(),
     bulkDeleteInterviewDelegations: authorizedByAllRoles(),
+    delegateInterviewers: authorizedByAdmin(),
   },
 };
 
