@@ -2,8 +2,6 @@ export type Role = "User" | "Admin";
 
 type ValueOf<T> = T[keyof T];
 
-export type EnumType = ValueOf<typeof InterviewConflictEnum>;
-
 export enum StatusType {
   ACCEPTED = "accepted",
   APPLIED = "applied",
