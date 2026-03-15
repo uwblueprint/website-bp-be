@@ -1,5 +1,9 @@
 export type Role = "User" | "Admin";
 
+type ValueOf<T> = T[keyof T];
+
+export type EnumType = ValueOf<typeof InterviewConflictEnum>;
+
 export enum StatusType {
   ACCEPTED = "accepted",
   APPLIED = "applied",
@@ -208,8 +212,7 @@ export const ReviewStatusEnum = {
   CONFLICT: "Conflict",
 } as const;
 
-export type ReviewStatus =
-  (typeof ReviewStatusEnum)[keyof typeof ReviewStatusEnum];
+export type ReviewStatus = ValueOf<typeof ReviewStatusEnum>;
 
 export type Review = {
   passionFSG?: number;
@@ -319,8 +322,7 @@ export const InterviewConflictEnum = {
   CANNOT_ATTEND: "CANNOT_ATTEND", // Cannot make interview
 };
 
-export type InterviewConflict =
-  (typeof InterviewConflictEnum)[keyof typeof InterviewConflictEnum];
+export type InterviewConflict = ValueOf<typeof InterviewConflictEnum>;
 
 export const InterviewGroupStatusEnum = {
   READY_TO_INTERVIEW: "Ready to Interview",
@@ -328,8 +330,7 @@ export const InterviewGroupStatusEnum = {
   AVAILABILITY_PENDING: "Availability Pending",
 } as const;
 
-export type InterviewGroupStatus =
-  (typeof InterviewGroupStatusEnum)[keyof typeof InterviewGroupStatusEnum];
+export type InterviewGroupStatus = ValueOf<typeof InterviewGroupStatusEnum>;
 
 export type InterviewDelegationDTO = {
   interviewedApplicantRecordId: string;
