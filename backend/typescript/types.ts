@@ -256,7 +256,6 @@ export type InterviewedApplicantRecordDTO = {
   interviewJson?: Interview;
   status: InterviewStatus;
   interviewNotesId?: string;
-  schedulingLink?: string;
   interviewDate?: Date;
 };
 
@@ -318,7 +317,7 @@ export const InterviewConflictEnum = {
   APPLICANT_NO_RESPONSE: "APPLICANT_NO_RESPONSE", // Applicant did not respond to the interview request
   PARTNER_NO_RESPONSE: "PARTNER_NO_RESPONSE", // Partner did not respond to the interview request
   CANNOT_ATTEND: "CANNOT_ATTEND", // Cannot make interview
-};
+} as const;
 
 export type InterviewConflict = ValueOf<typeof InterviewConflictEnum>;
 
@@ -334,4 +333,5 @@ export type InterviewDelegationDTO = {
   interviewedApplicantRecordId: string;
   interviewerId: number;
   interviewHasConflict?: InterviewConflict;
+  interviewGroupId: string;
 };
