@@ -1,5 +1,7 @@
 export type Role = "User" | "Admin";
 
+type ValueOf<T> = T[keyof T];
+
 export enum StatusType {
   ACCEPTED = "accepted",
   APPLIED = "applied",
@@ -108,7 +110,14 @@ export type Interview = {
   comments?: string;
 };
 
-export type InterviewStatus = "NeedsReview" | "InProgress" | "Complete";
+export const InterviewStatusEnum = {
+  NEEDS_REVIEW: "Need Review",
+  IN_PROGRESS: "In Progress",
+  COMPLETE: "Complete",
+} as const;
+
+export type InterviewStatus =
+  (typeof InterviewStatusEnum)[keyof typeof InterviewStatusEnum];
 
 export type ApplicantRecordExtraInfo = {
   adminReview?: string;
@@ -194,14 +203,14 @@ export type ProductPositionTitle = (typeof ProductPositionTitles)[number];
 export type CommunityPositionTitle = (typeof CommunityPositionTitles)[number];
 export type PositionTitle = (typeof PositionTitles)[number];
 
-export enum ReviewStatusEnum {
-  TODO = "Todo",
-  IN_PROGRESS = "In Progress",
-  DONE = "Done",
-  CONFLICT = "Conflict",
-}
+export const ReviewStatusEnum = {
+  TODO: "Todo",
+  IN_PROGRESS: "In Progress",
+  DONE: "Done",
+  CONFLICT: "Conflict",
+} as const;
 
-export type ReviewStatus = `${ReviewStatusEnum}`;
+export type ReviewStatus = ValueOf<typeof ReviewStatusEnum>;
 
 export type Review = {
   passionFSG?: number;
@@ -247,7 +256,6 @@ export type InterviewedApplicantRecordDTO = {
   interviewJson?: Interview;
   status: InterviewStatus;
   interviewNotesId?: string;
-  schedulingLink?: string;
   interviewDate?: Date;
 };
 
@@ -304,16 +312,26 @@ export type CreateFirebaseFileDTO = Omit<
   "id" | "createdAt" | "updatedAt"
 >;
 
-export const INTERVIEW_CONFLICT_OPTIONS = [
-  "APPLICANT_CONFLICT", // Conflict of interest with the applicant
-  "APPLICANT_NO_RESPONSE", // Applicant did not respond to the interview request
-  "PARTNER_NO_RESPONSE", // Partner did not respond to the interview request
-  "CANNOT_ATTEND", // Cannot make interview
-] as const;
-export type InterviewConflict = (typeof INTERVIEW_CONFLICT_OPTIONS)[number];
+export const InterviewConflictEnum = {
+  APPLICANT_CONFLICT: "APPLICANT_CONFLICT", // Conflict of interest with the applicant
+  APPLICANT_NO_RESPONSE: "APPLICANT_NO_RESPONSE", // Applicant did not respond to the interview request
+  PARTNER_NO_RESPONSE: "PARTNER_NO_RESPONSE", // Partner did not respond to the interview request
+  CANNOT_ATTEND: "CANNOT_ATTEND", // Cannot make interview
+} as const;
+
+export type InterviewConflict = ValueOf<typeof InterviewConflictEnum>;
+
+export const InterviewGroupStatusEnum = {
+  READY_TO_INTERVIEW: "Ready to Interview",
+  INVITES_SENT: "Invites Sent",
+  AVAILABILITY_PENDING: "Availability Pending",
+} as const;
+
+export type InterviewGroupStatus = ValueOf<typeof InterviewGroupStatusEnum>;
 
 export type InterviewDelegationDTO = {
   interviewedApplicantRecordId: string;
   interviewerId: number;
   interviewHasConflict?: InterviewConflict;
+  interviewGroupId: string;
 };
