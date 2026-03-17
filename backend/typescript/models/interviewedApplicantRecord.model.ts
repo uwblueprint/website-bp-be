@@ -6,9 +6,8 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { Interview, InterviewStatus, InterviewStatusEnum } from "../types";
 import { NonAttribute } from "sequelize";
-import { Interview, InterviewStatus } from "../types";
+import { Interview, InterviewStatus, InterviewStatusEnum } from "../types";
 import ApplicantRecord from "./applicantRecord.model";
 import File from "./file.model";
 
