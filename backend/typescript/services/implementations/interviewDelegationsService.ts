@@ -17,6 +17,7 @@ function toInterviewDelegationDTO(
   return {
     interviewedApplicantRecordId: delegation.interviewedApplicantRecordId,
     interviewerId: delegation.interviewerId,
+    groupId: delegation.groupId,
     interviewHasConflict: delegation.interviewHasConflict,
   };
 }
