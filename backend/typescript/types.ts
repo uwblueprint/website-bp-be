@@ -341,16 +341,6 @@ export type CreateInterviewDelegationDTO = Omit<
   "interviewHasConflict"
 >;
 
-export type DeleteInterviewDelegationDTO = {
-  interviewedApplicantRecordId: string;
-  interviewerId: number;
-};
-
-export type CreateInterviewDelegationDTO = Omit<
-  InterviewDelegationDTO,
-  "interviewHasConflict"
->;
-
 export type DeleteInterviewDelegationDTO = Omit<
   InterviewDelegationDTO,
   "interviewHasConflict"
