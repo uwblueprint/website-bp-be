@@ -20,7 +20,6 @@ function toInterviewedApplicantRecordDTO(
     interviewJson: model.interviewJson,
     status: model.status,
     interviewNotesId: model.interviewNotesId,
-    schedulingLink: model.schedulingLink,
     interviewDate: model.interviewDate,
   };
 }
@@ -55,7 +54,6 @@ class InterviewedApplicantRecordsService
     interviewJSON?: Interview,
     status?: InterviewStatus,
     interviewNotesId?: string,
-    schedulingLink?: string,
     interviewDate?: Date,
   ): Promise<InterviewedApplicantRecordDTO> {
     try {
@@ -66,7 +64,6 @@ class InterviewedApplicantRecordsService
           interviewJson: interviewJSON,
           status,
           interviewNotesId,
-          schedulingLink,
           interviewDate,
         });
       return toInterviewedApplicantRecordDTO(record);
@@ -86,7 +83,6 @@ class InterviewedApplicantRecordsService
     interviewJSON?: Interview,
     status?: InterviewStatus,
     interviewNotesId?: string,
-    schedulingLink?: string,
     interviewDate?: Date,
   ): Promise<InterviewedApplicantRecordDTO> {
     try {
@@ -100,7 +96,6 @@ class InterviewedApplicantRecordsService
         interviewJson: interviewJSON,
         status,
         interviewNotesId,
-        schedulingLink,
         interviewDate,
       };
       const updates = Object.fromEntries(
