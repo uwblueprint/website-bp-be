@@ -20,7 +20,6 @@ interface IInterviewedApplicantRecordsService {
    * @Param interviewJSON interviewer scores and comments
    * @Param status e.g. to-do, in-progress, done, conflict-reported, etc.
    * @Param interviewNotesId FK to FirebaseFile storing uploaded interview notes
-   * @Param schedulingLink Calendaly/LettuceMeet link used for scheduling. This will be sent to the applicant
    * @Param interviewDate the interview date
    */
   createInterviewedApplicantRecord(
@@ -29,7 +28,6 @@ interface IInterviewedApplicantRecordsService {
     interviewJSON?: Interview,
     status?: InterviewStatus,
     interviewNotesId?: string,
-    schedulingLink?: string,
     interviewDate?: Date,
   ): Promise<InterviewedApplicantRecordDTO>;
 
@@ -40,7 +38,6 @@ interface IInterviewedApplicantRecordsService {
    * @Param interviewJSON interviewer scores and comments
    * @Param status e.g. to-do, in-progress, done, conflict-reported, etc.
    * @Param interviewNotesId FK to FirebaseFile storing uploaded interview notes
-   * @Param schedulingLink Calendaly/LettuceMeet link used for scheduling. This will be sent to the applicant
    * @Param interviewDate the interview date
    */
   updateInterviewedApplicantRecord(
@@ -49,7 +46,6 @@ interface IInterviewedApplicantRecordsService {
     interviewJSON?: Interview,
     status?: InterviewStatus,
     interviewNotesId?: string,
-    schedulingLink?: string,
     interviewDate?: Date,
   ): Promise<InterviewedApplicantRecordDTO>;
 

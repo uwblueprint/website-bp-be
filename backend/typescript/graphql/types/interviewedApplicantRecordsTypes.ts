@@ -32,7 +32,6 @@ const interviewedApplicantRecordsTypes = gql`
     interviewJson: Interview
     status: InterviewStatus!
     interviewNotesId: String
-    schedulingLink: String
     interviewDate: String
   }
 
@@ -47,7 +46,6 @@ const interviewedApplicantRecordsTypes = gql`
       interviewJSON: InterviewInput
       status: InterviewStatus
       interviewNotesId: String
-      schedulingLink: String
       interviewDate: String
     ): InterviewedApplicantRecord!
 
@@ -57,7 +55,6 @@ const interviewedApplicantRecordsTypes = gql`
       interviewJSON: InterviewInput
       status: InterviewStatus
       interviewNotesId: String
-      schedulingLink: String
       interviewDate: String
     ): InterviewedApplicantRecord!
 

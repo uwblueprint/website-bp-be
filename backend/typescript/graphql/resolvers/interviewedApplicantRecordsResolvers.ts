@@ -34,7 +34,6 @@ const interviewedApplicantRecordsResolvers = {
         interviewJSON?: Interview;
         status?: InterviewStatus;
         interviewNotesId?: string;
-        schedulingLink?: string;
         interviewDate?: Date;
       },
     ): Promise<InterviewedApplicantRecordDTO> => {
@@ -45,7 +44,6 @@ const interviewedApplicantRecordsResolvers = {
           args.interviewJSON,
           args.status,
           args.interviewNotesId,
-          args.schedulingLink,
           args.interviewDate,
         );
       } catch (error) {
@@ -61,7 +59,6 @@ const interviewedApplicantRecordsResolvers = {
         interviewJSON?: Interview;
         status?: InterviewStatus;
         interviewNotesId?: string;
-        schedulingLink?: string;
         interviewDate?: Date;
       },
     ): Promise<InterviewedApplicantRecordDTO> => {
@@ -72,7 +69,6 @@ const interviewedApplicantRecordsResolvers = {
           args.interviewJSON,
           args.status,
           args.interviewNotesId,
-          args.schedulingLink,
           args.interviewDate,
         );
       } catch (error) {
