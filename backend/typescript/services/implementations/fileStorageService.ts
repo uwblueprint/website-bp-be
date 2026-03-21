@@ -20,7 +20,7 @@ class FileStorageService implements IFileStorageService {
       expirationDate.getMinutes() + expirationTimeMinutes,
     );
     try {
-      const currentBlob = await bucket.file(fileName);
+      const currentBlob = bucket.file(fileName);
       if (!(await currentBlob.exists())[0]) {
         throw new Error(`File name ${fileName} does not exist`);
       }
@@ -44,7 +44,7 @@ class FileStorageService implements IFileStorageService {
   ): Promise<void> {
     try {
       const bucket = storage().bucket(this.bucketName);
-      const currentBlob = await bucket.file(fileName);
+      const currentBlob = bucket.file(fileName);
       if ((await currentBlob.exists())[0]) {
         throw new Error(`File name ${fileName} already exists`);
       }
@@ -65,7 +65,7 @@ class FileStorageService implements IFileStorageService {
   ): Promise<void> {
     try {
       const bucket = storage().bucket(this.bucketName);
-      const currentBlob = await bucket.file(fileName);
+      const currentBlob = bucket.file(fileName);
       if (!(await currentBlob.exists())[0]) {
         throw new Error(`File name ${fileName} does not exist`);
       }
@@ -82,8 +82,8 @@ class FileStorageService implements IFileStorageService {
   async deleteFile(fileName: string): Promise<void> {
     try {
       const bucket = storage().bucket(this.bucketName);
-      const currentBlob = await bucket.file(fileName);
-      if (!currentBlob) {
+      const currentBlob = bucket.file(fileName);
+      if (!(await currentBlob.exists())[0]) {
         throw new Error(`File name ${fileName} does not exist`);
       }
       await currentBlob.delete();
