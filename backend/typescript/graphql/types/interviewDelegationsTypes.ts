@@ -12,6 +12,7 @@ const interviewDelegationsTypes = gql`
     interviewedApplicantRecordId: ID!
     interviewerId: Int!
     interviewHasConflict: InterviewConflict
+    groupId: ID!
   }
 
   input BulkCreateInterviewDelegationInput {
