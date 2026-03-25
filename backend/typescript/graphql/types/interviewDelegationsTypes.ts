@@ -17,6 +17,7 @@ const interviewDelegationsTypes = gql`
   input BulkCreateInterviewDelegationInput {
     interviewedApplicantRecordId: ID!
     interviewerId: Int!
+    groupId: ID!
   }
 
   input BulkDeleteInterviewDelegationInput {
@@ -35,12 +36,14 @@ const interviewDelegationsTypes = gql`
     createInterviewDelegation(
       interviewedApplicantRecordId: ID!
       interviewerId: Int!
+      groupId: ID!
     ): InterviewDelegation!
 
     updateInterviewDelegation(
       interviewedApplicantRecordId: ID!
       prevInterviewerId: Int!
       newInterviewerId: Int!
+      groupId: ID!
     ): InterviewDelegation!
 
     deleteInterviewDelegation(

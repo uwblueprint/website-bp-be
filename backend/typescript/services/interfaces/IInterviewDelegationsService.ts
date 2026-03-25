@@ -9,10 +9,12 @@ interface IInterviewDelegationsService {
    * Creates a new interview delegation record assigning an interviewer to an interviewed applicant.
    * @param interviewedApplicantRecordId FK to the interviewed applicant record
    * @param interviewerId FK to the user assigned as interviewer
+   * @param groupId FK to the interview group this delegation belongs to
    */
   createInterviewDelegation(
     interviewedApplicantRecordId: string,
     interviewerId: number,
+    groupId: string,
   ): Promise<InterviewDelegationDTO>;
 
   /**
@@ -20,11 +22,13 @@ interface IInterviewDelegationsService {
    * @param interviewedApplicantRecordId FK to the interviewed applicant record
    * @param prevInterviewerId FK to the interviewer being replaced
    * @param newInterviewerId FK to the new interviewer being assigned
+   * @param groupId FK to the interview group this delegation belongs to
    */
   updateInterviewDelegation(
     interviewedApplicantRecordId: string,
     prevInterviewerId: number,
     newInterviewerId: number,
+    groupId: string,
   ): Promise<InterviewDelegationDTO>;
 
   /**

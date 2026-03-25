@@ -29,12 +29,17 @@ const interviewDelegationsResolvers = {
   Mutation: {
     createInterviewDelegation: async (
       _parent: undefined,
-      args: { interviewedApplicantRecordId: string; interviewerId: number },
+      args: {
+        interviewedApplicantRecordId: string;
+        interviewerId: number;
+        groupId: string;
+      },
     ): Promise<InterviewDelegationDTO> => {
       try {
         return await interviewDelegationsService.createInterviewDelegation(
           args.interviewedApplicantRecordId,
           args.interviewerId,
+          args.groupId,
         );
       } catch (error) {
         throw new Error(getErrorMessage(error));
@@ -47,6 +52,7 @@ const interviewDelegationsResolvers = {
         interviewedApplicantRecordId: string;
         prevInterviewerId: number;
         newInterviewerId: number;
+        groupId: string;
       },
     ): Promise<InterviewDelegationDTO> => {
       try {
@@ -54,6 +60,7 @@ const interviewDelegationsResolvers = {
           args.interviewedApplicantRecordId,
           args.prevInterviewerId,
           args.newInterviewerId,
+          args.groupId,
         );
       } catch (error) {
         throw new Error(getErrorMessage(error));

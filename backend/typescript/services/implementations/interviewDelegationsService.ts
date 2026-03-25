@@ -27,11 +27,13 @@ class InterviewDelegationsService implements IInterviewDelegationsService {
   async createInterviewDelegation(
     interviewedApplicantRecordId: string,
     interviewerId: number,
+    groupId: string,
   ): Promise<InterviewDelegationDTO> {
     try {
       const newDelegation = await InterviewDelegation.create({
         interviewedApplicantRecordId,
         interviewerId,
+        groupId,
       });
       return toInterviewDelegationDTO(newDelegation);
     } catch (error: unknown) {
@@ -49,6 +51,7 @@ class InterviewDelegationsService implements IInterviewDelegationsService {
     interviewedApplicantRecordId: string,
     prevInterviewerId: number,
     newInterviewerId: number,
+    groupId: string,
   ): Promise<InterviewDelegationDTO> {
     try {
       const updatedDelegation = await sequelize.transaction(async (t) => {
@@ -69,6 +72,7 @@ class InterviewDelegationsService implements IInterviewDelegationsService {
           {
             interviewedApplicantRecordId,
             interviewerId: newInterviewerId,
+            groupId,
           },
           { transaction: t },
         );
