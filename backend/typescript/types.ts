@@ -351,3 +351,5 @@ export type InterviewGroupDTO = {
   schedulingLink?: string;
   status: InterviewGroupStatus;
 };
+
+export type CreateInterviewGroupDTO = Omit<InterviewGroupDTO, "id">;

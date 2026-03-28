@@ -17,6 +17,11 @@ const interviewGroupTypes = gql`
     getInterviewGroup(id: ID!): InterviewGroup!
   }
 
+  input BulkCreateInterviewGroupInput {
+    status: InterviewGroupStatus!
+    schedulingLink: String
+  }
+
   extend type Mutation {
     createInterviewGroup(
       schedulingLink: String
@@ -30,6 +35,12 @@ const interviewGroupTypes = gql`
     ): InterviewGroup!
 
     deleteInterviewGroup(id: ID!): InterviewGroup!
+
+    bulkCreateInterviewGroups(
+      groups: [BulkCreateInterviewGroupInput!]!
+    ): [InterviewGroup!]!
+
+    bulkDeleteInterviewGroups(ids: [String!]!): [InterviewGroup!]!
   }
 `;
 

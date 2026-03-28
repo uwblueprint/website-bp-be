@@ -1,5 +1,10 @@
+import { sequelize } from "../../models";
 import InterviewGroup from "../../models/interviewGroup.model";
-import { InterviewGroupDTO, InterviewGroupStatus } from "../../types";
+import {
+  CreateInterviewGroupDTO,
+  InterviewGroupDTO,
+  InterviewGroupStatus,
+} from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
 import IInterviewGroupService from "../interfaces/IInterviewGroupService";
@@ -86,6 +91,59 @@ class InterviewGroupService implements IInterviewGroupService {
     } catch (error: unknown) {
       Logger.error(
         `Failed to delete interview group. Reason = ${getErrorMessage(error)}`,
+      );
+      throw error;
+    }
+  }
+
+  async bulkCreateInterviewGroups(
+    groups: CreateInterviewGroupDTO[],
+  ): Promise<InterviewGroupDTO[]> {
+    try {
+      const createdGroups = await sequelize.transaction(async (t) => {
+        const groupRows = await InterviewGroup.bulkCreate(groups, {
+          transaction: t,
+        });
+        return groupRows;
+      });
+      return createdGroups.map(toInterviewGroupDTO);
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to bulk create interview groups. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
+  }
+
+  async bulkDeleteInterviewGroups(ids: string[]): Promise<InterviewGroupDTO[]> {
+    try {
+      const deletedGroups = await sequelize.transaction(async (t) => {
+        const foundGroups = await Promise.all(
+          ids.map((id) => InterviewGroup.findByPk(id, { transaction: t })),
+        );
+
+        if (foundGroups.some((g) => !g)) {
+          throw new Error(
+            "Not all interview groups were found, bulk delete failed",
+          );
+        }
+
+        const existingGroups = foundGroups as InterviewGroup[];
+        await Promise.all(
+          existingGroups.map((g) => g.destroy({ transaction: t })),
+        );
+
+        return existingGroups;
+      });
+
+      return deletedGroups.map(toInterviewGroupDTO);
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to bulk delete interview groups. Reason = ${getErrorMessage(
+          error,
+        )}`,
       );
       throw error;
     }

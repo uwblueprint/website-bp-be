@@ -1,4 +1,8 @@
-import { InterviewGroupDTO, InterviewGroupStatus } from "../../types";
+import {
+  CreateInterviewGroupDTO,
+  InterviewGroupDTO,
+  InterviewGroupStatus,
+} from "../../types";
 
 interface IInterviewGroupService {
   /**
@@ -34,6 +38,20 @@ interface IInterviewGroupService {
    * @param id PK of the interview group to delete
    */
   deleteInterviewGroup(id: string): Promise<InterviewGroupDTO>;
+
+  /**
+   * Bulk creates interview groups.
+   * @param groups list of groups to create
+   */
+  bulkCreateInterviewGroups(
+    groups: CreateInterviewGroupDTO[],
+  ): Promise<InterviewGroupDTO[]>;
+
+  /**
+   * Bulk deletes interview groups.
+   * @param ids list of group ids to delete
+   */
+  bulkDeleteInterviewGroups(ids: string[]): Promise<InterviewGroupDTO[]>;
 }
 
 export default IInterviewGroupService;
