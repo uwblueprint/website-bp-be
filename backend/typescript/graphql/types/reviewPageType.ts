@@ -32,6 +32,19 @@ const reviewPageType = gql`
     applicantLastName: String!
   }
 
+  type InterviewedApplicantsDTO {
+    applicantRecordId: String!
+    interviewStatus: String!
+    applicantFirstName: String!
+    applicantLastName: String!
+  }
+
+  type InterviewPairingsDTO {
+    interviewedGroupId: ID!
+    interviewGroupStatus: String!
+    groupMembers: [UserDTO!]!
+  }
+
   type ReviewedApplicantRecordDTO {
     applicantRecordId: String!
     reviewerId: Int!
@@ -51,6 +64,8 @@ const reviewPageType = gql`
   extend type Query {
     reviewApplicantPage(applicantRecordId: String!): ApplicationDTO!
     getReviewedApplicantsByUserId(userId: Int!): [ReviewedApplicantsDTO!]!
+    getInterviewedApplicantsByUserId(userId: Int!): [InterviewedApplicantsDTO!]!
+    getInterviewedPairingsByUserId(userId: Int!): [InterviewPairingsDTO!]!
   }
 `;
 

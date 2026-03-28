@@ -87,6 +87,8 @@ const graphQLMiddlewares = {
     users: authorizedByAdmin(),
     adminCommentsByApplicantRecordId: authorizedByAdmin(),
     adminCommentById: authorizedByAdmin(),
+    getInterviewedApplicantsByUserId: authorizedByAllRoles(),
+    getInterviewedPairingsByUserId: authorizedByAllRoles(),
   },
   Mutation: {
     createEntity: authorizedByAllRoles(),
