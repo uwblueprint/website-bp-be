@@ -4,17 +4,23 @@ import InterviewedApplicantRecord from "../../models/interviewedApplicantRecord.
 import {
   CreateInterviewDelegationDTO,
   InterviewDelegationDTO,
+  InterviewGroupStatusEnum,
 } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
 import IInterviewDashboardServices from "../interfaces/IInterviewDashboardServices";
 import InterviewDelegationsService from "./interviewDelegationsService";
 import IInterviewDelegationsService from "../interfaces/IInterviewDelegationsService";
+import InterviewGroupService from "./interviewGroupService";
+import IInterviewGroupService from "../interfaces/IInterviewGroupService";
 
 const Logger = logger(__filename);
 
 const interviewDelegationsService: IInterviewDelegationsService =
   new InterviewDelegationsService();
+
+const interviewGroupService: IInterviewGroupService =
+  new InterviewGroupService();
 
 class InterviewDashboardServices implements IInterviewDashboardServices {
   /* eslint-disable class-methods-use-this */
@@ -74,6 +80,21 @@ class InterviewDashboardServices implements IInterviewDashboardServices {
             },
           ],
         });
+
+      const createdGroups =
+        await interviewGroupService.bulkCreateInterviewGroups(
+          interviewedApplicantRecords.map(() => ({
+            status: InterviewGroupStatusEnum.AVAILABILITY_PENDING,
+          })),
+        );
+
+      const recordIdToGroupId = new Map<string, string>(
+        interviewedApplicantRecords.map((record, i) => [
+          record.id,
+          createdGroups[i].id,
+        ]),
+      );
+
       interviewedApplicantRecords.forEach((record) => {
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         const [count, userIds] = FSM.get(record.applicantRecord!.position)!;
@@ -89,16 +110,20 @@ class InterviewDashboardServices implements IInterviewDashboardServices {
 
         FSM.set(record.applicantRecord!.position, [newCount, userIds]);
 
+        const groupId = recordIdToGroupId.get(record.id)!;
+
         if (assignedReviewer1 !== undefined) {
           delegations.push({
             interviewedApplicantRecordId: record.id,
             interviewerId: assignedReviewer1,
+            groupId,
           });
         }
         if (assignedReviewer2 !== undefined) {
           delegations.push({
             interviewedApplicantRecordId: record.id,
             interviewerId: assignedReviewer2,
+            groupId,
           });
         }
       });
