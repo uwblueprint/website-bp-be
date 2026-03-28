@@ -31,6 +31,8 @@ import interviewDelegationsTypes from "./types/interviewDelegationsTypes";
 import interviewDelegationsResolvers from "./resolvers/interviewDelegationsResolvers";
 import interviewDashboardTypes from "./types/interviewDashboardTypes";
 import interviewDashboardResolvers from "./resolvers/interviewDashboardResolvers";
+import interviewGroupTypes from "./types/interviewGroupTypes";
+import interviewGroupResolvers from "./resolvers/interviewGroupResolvers";
 
 const query = gql`
   type Query {
@@ -58,9 +60,10 @@ const executableSchema = makeExecutableSchema({
     applicantRecordType,
     reviewPageType,
     interviewDelegationsTypes,
-    interviewDashboardTypes,
     reviewedApplicantRecordTypes,
     interviewedApplicantRecordsTypes,
+    interviewDashboardTypes,
+    interviewGroupTypes,
   ],
   resolvers: merge(
     authResolvers,
@@ -73,9 +76,10 @@ const executableSchema = makeExecutableSchema({
     applicantRecordResolvers,
     reviewPageResolvers,
     interviewDelegationsResolvers,
-    interviewDashboardResolvers,
     reviewedApplicantRecordResolvers,
     interviewedApplicantRecordsResolvers,
+    interviewDashboardResolvers,
+    interviewGroupResolvers,
   ),
 });
 
@@ -96,6 +100,7 @@ const graphQLMiddlewares = {
     adminCommentsByApplicantRecordId: authorizedByAdmin(),
     adminCommentById: authorizedByAdmin(),
     getInterviewDelegation: authorizedByAllRoles(),
+    getInterviewGroup: authorizedByAllRoles(),
   },
   Mutation: {
     createEntity: authorizedByAllRoles(),
@@ -125,6 +130,9 @@ const graphQLMiddlewares = {
     bulkCreateInterviewDelegations: authorizedByAllRoles(),
     bulkDeleteInterviewDelegations: authorizedByAllRoles(),
     delegateInterviewers: authorizedByAdmin(),
+    createInterviewGroup: authorizedByAllRoles(),
+    updateInterviewGroup: authorizedByAllRoles(),
+    deleteInterviewGroup: authorizedByAllRoles(),
   },
 };
 
