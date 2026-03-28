@@ -346,5 +346,15 @@ export type InterviewDelegationDTO = {
   interviewedApplicantRecordId: string;
   interviewerId: number;
   interviewHasConflict?: InterviewConflict;
-  interviewGroupId: string;
+  groupId: string;
+};
+
+export type CreateInterviewDelegationDTO = Omit<
+  InterviewDelegationDTO,
+  "interviewHasConflict"
+>;
+
+export type DeleteInterviewDelegationDTO = {
+  interviewedApplicantRecordId: string;
+  interviewerId: number;
 };
