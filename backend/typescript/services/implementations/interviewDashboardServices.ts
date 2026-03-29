@@ -66,7 +66,35 @@ class InterviewDashboardServices implements IInterviewDashboardServices {
         }
       });
 
-      // 2. round robin via the FSM
+      // 2. create one interview group per interviewer pair (one per every 2 userIds per position)
+      const groupCountsPerPosition = Array.from(FSM.entries()).map(
+        ([position, [, userIds]]) => ({
+          position,
+          numPairs: Math.ceil(userIds.length / 2),
+        }),
+      );
+
+      const createdGroups =
+        await interviewGroupService.bulkCreateInterviewGroups(
+          groupCountsPerPosition.flatMap(({ numPairs }) =>
+            Array.from({ length: numPairs }, () => ({
+              status: InterviewGroupStatusEnum.AVAILABILITY_PENDING,
+            })),
+          ),
+        );
+
+      // map each position to its slice of created group IDs
+      const positionPairGroups = new Map<string, string[]>();
+      let groupIdx = 0;
+      groupCountsPerPosition.forEach(({ position, numPairs }) => {
+        positionPairGroups.set(
+          position,
+          createdGroups.slice(groupIdx, groupIdx + numPairs).map((g) => g.id),
+        );
+        groupIdx += numPairs;
+      });
+
+      // 3. round robin via the FSM
       const interviewedApplicantRecords =
         await InterviewedApplicantRecord.findAll({
           attributes: { exclude: ["createdAt", "updatedAt"] },
@@ -80,20 +108,6 @@ class InterviewDashboardServices implements IInterviewDashboardServices {
             },
           ],
         });
-
-      const createdGroups =
-        await interviewGroupService.bulkCreateInterviewGroups(
-          interviewedApplicantRecords.map(() => ({
-            status: InterviewGroupStatusEnum.AVAILABILITY_PENDING,
-          })),
-        );
-
-      const recordIdToGroupId = new Map<string, string>(
-        interviewedApplicantRecords.map((record, i) => [
-          record.id,
-          createdGroups[i].id,
-        ]),
-      );
 
       interviewedApplicantRecords.forEach((record) => {
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
@@ -110,7 +124,9 @@ class InterviewDashboardServices implements IInterviewDashboardServices {
 
         FSM.set(record.applicantRecord!.position, [newCount, userIds]);
 
-        const groupId = recordIdToGroupId.get(record.id)!;
+        const groupId = positionPairGroups.get(
+          record.applicantRecord!.position,
+        )![Math.floor(count / 2)];
 
         if (assignedReviewer1 !== undefined) {
           delegations.push({
@@ -128,7 +144,7 @@ class InterviewDashboardServices implements IInterviewDashboardServices {
         }
       });
 
-      // 3. persist the delegations
+      // 4. persist the delegations
 
       const res =
         await interviewDelegationsService.bulkCreateInterviewDelegations(
