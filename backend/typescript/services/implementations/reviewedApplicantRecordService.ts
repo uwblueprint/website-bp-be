@@ -33,6 +33,19 @@ function validateReviewScores(review: Review | undefined): void {
   });
 }
 
+function toReviewedApplicantRecordDTO(
+  model: ReviewedApplicantRecord,
+): ReviewedApplicantRecordDTO {
+  return {
+    applicantRecordId: model.applicantRecordId,
+    reviewerId: model.reviewerId,
+    review: model.review,
+    status: model.status,
+    score: model.score,
+    reviewerHasConflict: model.reviewerHasConflict,
+  };
+}
+
 class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
   /* eslint-disable class-methods-use-this */
   async getReviewedApplicantRecord(
@@ -48,7 +61,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
         throw new Error("ReviewedApplicantRecord not found");
       }
 
-      return record.toJSON() as ReviewedApplicantRecordDTO;
+      return toReviewedApplicantRecordDTO(record);
     } catch (error: unknown) {
       Logger.error(
         `Failed to get reviewed applicant record. Reason = ${getErrorMessage(
@@ -65,7 +78,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
     try {
       validateReviewScores(dto.review);
       const record = await ReviewedApplicantRecord.create(dto);
-      return record.toJSON() as ReviewedApplicantRecordDTO;
+      return toReviewedApplicantRecordDTO(record);
     } catch (error: unknown) {
       Logger.error(
         `Failed to create reviewed applicant record. Reason = ${getErrorMessage(
@@ -94,9 +107,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
         },
       );
 
-      return reviewedApplicantRecords.map(
-        (record) => record.toJSON() as ReviewedApplicantRecordDTO,
-      );
+      return reviewedApplicantRecords.map(toReviewedApplicantRecordDTO);
     } catch (error: unknown) {
       Logger.error(
         `Failed to bulk create reviewed applicant records. Reason = ${getErrorMessage(
@@ -122,7 +133,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
       }
 
       await record.destroy();
-      return record.toJSON() as ReviewedApplicantRecordDTO;
+      return toReviewedApplicantRecordDTO(record);
     } catch (error: unknown) {
       Logger.error(
         `Failed to delete reviewed applicant records. Reason = ${getErrorMessage(
@@ -160,9 +171,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
         return existingRecords;
       });
 
-      return deletedRecords.map(
-        (r) => r.toJSON() as ReviewedApplicantRecordDTO,
-      );
+      return deletedRecords.map(toReviewedApplicantRecordDTO);
     } catch (error: unknown) {
       Logger.error(
         `Failed to bulk delete reviewed applicant records. Reason = ${getErrorMessage(
@@ -246,7 +255,7 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
         return reviewedRecord;
       });
 
-      return updatedRecord.toJSON() as ReviewedApplicantRecordDTO;
+      return toReviewedApplicantRecordDTO(updatedRecord);
     } catch (error: unknown) {
       Logger.error(
         `Failed to update reviewed applicant record. Reason = ${getErrorMessage(
