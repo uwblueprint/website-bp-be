@@ -124,13 +124,16 @@ class InterviewGroupService implements IInterviewGroupService {
           ids.map((id) => InterviewGroup.findByPk(id, { transaction: t })),
         );
 
-        if (foundGroups.some((g) => !g)) {
+        const existingGroups = foundGroups.filter(
+          (g): g is InterviewGroup => g !== null,
+        );
+
+        if (existingGroups.length !== ids.length) {
           throw new Error(
             "Not all interview groups were found, bulk delete failed",
           );
         }
 
-        const existingGroups = foundGroups as InterviewGroup[];
         await Promise.all(
           existingGroups.map((g) => g.destroy({ transaction: t })),
         );
