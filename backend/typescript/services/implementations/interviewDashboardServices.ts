@@ -22,135 +22,140 @@ const interviewDelegationsService: IInterviewDelegationsService =
 const interviewGroupService: IInterviewGroupService =
   new InterviewGroupService();
 
+type InterviewerPool = {
+  nextIndex: number;
+  interviewerIds: number[];
+  groupIds: string[];
+};
+
 class InterviewDashboardServices implements IInterviewDashboardServices {
   /* eslint-disable class-methods-use-this */
   async delegateInterviewers(
     positions: string[],
   ): Promise<InterviewDelegationDTO[]> {
     try {
-      const delegations = Array<CreateInterviewDelegationDTO>();
+      // 1. Fetch users and group IDs by position
+      const users = await User.findAll({
+        attributes: ["id", "position"],
+        where: { position: { [Op.in]: positions } },
+      });
 
-      // Get users and group by position
-      const groups = (
-        await User.findAll({
-          attributes: { exclude: ["createdAt", "updatedAt"] },
-          where: {
-            position: {
-              [Op.in]: positions,
-            },
-          },
-        })
-      ).reduce((map, user) => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const pos = user.position!;
-        const arr = map.get(pos) ?? [];
-        arr.push(user.id);
-        map.set(pos, arr);
-        return map;
-      }, new Map<string, number[]>());
-
-      // 1. build the FSM
-      const FSM = new Map<string, [number, (number | undefined)[]]>(
-        positions.map((title) => [title, [0, groups.get(title) ?? []]]),
-      );
-
-      // validate fsm
-      Array.from(FSM.entries()).forEach(([title, [, userIds]]) => {
-        if (userIds.length === 0) {
-          // no users with this position
-          throw new Error(`No users found for position ${title}`);
+      const interviewerIdsByPosition: Record<string, number[]> = users.reduce<
+        Record<string, number[]>
+      >((acc, user) => {
+        if (user.position) {
+          (acc[user.position] ??= []).push(user.id);
         }
-        if (userIds.length % 2 !== 0) {
-          // sentinel value of undefined at the end
-          userIds.push(undefined);
+        return acc;
+      }, {});
+
+      // Validate every requested position has at least one interviewer
+      positions.forEach((position) => {
+        if (!interviewerIdsByPosition[position]?.length) {
+          throw new Error(`No users found for position ${position}`);
         }
       });
 
-      // 2. create one interview group per interviewer pair (one per every 2 userIds per position)
-      const groupCountsPerPosition = Array.from(FSM.entries()).map(
-        ([position, [, userIds]]) => ({
+      // 2. Create one interview group per interviewer pair
+      const pairsPerPosition: Record<string, number> = Object.fromEntries(
+        positions.map((position) => [
           position,
-          numPairs: Math.ceil(userIds.length / 2),
-        }),
+          Math.ceil(interviewerIdsByPosition[position].length / 2),
+        ]),
       );
 
+      const totalGroups = Object.values(pairsPerPosition).reduce(
+        (sum, n) => sum + n,
+        0,
+      );
       const createdGroups =
         await interviewGroupService.bulkCreateInterviewGroups(
-          groupCountsPerPosition.flatMap(({ numPairs }) =>
-            Array.from({ length: numPairs }, () => ({
-              status: InterviewGroupStatusEnum.AVAILABILITY_PENDING,
-            })),
-          ),
+          Array.from({ length: totalGroups }, () => ({
+            status: InterviewGroupStatusEnum.AVAILABILITY_PENDING,
+          })),
         );
 
-      // map each position to its slice of created group IDs
-      const positionPairGroups = new Map<string, string[]>();
-      let groupIdx = 0;
-      groupCountsPerPosition.forEach(({ position, numPairs }) => {
-        positionPairGroups.set(
-          position,
-          createdGroups.slice(groupIdx, groupIdx + numPairs).map((g) => g.id),
-        );
-        groupIdx += numPairs;
-      });
+      // Slice created groups into per-position pools
+      // bulkCreateInterviewGroups returns a flat array, so we use a running
+      // offset to slice each position's share of groups out of that array.
+      const pools: Record<string, InterviewerPool> = positions.reduce<{
+        offset: number;
+        result: Record<string, InterviewerPool>;
+      }>(
+        ({ offset, result }, position) => {
+          const numPairs = pairsPerPosition[position];
+          return {
+            offset: offset + numPairs,
+            result: {
+              ...result,
+              [position]: {
+                nextIndex: 0,
+                interviewerIds: interviewerIdsByPosition[position],
+                groupIds: createdGroups
+                  .slice(offset, offset + numPairs)
+                  .map((g) => g.id),
+              },
+            },
+          };
+        },
+        { offset: 0, result: {} },
+      ).result;
 
-      // 3. round robin via the FSM
+      // 3. Round-robin assign applicants to interviewer pairs
       const interviewedApplicantRecords =
         await InterviewedApplicantRecord.findAll({
-          attributes: { exclude: ["createdAt", "updatedAt"] },
+          attributes: ["id"],
           include: [
             {
               association: "applicantRecord",
               attributes: ["position"],
-              where: {
-                position: { [Op.in]: positions },
-              },
+              where: { position: { [Op.in]: positions } },
             },
           ],
         });
 
-      interviewedApplicantRecords.forEach((record) => {
-        /* eslint-disable @typescript-eslint/no-non-null-assertion */
-        const [count, userIds] = FSM.get(record.applicantRecord!.position)!;
-        let newCount = count;
+      const delegations: CreateInterviewDelegationDTO[] =
+        interviewedApplicantRecords
+          .filter(
+            (
+              record,
+            ): record is typeof record & {
+              applicantRecord: { position: string };
+            } => !!record.applicantRecord?.position,
+          )
+          .flatMap((record) => {
+            const { position } = record.applicantRecord;
+            const pool = pools[position];
+            const { interviewerIds, groupIds } = pool;
+            const pairIndex = Math.floor(pool.nextIndex / 2) % groupIds.length;
+            const groupId = groupIds[pairIndex];
 
-        const assignedReviewer1 = userIds[newCount];
-        newCount++;
-        newCount %= userIds.length;
+            const first: CreateInterviewDelegationDTO = {
+              interviewedApplicantRecordId: record.id,
+              interviewerId: interviewerIds[pool.nextIndex],
+              groupId,
+            };
+            pool.nextIndex = (pool.nextIndex + 1) % interviewerIds.length;
 
-        const assignedReviewer2 = userIds[newCount];
-        newCount++;
-        newCount %= userIds.length;
+            if (interviewerIds.length <= 1) {
+              return [first];
+            }
 
-        FSM.set(record.applicantRecord!.position, [newCount, userIds]);
+            // Assign second interviewer
+            const second: CreateInterviewDelegationDTO = {
+              interviewedApplicantRecordId: record.id,
+              interviewerId: interviewerIds[pool.nextIndex],
+              groupId,
+            };
+            pool.nextIndex = (pool.nextIndex + 1) % interviewerIds.length;
 
-        const groupId = positionPairGroups.get(
-          record.applicantRecord!.position,
-        )![Math.floor(count / 2)];
-
-        if (assignedReviewer1 !== undefined) {
-          delegations.push({
-            interviewedApplicantRecordId: record.id,
-            interviewerId: assignedReviewer1,
-            groupId,
+            return [first, second];
           });
-        }
-        if (assignedReviewer2 !== undefined) {
-          delegations.push({
-            interviewedApplicantRecordId: record.id,
-            interviewerId: assignedReviewer2,
-            groupId,
-          });
-        }
-      });
 
-      // 4. persist the delegations
-
-      const res =
-        await interviewDelegationsService.bulkCreateInterviewDelegations(
-          delegations,
-        );
-      return res;
+      // 4. Persist
+      return await interviewDelegationsService.bulkCreateInterviewDelegations(
+        delegations,
+      );
     } catch (error: unknown) {
       Logger.error(
         `Failed to delegate interviewers. Reason = ${getErrorMessage(error)}`,
