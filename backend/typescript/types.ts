@@ -33,6 +33,7 @@ export type UserDTO = {
   email: string;
   position?: string;
   role: Role;
+  profilePictureFileId?: string;
 };
 
 export type ApplicationDTO = {
