@@ -52,6 +52,13 @@ const reviewedApplicantRecordTypes = gql`
     status: String
   }
 
+  extend type Query {
+    getReviewedApplicantRecord(
+      applicantRecordId: ID!
+      reviewerId: Int!
+    ): ReviewedApplicantRecord!
+  }
+
   extend type Mutation {
     createReviewedApplicantRecord(
       input: CreateReviewedApplicantRecordInput!

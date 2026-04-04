@@ -10,6 +10,21 @@ import { getErrorMessage } from "../../utilities/errorUtils";
 const reviewedApplicantRecordService = new ReviewedApplicantRecordService();
 
 const reviewedApplicantRecordResolvers = {
+  Query: {
+    getReviewedApplicantRecord: async (
+      _parent: undefined,
+      args: { applicantRecordId: string; reviewerId: number },
+    ): Promise<ReviewedApplicantRecordDTO> => {
+      try {
+        return await reviewedApplicantRecordService.getReviewedApplicantRecord(
+          args.applicantRecordId,
+          args.reviewerId,
+        );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
+  },
   Mutation: {
     createReviewedApplicantRecord: async (
       _parent: undefined,
