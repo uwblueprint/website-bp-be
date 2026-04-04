@@ -35,6 +35,7 @@ class UserService implements IUserService {
       email: "firebaseUser.email ?? ",
       position: user.position ?? undefined,
       role: user.role,
+      profilePictureFileId: user.profilePictureFileId ?? undefined,
     };
   }
 
@@ -63,6 +64,7 @@ class UserService implements IUserService {
       email: email ?? "",
       position: user.position ?? undefined,
       role: user.role,
+      profilePictureFileId: user.profilePictureFileId ?? undefined,
     };
   }
 
@@ -136,6 +138,7 @@ class UserService implements IUserService {
             email: firebaseUser.email ?? "",
             position: user.position ?? undefined,
             role: user.role,
+            profilePictureFileId: user.profilePictureFileId ?? undefined,
           };
         }),
       );

@@ -13,6 +13,7 @@ const userType = gql`
     email: String!
     role: Role!
     position: String
+    profilePictureFileId: ID
   }
 
   input CreateUserDTO {
