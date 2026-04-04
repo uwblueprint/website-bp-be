@@ -29,6 +29,8 @@ import interviewedApplicantRecordsTypes from "./types/interviewedApplicantRecord
 import interviewedApplicantRecordsResolvers from "./resolvers/interviewedApplicantRecordsResolvers";
 import interviewDelegationsTypes from "./types/interviewDelegationsTypes";
 import interviewDelegationsResolvers from "./resolvers/interviewDelegationsResolvers";
+import firebaseFileType from "./types/firebaseFileType";
+import firebaseFileResolvers from "./resolvers/firebaseFileResolvers";
 
 const query = gql`
   type Query {
@@ -58,6 +60,7 @@ const executableSchema = makeExecutableSchema({
     interviewDelegationsTypes,
     reviewedApplicantRecordTypes,
     interviewedApplicantRecordsTypes,
+    firebaseFileType,
   ],
   resolvers: merge(
     authResolvers,
@@ -72,6 +75,7 @@ const executableSchema = makeExecutableSchema({
     interviewDelegationsResolvers,
     reviewedApplicantRecordResolvers,
     interviewedApplicantRecordsResolvers,
+    firebaseFileResolvers,
   ),
 });
 
@@ -121,6 +125,7 @@ const graphQLMiddlewares = {
     deleteInterviewDelegation: authorizedByAllRoles(),
     bulkCreateInterviewDelegations: authorizedByAllRoles(),
     bulkDeleteInterviewDelegations: authorizedByAllRoles(),
+    createFirebaseFile: authorizedByAllRoles(),
   },
 };
 
