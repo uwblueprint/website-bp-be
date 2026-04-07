@@ -283,6 +283,19 @@ export type ReviewedApplicantsDTO = {
   applicantLastName: string;
 };
 
+export type InterviewedApplicantsDTO = {
+  applicantRecordId: string;
+  interviewStatus: InterviewStatus;
+  applicantFirstName: string;
+  applicantLastName: string;
+};
+
+export type InterviewPairingsDTO = {
+  interviewedGroupId: string;
+  interviewGroupStatus: InterviewGroupStatus;
+  groupMembers: UserDTO[];
+};
+
 export type AdminCommentDTO = {
   id: string;
   userId: number;

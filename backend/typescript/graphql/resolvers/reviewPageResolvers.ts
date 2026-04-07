@@ -1,5 +1,7 @@
 import {
   ApplicationDTO,
+  InterviewedApplicantsDTO,
+  InterviewPairingsDTO,
   ReviewedApplicantRecordDTO,
   ReviewedApplicantsDTO,
 } from "../../types";
@@ -26,6 +28,30 @@ const reviewPageResolvers = {
     ): Promise<ReviewedApplicantsDTO[]> => {
       try {
         return await reviewPageService.getReviewedApplicantsByUserId(
+          args.userId,
+        );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
+    getInterviewedApplicantsByUserId: async (
+      _parent: undefined,
+      args: { userId: number },
+    ): Promise<InterviewedApplicantsDTO[]> => {
+      try {
+        return await reviewPageService.getInterviewedApplicantsByUserId(
+          args.userId,
+        );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
+    getInterviewedPairingsByUserId: async (
+      _parent: undefined,
+      args: { userId: number },
+    ): Promise<InterviewPairingsDTO[]> => {
+      try {
+        return await reviewPageService.getInterviewedPairingsByUserId(
           args.userId,
         );
       } catch (error) {
