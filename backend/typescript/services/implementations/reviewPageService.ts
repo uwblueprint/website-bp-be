@@ -13,7 +13,6 @@ import ApplicantRecord from "../../models/applicantRecord.model";
 import ReviewedApplicantRecord from "../../models/reviewedApplicantRecord.model";
 import Applicant from "../../models/applicant.model";
 import User from "../../models/user.model";
-import { Op } from "sequelize";
 import InterviewedApplicantRecord from "../../models/interviewedApplicantRecord.model";
 import InterviewDelegation from "../../models/interviewDelegation.model";
 
@@ -186,61 +185,31 @@ class ReviewPageService implements IReviewPageService {
     userId: number,
   ): Promise<InterviewedApplicantsDTO[]> {
     try {
-      const reviewedApplicantRecords = await ReviewedApplicantRecord.findAll({
-        where: { reviewerId: userId },
-        attributes: ["applicantRecordId"],
-      });
-
-      if (!reviewedApplicantRecords.length) {
-        return [];
-      }
-
-      const applicantRecordIds = reviewedApplicantRecords.map(
-        (record) => record.applicantRecordId,
-      );
-
-      const interviewedApplicantRecords =
-        await InterviewedApplicantRecord.findAll({
-          where: { applicantRecordId: { [Op.in]: applicantRecordIds } },
-          include: [
-            {
-              association: "applicantRecord",
-              include: [
-                {
-                  association: "applicant",
-                },
-              ],
-            },
-          ],
-        });
-
-      const interviewedApplicantRecordIds = interviewedApplicantRecords.map(
-        (record) => record.id,
-      );
-
-      if (!interviewedApplicantRecordIds.length) {
-        return [];
-      }
-
       const assignedDelegations = await InterviewDelegation.findAll({
-        where: {
-          interviewerId: userId,
-          interviewedApplicantRecordId: {
-            [Op.in]: interviewedApplicantRecordIds,
+        where: { interviewerId: userId },
+        include: [
+          {
+            association: "interviewedApplicantRecord",
+            include: [
+              {
+                association: "applicantRecord",
+                include: [
+                  {
+                    association: "applicant",
+                  },
+                ],
+              },
+            ],
           },
-        },
-        attributes: ["interviewedApplicantRecordId"],
+        ],
       });
+      console.log(assignedDelegations);
 
-      const assignedInterviewedApplicantRecordIds = new Set(
-        assignedDelegations.map(
-          (delegation) => delegation.interviewedApplicantRecordId,
-        ),
-      );
-
-      return interviewedApplicantRecords
-        .filter((record) =>
-          assignedInterviewedApplicantRecordIds.has(record.id),
+      return assignedDelegations
+        .map((delegation) => delegation.interviewedApplicantRecord)
+        .filter(
+          (record): record is InterviewedApplicantRecord =>
+            record !== undefined,
         )
         .map((record) => ({
           applicantRecordId: record.applicantRecordId,
@@ -259,40 +228,8 @@ class ReviewPageService implements IReviewPageService {
     userId: number,
   ): Promise<InterviewPairingsDTO[]> {
     try {
-      const reviewedApplicantRecords = await ReviewedApplicantRecord.findAll({
-        where: { reviewerId: userId },
-        attributes: ["applicantRecordId"],
-      });
-
-      if (!reviewedApplicantRecords.length) {
-        return [];
-      }
-
-      const applicantRecordIds = reviewedApplicantRecords.map(
-        (record) => record.applicantRecordId,
-      );
-
-      const interviewedApplicantRecords =
-        await InterviewedApplicantRecord.findAll({
-          where: { applicantRecordId: { [Op.in]: applicantRecordIds } },
-          attributes: ["id"],
-        });
-
-      const interviewedApplicantRecordIds = interviewedApplicantRecords.map(
-        (record) => record.id,
-      );
-
-      if (!interviewedApplicantRecordIds.length) {
-        return [];
-      }
-
       const assignedDelegations = await InterviewDelegation.findAll({
-        where: {
-          interviewerId: userId,
-          interviewedApplicantRecordId: {
-            [Op.in]: interviewedApplicantRecordIds,
-          },
-        },
+        where: { interviewerId: userId },
         include: [
           {
             association: "interviewGroup",
