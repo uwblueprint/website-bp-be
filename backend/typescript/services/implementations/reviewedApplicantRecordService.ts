@@ -182,7 +182,6 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
     }
   }
 
-  /* eslint-disable class-methods-use-this */
   async updateReviewedApplicantRecord({
     applicantRecordId,
     reviewerId,
@@ -259,6 +258,24 @@ class ReviewedApplicantRecordService implements IReviewApplicantRecordService {
     } catch (error: unknown) {
       Logger.error(
         `Failed to update reviewed applicant record. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
+  }
+
+  async getAllByApplicantRecordId(
+    applicantRecordId: string,
+  ): Promise<ReviewedApplicantRecordDTO[]> {
+    try {
+      const records = await ReviewedApplicantRecord.findAll({
+        where: { applicantRecordId },
+      });
+      return records.map((record) => toReviewedApplicantRecordDTO(record));
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to get reviewed applicant records by applicantRecordId. Reason = ${getErrorMessage(
           error,
         )}`,
       );

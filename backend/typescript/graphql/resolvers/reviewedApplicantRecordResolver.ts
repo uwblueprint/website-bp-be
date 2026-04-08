@@ -24,6 +24,18 @@ const reviewedApplicantRecordResolvers = {
         throw new Error(getErrorMessage(error));
       }
     },
+    getAllReviewsByApplicantRecordId: async (
+      _parent: undefined,
+      args: { applicantRecordId: string },
+    ): Promise<ReviewedApplicantRecordDTO[]> => {
+      try {
+        return await reviewedApplicantRecordService.getAllByApplicantRecordId(
+          args.applicantRecordId,
+        );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
   },
   Mutation: {
     createReviewedApplicantRecord: async (

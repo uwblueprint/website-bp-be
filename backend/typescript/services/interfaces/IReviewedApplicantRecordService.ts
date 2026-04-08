@@ -57,6 +57,14 @@ interface IReviewApplicantRecordService {
   updateReviewedApplicantRecord(
     updateReviewedApplicantRecordDTO: UpdateReviewedApplicantRecordDTO,
   ): Promise<ReviewedApplicantRecordDTO>;
+
+  /**
+   * Get all reviewed applicant records for a given applicant record
+   * @Param applicantRecordId the ID of applicant record
+   */
+  getAllByApplicantRecordId(
+    applicantRecordId: string,
+  ): Promise<ReviewedApplicantRecordDTO[]>;
 }
 
 export default IReviewApplicantRecordService;
