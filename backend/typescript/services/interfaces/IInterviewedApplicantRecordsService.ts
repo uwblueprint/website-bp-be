@@ -14,6 +14,14 @@ interface IInterviewedApplicantRecordsService {
   ): Promise<InterviewedApplicantRecordDTO>;
 
   /**
+   * Gets all interviewed applicant records belonging to an interview group
+   * @Param groupId the ID of the interview group
+   */
+  getInterviewedApplicantsByGroupId(
+    groupId: string,
+  ): Promise<InterviewedApplicantRecordDTO[]>;
+
+  /**
    * Creates a single interviewed applicant record
    * @Param applicantRecordId applicant record ID of the application being interviewed
    * @Param score the score calculated from the submitted interview
