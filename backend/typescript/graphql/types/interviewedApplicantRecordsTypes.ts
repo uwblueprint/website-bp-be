@@ -37,6 +37,9 @@ const interviewedApplicantRecordsTypes = gql`
 
   extend type Query {
     getInterviewedApplicantRecordById(id: ID!): InterviewedApplicantRecord!
+    getInterviewedApplicantsByGroupId(
+      groupId: ID!
+    ): [InterviewedApplicantRecord!]!
   }
 
   extend type Mutation {

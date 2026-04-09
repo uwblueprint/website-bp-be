@@ -24,6 +24,18 @@ const interviewedApplicantRecordsResolvers = {
         throw new Error(getErrorMessage(error));
       }
     },
+    getInterviewedApplicantsByGroupId: async (
+      _parent: undefined,
+      args: { groupId: string },
+    ): Promise<InterviewedApplicantRecordDTO[]> => {
+      try {
+        return await interviewedApplicantRecordsService.getInterviewedApplicantsByGroupId(
+          args.groupId,
+        );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
   },
   Mutation: {
     createInterviewedApplicantRecord: async (
