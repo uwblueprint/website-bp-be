@@ -5,7 +5,6 @@ import {
 } from "../../types";
 import IInterviewedApplicantRecordsService from "../interfaces/IInterviewedApplicantRecordsService";
 import InterviewedApplicantRecord from "../../models/interviewedApplicantRecord.model";
-import InterviewDelegation from "../../models/interviewDelegation.model";
 import { getErrorMessage } from "../../utilities/errorUtils";
 import logger from "../../utilities/logger";
 
@@ -42,36 +41,6 @@ class InterviewedApplicantRecordsService
     } catch (error: unknown) {
       Logger.error(
         `Failed to fetch interviewed applicant record. Reason = ${getErrorMessage(
-          error,
-        )}`,
-      );
-      throw error;
-    }
-  }
-
-  async getInterviewedApplicantsByGroupId(
-    groupId: string,
-  ): Promise<InterviewedApplicantRecordDTO[]> {
-    try {
-      const delegations = await InterviewDelegation.findAll({
-        where: { groupId },
-        include: [
-          {
-            model: InterviewedApplicantRecord,
-            as: "interviewedApplicantRecord",
-          },
-        ],
-      });
-      const records = delegations
-        .map((d) => d.interviewedApplicantRecord)
-        .filter((r): r is InterviewedApplicantRecord => r !== undefined);
-      const unique = Array.from(
-        new Map(records.map((r) => [r.id, r])).values(),
-      );
-      return unique.map(toInterviewedApplicantRecordDTO);
-    } catch (error: unknown) {
-      Logger.error(
-        `Failed to fetch interviewed applicants by group. Reason = ${getErrorMessage(
           error,
         )}`,
       );
