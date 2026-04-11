@@ -1,6 +1,6 @@
 import InterviewReviewPageService from "../../services/implementations/interviewReviewPageService";
 import IInterviewReviewPageService from "../../services/interfaces/IInterviewReviewPageService";
-import { InterviewedApplicantDTO } from "../../types";
+import { InterviewedApplicantDTO, UserDTO } from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 
 const interviewReviewPageService: IInterviewReviewPageService =
@@ -14,6 +14,18 @@ const interviewReviewPageResolvers = {
     ): Promise<InterviewedApplicantDTO[]> => {
       try {
         return await interviewReviewPageService.getInterviewedApplicantsByGroupId(
+          args.groupId,
+        );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
+    getInterviewersByGroupId: async (
+      _parent: undefined,
+      args: { groupId: string },
+    ): Promise<UserDTO[]> => {
+      try {
+        return await interviewReviewPageService.getInterviewersByGroupId(
           args.groupId,
         );
       } catch (error) {

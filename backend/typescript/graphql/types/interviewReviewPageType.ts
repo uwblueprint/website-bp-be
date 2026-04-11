@@ -9,6 +9,7 @@ const interviewReviewPageType = gql`
 
   extend type Query {
     getInterviewedApplicantsByGroupId(groupId: ID!): [InterviewedApplicantDTO!]!
+    getInterviewersByGroupId(groupId: ID!): [UserDTO!]!
   }
 `;
 
