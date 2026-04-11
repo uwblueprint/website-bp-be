@@ -260,6 +260,12 @@ export type InterviewedApplicantRecordDTO = {
   interviewDate?: Date;
 };
 
+export type InterviewedApplicantDTO = {
+  applicantRecordId: string;
+  firstName: string;
+  lastName: string;
+};
+
 export type ReviewDetails = {
   reviewerFirstName: string;
   reviewerLastName: string;

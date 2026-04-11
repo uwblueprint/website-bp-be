@@ -74,6 +74,9 @@ export default class InterviewedApplicantRecord extends Model {
   })
   updatedAt!: Date;
 
-  @BelongsTo(() => ApplicantRecord, "applicantRecordId")
+  @BelongsTo(() => ApplicantRecord, {
+    foreignKey: "applicantRecordId",
+    targetKey: "id",
+  })
   applicantRecord?: NonAttribute<ApplicantRecord>;
 }
