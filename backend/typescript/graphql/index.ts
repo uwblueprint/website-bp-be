@@ -33,6 +33,8 @@ import interviewDashboardTypes from "./types/interviewDashboardTypes";
 import interviewDashboardResolvers from "./resolvers/interviewDashboardResolvers";
 import interviewGroupTypes from "./types/interviewGroupTypes";
 import interviewGroupResolvers from "./resolvers/interviewGroupResolvers";
+import interviewReviewPageType from "./types/interviewReviewPageType";
+import interviewReviewPageResolvers from "./resolvers/interviewReviewPageResolvers";
 
 const query = gql`
   type Query {
@@ -64,6 +66,7 @@ const executableSchema = makeExecutableSchema({
     interviewedApplicantRecordsTypes,
     interviewDashboardTypes,
     interviewGroupTypes,
+    interviewReviewPageType,
   ],
   resolvers: merge(
     authResolvers,
@@ -80,6 +83,7 @@ const executableSchema = makeExecutableSchema({
     interviewedApplicantRecordsResolvers,
     interviewDashboardResolvers,
     interviewGroupResolvers,
+    interviewReviewPageResolvers,
   ),
 });
 
