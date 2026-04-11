@@ -1,16 +1,10 @@
 import { gql } from "apollo-server-express";
 
 const interviewGroupTypes = gql`
-  enum InterviewGroupStatus {
-    READY_TO_INTERVIEW
-    INVITES_SENT
-    AVAILABILITY_PENDING
-  }
-
   type InterviewGroup {
     id: ID!
     schedulingLink: String
-    status: InterviewGroupStatus!
+    status: String!
   }
 
   extend type Query {
@@ -18,20 +12,20 @@ const interviewGroupTypes = gql`
   }
 
   input BulkCreateInterviewGroupInput {
-    status: InterviewGroupStatus!
+    status: String!
     schedulingLink: String
   }
 
   extend type Mutation {
     createInterviewGroup(
       schedulingLink: String
-      status: InterviewGroupStatus!
+      status: String!
     ): InterviewGroup!
 
     updateInterviewGroup(
       id: ID!
       schedulingLink: String
-      status: InterviewGroupStatus!
+      status: String!
     ): InterviewGroup!
 
     deleteInterviewGroup(id: ID!): InterviewGroup!
