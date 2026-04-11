@@ -1,6 +1,7 @@
 /* eslint import/no-cycle: 0 */
 
 import {
+  BelongsTo,
   Column,
   DataType,
   ForeignKey,
@@ -10,6 +11,7 @@ import {
 } from "sequelize-typescript";
 import { NonAttribute } from "sequelize";
 import { Role } from "../types";
+import File from "./file.model";
 import Position from "./position.model";
 import ReviewedApplicantRecord from "./reviewedApplicantRecord.model";
 
@@ -39,6 +41,13 @@ export default class User extends Model {
 
   @Column({ type: DataType.BOOLEAN, defaultValue: true })
   isActive!: boolean;
+
+  @ForeignKey(() => File)
+  @Column({ type: DataType.UUID, allowNull: true })
+  profilePictureFileId?: string;
+
+  @BelongsTo(() => File, { foreignKey: "profilePictureFileId" })
+  profilePicture?: NonAttribute<File>;
 
   @HasMany(() => ReviewedApplicantRecord, {
     foreignKey: "reviewerId",
