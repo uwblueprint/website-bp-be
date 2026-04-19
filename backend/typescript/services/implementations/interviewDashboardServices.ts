@@ -25,18 +25,16 @@ const interviewGroupService: IInterviewGroupService =
 type InterviewerPair = [number] | [number, number];
 
 function buildPairs(ids: number[]): InterviewerPair[] {
-  const pairs: InterviewerPair[] = [];
-  for (let i = 0; i < ids.length; i += 2) {
-    if (i + 1 < ids.length) {
+  if (ids.length === 1) return [[ids[0]]];
+  if (ids.length % 2 === 0) {
+    const pairs: [number, number][] = [];
+    for (let i = 0; i < ids.length; i += 2) {
       pairs.push([ids[i], ids[i + 1]]);
-    } else if (ids.length > 1) {
-      // Odd count: wrap last interviewer with the first so no one is solo
-      pairs.push([ids[i], ids[0]]);
-    } else {
-      pairs.push([ids[i]]);
     }
+    return pairs;
   }
-  return pairs;
+  // Odd count: sliding window so every interviewer covers exactly 2/n of applicants
+  return ids.map((_, i) => [ids[i], ids[(i + 1) % ids.length]]);
 }
 
 class InterviewDashboardServices implements IInterviewDashboardServices {
