@@ -22,11 +22,22 @@ const interviewDelegationsService: IInterviewDelegationsService =
 const interviewGroupService: IInterviewGroupService =
   new InterviewGroupService();
 
-type InterviewerPool = {
-  nextIndex: number;
-  interviewerIds: number[];
-  groupIds: string[];
-};
+type InterviewerPair = [number] | [number, number];
+
+function buildPairs(ids: number[]): InterviewerPair[] {
+  const pairs: InterviewerPair[] = [];
+  for (let i = 0; i < ids.length; i += 2) {
+    if (i + 1 < ids.length) {
+      pairs.push([ids[i], ids[i + 1]]);
+    } else if (ids.length > 1) {
+      // Odd count: wrap last interviewer with the first so no one is solo
+      pairs.push([ids[i], ids[0]]);
+    } else {
+      pairs.push([ids[i]]);
+    }
+  }
+  return pairs;
+}
 
 class InterviewDashboardServices implements IInterviewDashboardServices {
   /* eslint-disable class-methods-use-this */
@@ -34,7 +45,7 @@ class InterviewDashboardServices implements IInterviewDashboardServices {
     positions: string[],
   ): Promise<InterviewDelegationDTO[]> {
     try {
-      // 1. Fetch users and group IDs by position
+      // 1. Fetch users by position
       const users = await User.findAll({
         attributes: ["id", "position"],
         where: { position: { [Op.in]: positions } },
@@ -49,23 +60,23 @@ class InterviewDashboardServices implements IInterviewDashboardServices {
         return acc;
       }, {});
 
-      // Validate every requested position has at least one interviewer
       positions.forEach((position) => {
         if (!interviewerIdsByPosition[position]?.length) {
           throw new Error(`No users found for position ${position}`);
         }
       });
 
-      // 2. Create one interview group per interviewer pair
-      const pairsPerPosition: Record<string, number> = Object.fromEntries(
-        positions.map((position) => [
-          position,
-          Math.ceil(interviewerIdsByPosition[position].length / 2),
-        ]),
-      );
+      // 2. Build static pairs per position, one group per pair
+      const pairsByPosition: Record<string, InterviewerPair[]> =
+        Object.fromEntries(
+          positions.map((position) => [
+            position,
+            buildPairs(interviewerIdsByPosition[position]),
+          ]),
+        );
 
-      const totalGroups = Object.values(pairsPerPosition).reduce(
-        (sum, n) => sum + n,
+      const totalGroups = positions.reduce(
+        (sum, position) => sum + pairsByPosition[position].length,
         0,
       );
       const createdGroups =
@@ -75,33 +86,26 @@ class InterviewDashboardServices implements IInterviewDashboardServices {
           })),
         );
 
-      // Slice created groups into per-position pools
-      // bulkCreateInterviewGroups returns a flat array, so we use a running
-      // offset to slice each position's share of groups out of that array.
-      const pools: Record<string, InterviewerPool> = positions.reduce<{
+      const groupIdsByPosition: Record<string, string[]> = positions.reduce<{
         offset: number;
-        result: Record<string, InterviewerPool>;
+        result: Record<string, string[]>;
       }>(
         ({ offset, result }, position) => {
-          const numPairs = pairsPerPosition[position];
+          const numPairs = pairsByPosition[position].length;
           return {
             offset: offset + numPairs,
             result: {
               ...result,
-              [position]: {
-                nextIndex: 0,
-                interviewerIds: interviewerIdsByPosition[position],
-                groupIds: createdGroups
-                  .slice(offset, offset + numPairs)
-                  .map((g) => g.id),
-              },
+              [position]: createdGroups
+                .slice(offset, offset + numPairs)
+                .map((g) => g.id),
             },
           };
         },
         { offset: 0, result: {} },
       ).result;
 
-      // 3. Round-robin assign applicants to interviewer pairs
+      // 3. Round-robin applicants across pairs
       const interviewedApplicantRecords =
         await InterviewedApplicantRecord.findAll({
           attributes: ["id"],
@@ -114,6 +118,10 @@ class InterviewDashboardServices implements IInterviewDashboardServices {
           ],
         });
 
+      const counterByPosition: Record<string, number> = Object.fromEntries(
+        positions.map((p) => [p, 0]),
+      );
+
       const delegations: CreateInterviewDelegationDTO[] =
         interviewedApplicantRecords
           .filter(
@@ -125,31 +133,16 @@ class InterviewDashboardServices implements IInterviewDashboardServices {
           )
           .flatMap((record) => {
             const { position } = record.applicantRecord;
-            const pool = pools[position];
-            const { interviewerIds, groupIds } = pool;
-            const pairIndex = Math.floor(pool.nextIndex / 2) % groupIds.length;
-            const groupId = groupIds[pairIndex];
+            const pairs = pairsByPosition[position];
+            const groupIds = groupIdsByPosition[position];
+            const pairIndex = counterByPosition[position] % pairs.length;
+            counterByPosition[position] += 1;
 
-            const first: CreateInterviewDelegationDTO = {
+            return pairs[pairIndex].map((interviewerId) => ({
               interviewedApplicantRecordId: record.id,
-              interviewerId: interviewerIds[pool.nextIndex],
-              groupId,
-            };
-            pool.nextIndex = (pool.nextIndex + 1) % interviewerIds.length;
-
-            if (interviewerIds.length <= 1) {
-              return [first];
-            }
-
-            // Assign second interviewer
-            const second: CreateInterviewDelegationDTO = {
-              interviewedApplicantRecordId: record.id,
-              interviewerId: interviewerIds[pool.nextIndex],
-              groupId,
-            };
-            pool.nextIndex = (pool.nextIndex + 1) % interviewerIds.length;
-
-            return [first, second];
+              interviewerId,
+              groupId: groupIds[pairIndex],
+            }));
           });
 
       // 4. Persist
