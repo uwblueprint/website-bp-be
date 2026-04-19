@@ -29,6 +29,12 @@ import interviewedApplicantRecordsTypes from "./types/interviewedApplicantRecord
 import interviewedApplicantRecordsResolvers from "./resolvers/interviewedApplicantRecordsResolvers";
 import interviewDelegationsTypes from "./types/interviewDelegationsTypes";
 import interviewDelegationsResolvers from "./resolvers/interviewDelegationsResolvers";
+import interviewDashboardTypes from "./types/interviewDashboardTypes";
+import interviewDashboardResolvers from "./resolvers/interviewDashboardResolvers";
+import interviewGroupTypes from "./types/interviewGroupTypes";
+import interviewGroupResolvers from "./resolvers/interviewGroupResolvers";
+import interviewReviewPageType from "./types/interviewReviewPageType";
+import interviewReviewPageResolvers from "./resolvers/interviewReviewPageResolvers";
 
 const query = gql`
   type Query {
@@ -58,6 +64,9 @@ const executableSchema = makeExecutableSchema({
     interviewDelegationsTypes,
     reviewedApplicantRecordTypes,
     interviewedApplicantRecordsTypes,
+    interviewDashboardTypes,
+    interviewGroupTypes,
+    interviewReviewPageType,
   ],
   resolvers: merge(
     authResolvers,
@@ -72,6 +81,9 @@ const executableSchema = makeExecutableSchema({
     interviewDelegationsResolvers,
     reviewedApplicantRecordResolvers,
     interviewedApplicantRecordsResolvers,
+    interviewDashboardResolvers,
+    interviewGroupResolvers,
+    interviewReviewPageResolvers,
   ),
 });
 
@@ -93,6 +105,7 @@ const graphQLMiddlewares = {
     adminCommentById: authorizedByAdmin(),
     getReviewedApplicantRecord: authorizedByAllRoles(),
     getInterviewDelegation: authorizedByAllRoles(),
+    getInterviewGroup: authorizedByAllRoles(),
   },
   Mutation: {
     createEntity: authorizedByAllRoles(),
@@ -121,6 +134,10 @@ const graphQLMiddlewares = {
     deleteInterviewDelegation: authorizedByAllRoles(),
     bulkCreateInterviewDelegations: authorizedByAllRoles(),
     bulkDeleteInterviewDelegations: authorizedByAllRoles(),
+    delegateInterviewers: authorizedByAdmin(),
+    createInterviewGroup: authorizedByAllRoles(),
+    updateInterviewGroup: authorizedByAllRoles(),
+    deleteInterviewGroup: authorizedByAllRoles(),
   },
 };
 

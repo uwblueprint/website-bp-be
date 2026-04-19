@@ -33,6 +33,7 @@ export type UserDTO = {
   email: string;
   position?: string;
   role: Role;
+  profilePictureFileId?: string;
 };
 
 export type ApplicationDTO = {
@@ -259,6 +260,12 @@ export type InterviewedApplicantRecordDTO = {
   interviewDate?: Date;
 };
 
+export type InterviewedApplicantDTO = {
+  applicantRecordId: string;
+  firstName: string;
+  lastName: string;
+};
+
 export type ReviewDetails = {
   reviewerFirstName: string;
   reviewerLastName: string;
@@ -345,3 +352,11 @@ export type DeleteInterviewDelegationDTO = {
   interviewedApplicantRecordId: string;
   interviewerId: number;
 };
+
+export type InterviewGroupDTO = {
+  id: string;
+  schedulingLink?: string;
+  status: InterviewGroupStatus;
+};
+
+export type CreateInterviewGroupDTO = Omit<InterviewGroupDTO, "id">;

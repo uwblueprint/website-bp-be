@@ -1,10 +1,12 @@
 import {
+  BelongsTo,
   Column,
   DataType,
   ForeignKey,
   Model,
   Table,
 } from "sequelize-typescript";
+import { NonAttribute } from "sequelize";
 import { Interview, InterviewStatus, InterviewStatusEnum } from "../types";
 import ApplicantRecord from "./applicantRecord.model";
 import File from "./file.model";
@@ -71,4 +73,10 @@ export default class InterviewedApplicantRecord extends Model {
     defaultValue: DataType.NOW,
   })
   updatedAt!: Date;
+
+  @BelongsTo(() => ApplicantRecord, {
+    foreignKey: "applicantRecordId",
+    targetKey: "id",
+  })
+  applicantRecord?: NonAttribute<ApplicantRecord>;
 }
