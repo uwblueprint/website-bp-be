@@ -35,7 +35,7 @@ function toApplicationDTO(model: Applicant): ApplicationDTO {
     resumeUrl: model.resumeUrl,
     roleSpecificQuestions: firstChoice!.roleSpecificQuestions,
     secondChoiceRole: secondChoice ? secondChoice.position : "",
-    shortAnswerQuestions: model.shortAnswerQuestions,
+    shortQuestionAnswers: model.shortQuestionAnswers,
     status: firstChoice!.status,
     term: model.term,
     secondChoiceStatus: secondChoice ? secondChoice.status : "",

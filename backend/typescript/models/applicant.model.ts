@@ -2,6 +2,7 @@
 
 import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
 import { NonAttribute } from "sequelize";
+import type { ShortQuestionAnswerDTO } from "../types";
 import ApplicantRecord from "./applicantRecord.model";
 
 @Table({ tableName: "applicants" })
@@ -46,8 +47,8 @@ export default class Applicant extends Model {
   @Column({ type: DataType.INTEGER })
   timesApplied!: number;
 
-  @Column({ type: DataType.ARRAY(DataType.STRING) })
-  shortAnswerQuestions!: string[];
+  @Column({ type: DataType.JSONB })
+  shortQuestionAnswers!: ShortQuestionAnswerDTO[];
 
   @Column({ type: DataType.STRING })
   term!: string;
