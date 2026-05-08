@@ -84,9 +84,7 @@ class InterviewPageService implements IInterviewPageService {
       });
 
       // dedupe groupIds, although each groupId should have a unique set of interviewers, the database design does not guarantee this.
-      const groupIds = [
-        ...new Set(userGroupRows.map((row) => row.groupId)),
-      ];
+      const groupIds = [...new Set(userGroupRows.map((row) => row.groupId))];
       if (groupIds.length === 0) {
         return [];
       }
