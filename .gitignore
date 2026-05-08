@@ -10,6 +10,8 @@
 **/*.cache
 **/*.egg-info
 backend/typescript/serviceAccount.json
+backend/typescript/uploads/*
+!backend/typescript/uploads/.gitkeep
 package-lock.json
 .gitignore
 package.json
