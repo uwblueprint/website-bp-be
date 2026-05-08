@@ -37,7 +37,7 @@ export type UserDTO = {
 
 export type ShortQuestionAnswerDTO = {
   question: string;
-  response?: string | null;
+  response: string;
 };
 
 export type ApplicationDTO = {

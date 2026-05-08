@@ -3,7 +3,7 @@ import { gql } from "apollo-server-express";
 const reviewPageType = gql`
   type ShortQuestionAnswer {
     question: String!
-    response: String
+    response: String!
   }
 
   type ApplicationDTO {
