@@ -35,6 +35,11 @@ export type UserDTO = {
   role: Role;
 };
 
+export type ShortQuestionAnswerDTO = {
+  question: string;
+  response: string;
+};
+
 export type ApplicationDTO = {
   id: string;
   academicOrCoop: string;
@@ -51,7 +56,7 @@ export type ApplicationDTO = {
   resumeUrl: string;
   roleSpecificQuestions: string[];
   secondChoiceRole: string;
-  shortAnswerQuestions: string[];
+  shortQuestionAnswers: ShortQuestionAnswerDTO[];
   status: string;
   secondChoiceStatus: string;
   term: string;
@@ -73,7 +78,7 @@ export type ApplicantDTO = {
   pronounsSpecified: string;
   resumeUrl: string;
   timesApplied: string;
-  shortAnswerQuestions: string[];
+  shortQuestionAnswers: ShortQuestionAnswerDTO[];
   term: string;
   submittedAt: Date;
 };

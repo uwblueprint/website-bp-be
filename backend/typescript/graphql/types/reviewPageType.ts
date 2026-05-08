@@ -1,6 +1,11 @@
 import { gql } from "apollo-server-express";
 
 const reviewPageType = gql`
+  type ShortQuestionAnswer {
+    question: String!
+    response: String!
+  }
+
   type ApplicationDTO {
     id: String!
     academicOrCoop: String!
@@ -17,7 +22,7 @@ const reviewPageType = gql`
     resumeUrl: String!
     roleSpecificQuestions: [String!]!
     secondChoiceRole: String!
-    shortAnswerQuestions: [String!]!
+    shortQuestionAnswers: [ShortQuestionAnswer!]!
     status: String!
     secondChoiceStatus: String!
     term: String!
