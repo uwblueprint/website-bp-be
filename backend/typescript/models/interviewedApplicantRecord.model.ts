@@ -78,5 +78,5 @@ export default class InterviewedApplicantRecord extends Model {
     foreignKey: "applicantRecordId",
     targetKey: "id",
   })
-  applicantRecord?: NonAttribute<ApplicantRecord>;
+  applicantRecord!: NonAttribute<ApplicantRecord>;
 }

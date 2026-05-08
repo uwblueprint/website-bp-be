@@ -1,10 +1,7 @@
 import {
   ApplicationDTO,
-  InterviewedApplicantsDTO,
-  InterviewPairingsDTO,
   ReviewedApplicantRecordDTO,
   ReviewedApplicantsDTO,
-  UserDTO,
 } from "../../types";
 import IReviewPageService from "../interfaces/IReviewPageService";
 import { getErrorMessage } from "../../utilities/errorUtils";
@@ -13,8 +10,6 @@ import ApplicantRecord from "../../models/applicantRecord.model";
 import ReviewedApplicantRecord from "../../models/reviewedApplicantRecord.model";
 import Applicant from "../../models/applicant.model";
 import User from "../../models/user.model";
-import InterviewedApplicantRecord from "../../models/interviewedApplicantRecord.model";
-import InterviewDelegation from "../../models/interviewDelegation.model";
 
 const Logger = logger(__filename);
 
@@ -69,17 +64,6 @@ function toReviewedApplicantRecordDTO(
     review: model.review,
     status: model.status,
     reviewerHasConflict: model.reviewerHasConflict,
-  };
-}
-
-function toUserDTO(model: User): UserDTO {
-  return {
-    id: String(model.id),
-    firstName: model.first_name,
-    lastName: model.last_name,
-    email: model.email,
-    position: model.position,
-    role: model.role,
   };
 }
 
@@ -177,108 +161,6 @@ class ReviewPageService implements IReviewPageService {
       Logger.error(
         `Failed to report conflict. Reason = ${getErrorMessage(error)}`,
       );
-      throw error;
-    }
-  }
-
-  async getInterviewedApplicantsByUserId(
-    userId: number,
-  ): Promise<InterviewedApplicantsDTO[]> {
-    try {
-      const assignedDelegations = await InterviewDelegation.findAll({
-        where: { interviewerId: userId },
-        include: [
-          {
-            association: "interviewedApplicantRecord",
-            include: [
-              {
-                association: "applicantRecord",
-                include: [
-                  {
-                    association: "applicant",
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      });
-      console.log(assignedDelegations);
-
-      return assignedDelegations
-        .map((delegation) => delegation.interviewedApplicantRecord)
-        .filter(
-          (record): record is InterviewedApplicantRecord =>
-            record !== undefined,
-        )
-        .map((record) => ({
-          applicantRecordId: record.applicantRecordId,
-          interviewStatus: record.status,
-          applicantFirstName:
-            record.applicantRecord?.applicant?.firstName ?? "",
-          applicantLastName: record.applicantRecord?.applicant?.lastName ?? "",
-        }));
-    } catch (error: unknown) {
-      Logger.error(`Failed to fetch. Reason = ${getErrorMessage(error)}`);
-      throw error;
-    }
-  }
-
-  async getInterviewedPairingsByUserId(
-    userId: number,
-  ): Promise<InterviewPairingsDTO[]> {
-    try {
-      const assignedDelegations = await InterviewDelegation.findAll({
-        where: { interviewerId: userId },
-        include: [
-          {
-            association: "interviewGroup",
-            include: [
-              {
-                association: "interviewDelegations",
-                include: [{ association: "interviewer" }],
-              },
-            ],
-          },
-        ],
-      });
-
-      const pairingsByGroupId = new Map<string, InterviewPairingsDTO>();
-
-      assignedDelegations.forEach((delegation) => {
-        const group = delegation.interviewGroup;
-        if (!group) {
-          return;
-        }
-
-        if (!pairingsByGroupId.has(group.id)) {
-          pairingsByGroupId.set(group.id, {
-            interviewedGroupId: group.id,
-            interviewGroupStatus: group.status,
-            groupMembers: [],
-          });
-        }
-
-        const pairing = pairingsByGroupId.get(group.id);
-        if (!pairing) {
-          return;
-        }
-
-        const dedupedMembers = new Map<string, UserDTO>();
-        group.interviewDelegations?.forEach((groupDelegation) => {
-          if (!groupDelegation.interviewer) {
-            return;
-          }
-          const member = toUserDTO(groupDelegation.interviewer);
-          dedupedMembers.set(member.id, member);
-        });
-
-        pairing.groupMembers = Array.from(dedupedMembers.values());
-      });
-
-      return Array.from(pairingsByGroupId.values());
-    } catch (error: unknown) {
-      Logger.error(`Failed to fetch. Reason = ${getErrorMessage(error)}`);
       throw error;
     }
   }

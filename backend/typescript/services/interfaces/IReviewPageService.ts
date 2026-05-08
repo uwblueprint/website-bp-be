@@ -22,22 +22,6 @@ interface IReviewPageService {
   ): Promise<ReviewedApplicantsDTO[]>;
 
   /**
-   * Fetches information about all the applicants assigned to a user to interview.
-   * @param userId the id of the interviewer
-   */
-  getInterviewedApplicantsByUserId(
-    userId: number,
-  ): Promise<InterviewedApplicantsDTO[]>;
-
-  /**
-   * Fetches interview pairing group information for an interviewer.
-   * @param userId the id of the interviewer
-   */
-  getInterviewedPairingsByUserId(
-    userId: number,
-  ): Promise<InterviewPairingsDTO[]>;
-
-  /**
    * Update the reviewerHasConflict column of a ReviewedApplicantRecord entry to indicate a conflict.
    * @param applicantRecordId the id of the applicant record that the reviewer is interested in
    * @param reviewerId the id of the reviewer that is reporting the conflict
