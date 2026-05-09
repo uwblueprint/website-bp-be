@@ -1,5 +1,7 @@
 import {
   ApplicationDTO,
+  InterviewedApplicantsDTO,
+  InterviewPairingsDTO,
   ReviewedApplicantRecordDTO,
   ReviewedApplicantsDTO,
 } from "../../types";

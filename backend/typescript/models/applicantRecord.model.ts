@@ -69,7 +69,7 @@ export default class ApplicantRecord extends Model {
   isShortlistedForOffer!: boolean;
 
   @BelongsTo(() => Applicant, "applicantId")
-  applicant?: NonAttribute<Applicant>;
+  applicant!: NonAttribute<Applicant>;
 
   @HasMany(() => ReviewedApplicantRecord, "applicantRecordId")
   reviewedApplicantRecords?: NonAttribute<ReviewedApplicantRecord[]>;

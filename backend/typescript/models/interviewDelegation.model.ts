@@ -55,17 +55,17 @@ export default class InterviewDelegation extends Model {
     foreignKey: "interviewedApplicantRecordId",
     targetKey: "id",
   })
-  interviewedApplicantRecord?: NonAttribute<InterviewedApplicantRecord>;
+  interviewedApplicantRecord!: NonAttribute<InterviewedApplicantRecord>;
 
   @BelongsTo(() => User, {
     foreignKey: "interviewerId",
     targetKey: "id",
   })
-  interviewer?: NonAttribute<User>;
+  interviewer!: NonAttribute<User>;
 
   @BelongsTo(() => InterviewGroup, {
     foreignKey: "groupId",
     targetKey: "id",
   })
-  interviewGroup?: NonAttribute<InterviewGroup>;
+  interviewGroup!: NonAttribute<InterviewGroup>;
 }
