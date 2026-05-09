@@ -83,11 +83,12 @@ class InterviewPageService implements IInterviewPageService {
         attributes: ["groupId"],
       });
 
-      // dedupe groupIds, although each groupId should have a unique set of interviewers, the database design does not guarantee this.
-      const groupIds = [...new Set(userGroupRows.map((row) => row.groupId))];
-      if (groupIds.length === 0) {
+      if (userGroupRows.length === 0) {
         return [];
       }
+
+      // dedupe groupIds, although each groupId should have a unique set of interviewers, the database design does not guarantee this.
+      const groupIds = [...new Set(userGroupRows.map((row) => row.groupId))];
 
       const interviewGroups = await InterviewGroup.findAll({
         where: { id: { [Op.in]: groupIds } },
