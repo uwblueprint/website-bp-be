@@ -1,4 +1,8 @@
-import { InterviewedApplicantsDTO, InterviewPairingsDTO } from "../../types";
+import {
+  InterviewedApplicantsDTO,
+  InterviewPairingsDTO,
+  UserDTO,
+} from "../../types";
 
 interface IInterviewPageService {
   /**
@@ -16,6 +20,12 @@ interface IInterviewPageService {
   getInterviewedPairingsByUserId(
     userId: number,
   ): Promise<InterviewPairingsDTO[]>;
+
+  /**
+   * Returns distinct interviewers assigned to an interview group (by delegation rows).
+   * @param groupId the interview group id
+   */
+  getInterviewersByGroupId(groupId: string): Promise<UserDTO[]>;
 }
 
 export default IInterviewPageService;

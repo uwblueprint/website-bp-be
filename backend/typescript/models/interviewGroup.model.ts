@@ -5,7 +5,11 @@ import InterviewDelegation from "./interviewDelegation.model";
 
 @Table({ tableName: "interview_groups" })
 export default class InterviewGroup extends Model {
-  @Column({ type: DataType.UUIDV4, primaryKey: true })
+  @Column({
+    type: DataType.UUID,
+    primaryKey: true,
+    defaultValue: DataType.UUIDV4,
+  })
   id!: string;
 
   @Column({ type: DataType.STRING, allowNull: true, defaultValue: null })
