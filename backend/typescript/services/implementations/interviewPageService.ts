@@ -125,7 +125,9 @@ class InterviewPageService implements IInterviewPageService {
         },
       });
 
-      const interviewers = delegations.map((delegation) => delegation.interviewer);
+      const interviewers = delegations.map(
+        (delegation) => delegation.interviewer,
+      );
       if (interviewers.length === 0) {
         return [];
       }
