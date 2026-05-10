@@ -8,6 +8,7 @@ const authType = gql`
     email: String!
     position: String
     role: Role!
+    profilePictureFileId: ID
     accessToken: String!
     refreshToken: String!
   }

@@ -114,6 +114,41 @@ class InterviewPageService implements IInterviewPageService {
       throw error;
     }
   }
+
+  async getInterviewersByGroupId(groupId: string): Promise<UserDTO[]> {
+    try {
+      const delegations = await InterviewDelegation.findAll({
+        where: { groupId },
+        include: {
+          model: User,
+          as: "interviewer",
+        },
+      });
+
+      const interviewers = delegations.map((delegation) => delegation.interviewer);
+      if (interviewers.length === 0) {
+        return [];
+      }
+
+      const uniqueByInterviewerId = new Set<number>();
+      const uniqueInterviewers = interviewers.filter((interviewer) => {
+        if (uniqueByInterviewerId.has(interviewer.id)) {
+          return false;
+        }
+        uniqueByInterviewerId.add(interviewer.id);
+        return true;
+      });
+
+      return uniqueInterviewers.map((interviewer) => toUserDTO(interviewer));
+    } catch (error: unknown) {
+      Logger.error(
+        `Failed to get interview delegations by groupId. Reason = ${getErrorMessage(
+          error,
+        )}`,
+      );
+      throw error;
+    }
+  }
 }
 
 export default InterviewPageService;

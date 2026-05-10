@@ -17,6 +17,7 @@ const interviewPageType = gql`
   extend type Query {
     getInterviewedApplicantsByUserId(userId: Int!): [InterviewedApplicantsDTO!]!
     getInterviewedPairingsByUserId(userId: Int!): [InterviewPairingsDTO!]!
+    getInterviewersByGroupId(groupId: ID!): [UserDTO!]!
   }
 `;
 

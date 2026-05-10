@@ -1,5 +1,9 @@
 import InterviewPageService from "../../services/implementations/interviewPageService";
-import { InterviewedApplicantsDTO, InterviewPairingsDTO } from "../../types";
+import {
+  InterviewedApplicantsDTO,
+  InterviewPairingsDTO,
+  UserDTO,
+} from "../../types";
 import { getErrorMessage } from "../../utilities/errorUtils";
 
 const interviewPageService = new InterviewPageService();
@@ -28,6 +32,17 @@ const interviewPageResolvers = {
         return await interviewPageService.getInterviewedPairingsByUserId(
           userId,
         );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
+    getInterviewersByGroupId: async (
+      _parent: undefined,
+      args: { groupId: string },
+    ): Promise<UserDTO[]> => {
+      const { groupId } = args;
+      try {
+        return await interviewPageService.getInterviewersByGroupId(groupId);
       } catch (error) {
         throw new Error(getErrorMessage(error));
       }
