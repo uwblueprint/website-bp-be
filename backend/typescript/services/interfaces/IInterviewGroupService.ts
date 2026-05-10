@@ -13,8 +13,7 @@ interface IInterviewGroupService {
 
   /**
    * Creates a new interview group.
-   * @param status initial status
-   * @param schedulingLink scheduling link, or undefined if not yet set
+   * @param interviewGroup initial interview group
    */
   createInterviewGroup(
     interviewGroup: CreateInterviewGroupDTO,
@@ -23,8 +22,7 @@ interface IInterviewGroupService {
   /**
    * Updates an existing interview group.
    * @param id PK of the interview group to update
-   * @param status updated status
-   * @param schedulingLink updated scheduling link, or undefined to clear it
+   * @param interviewGroup updated interview group
    */
   updateInterviewGroup(
     id: string,
@@ -36,6 +34,22 @@ interface IInterviewGroupService {
    * @param id PK of the interview group to delete
    */
   deleteInterviewGroupById(id: string): Promise<InterviewGroupDTO>;
+
+  /**
+   * Bulk creates interview groups.
+   * @param interviewGroups list of interview groups to create
+   */
+  bulkCreateInterviewGroups(
+    interviewGroups: CreateInterviewGroupDTO[],
+  ): Promise<InterviewGroupDTO[]>;
+
+  /**
+   * Bulk deletes interview groups by ids.
+   * @param interviewGroupIds list of interview group ids to delete
+   */
+  bulkDeleteInterviewGroupsByIds(
+    interviewGroupIds: string[],
+  ): Promise<InterviewGroupDTO[]>;
 }
 
 export default IInterviewGroupService;

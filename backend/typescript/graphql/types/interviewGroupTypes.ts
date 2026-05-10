@@ -32,6 +32,14 @@ const interviewGroupTypes = gql`
     ): InterviewGroupDTO!
 
     deleteInterviewGroupById(id: ID!): InterviewGroupDTO!
+
+    bulkCreateInterviewGroups(
+      interviewGroups: [CreateInterviewGroupDTO]!
+    ): [InterviewGroupDTO]!
+
+    bulkDeleteInterviewGroupsByIds(
+      interviewGroupIds: [ID]!
+    ): [InterviewGroupDTO]!
   }
 `;
 

@@ -67,6 +67,32 @@ const interviewGroupResolvers = {
         throw new Error(getErrorMessage(error));
       }
     },
+
+    bulkCreateInterviewGroups: async (
+      _parent: undefined,
+      args: { interviewGroups: CreateInterviewGroupDTO[] },
+    ): Promise<InterviewGroupDTO[]> => {
+      try {
+        return await interviewGroupService.bulkCreateInterviewGroups(
+          args.interviewGroups,
+        );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
+
+    bulkDeleteInterviewGroupsByIds: async (
+      _parent: undefined,
+      args: { interviewGroupIds: string[] },
+    ): Promise<InterviewGroupDTO[]> => {
+      try {
+        return await interviewGroupService.bulkDeleteInterviewGroupsByIds(
+          args.interviewGroupIds,
+        );
+      } catch (error) {
+        throw new Error(getErrorMessage(error));
+      }
+    },
   },
 };
 
