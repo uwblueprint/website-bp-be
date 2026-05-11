@@ -34,7 +34,9 @@ function interviewerTeamKey(a: InterviewerAssignment): string {
     (x): x is number => x !== undefined,
   );
   if (ids.length === 0) {
-    throw new Error("No interviewers assigned to this interviewed applicant record.");
+    throw new Error(
+      "No interviewers assigned to this interviewed applicant record.",
+    );
   }
   if (ids.length === 1) {
     return `solo:${ids[0]}`;
@@ -57,7 +59,6 @@ class InterviewDashboardServices implements IInterviewDashboardService {
     positions: string[],
   ): Promise<InterviewDelegationDTO[]> {
     try {
-
       // Get all users by position.
       const groups = (
         await User.findAll({
@@ -100,7 +101,6 @@ class InterviewDashboardServices implements IInterviewDashboardService {
           ],
         });
 
-      
       // Round robin the interviewers for each interviewed applicant record.
       const assignments: InterviewerAssignment[] = [];
 
@@ -157,8 +157,8 @@ class InterviewDashboardServices implements IInterviewDashboardService {
       );
 
       // Create the interview delegations.
-      const delegations: CreateInterviewDelegationDTO[] =
-        assignments.flatMap((a) => {
+      const delegations: CreateInterviewDelegationDTO[] = assignments.flatMap(
+        (a) => {
           const groupId = groupIdByTeamKey[interviewerTeamKey(a)];
           const row: CreateInterviewDelegationDTO[] = [];
           if (a.interviewer1 !== undefined) {
@@ -176,7 +176,8 @@ class InterviewDashboardServices implements IInterviewDashboardService {
             });
           }
           return row;
-        });
+        },
+      );
 
       return await interviewDelegationsService.bulkCreateInterviewDelegations(
         delegations,

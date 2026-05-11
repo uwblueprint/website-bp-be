@@ -1,6 +1,6 @@
 import { InterviewDelegationDTO } from "../../types";
 
-interface IInterviewDashboardService{
+interface IInterviewDashboardService {
   /**
    * Delegates interviewers to interview applicants.
    */
